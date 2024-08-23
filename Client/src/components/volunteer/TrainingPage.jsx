@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { FaSearch } from 'react-icons/fa';
 
 
-function EventSearchPage() {
+function TrainingPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [eventType, setEventType] = useState('');
   const [gender, setGender] = useState('');
@@ -149,4 +149,4 @@ const HeroSection = styled.div`
   }
 `;
 
-export default EventSearchPage;
+export default TrainingPage;
