@@ -25,56 +25,60 @@ function EventsSection() {
     time:"10:00 AM - 2:00 PM",
     location:"Community Center, Los Angeles"},
   ]
-  
+  const handleRegister = (val)=>{
+      console.log(val)
+  }
   return (
     <Wrapper>
-      <div className="container">
-        <h1>Upcoming Events</h1>
-        <div className="events-grid">
-        { 
-        !showDetail&& eventList.map((event) => (
+    <div className="container">
+      {!showDetail && <h1>Upcoming Events</h1>}
+      <div className="events-grid">
+        {!showDetail && eventList.map((event) => (
           <EventCard
-          key={event}
-            event = {event}
-            getDetails ={()=>{
-              setShowDetail(event)
+            key={event}
+            event={event}
+            getDetails={() => {
+              setShowDetail(event);
             }}
           />
-          ))}
-          {
-          showDetail&&<EventFullDisplay
-            event = {showDetail}
-            getDetails ={setShowDetail}
+        ))}
+        {showDetail && (
+          <EventFullDisplay
+            event={showDetail}
+            getDetails={setShowDetail}
+            register ={handleRegister}
           />
-          }
-
-        </div>
+        )}
       </div>
-    </Wrapper>
+    </div>
+  </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
-  padding: 50px 20px;
-  text-align: center;
+padding: 50px 20px;
+text-align: center;
 
-  .container {
-    max-width: 1200px;
-    width: 100%;
-    margin: 0 auto;
-  }
+.container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
 
-  h1 {
-    font-size: 28px;
-    color: #333;
-    margin-bottom: 30px;
-  }
+h1 {
+  font-size: 32px; /* Increased font size */
+  color: #333;
+  margin-bottom: 30px;
+}
 
-  .events-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-  }
+.events-grid {
+  display: flex; /* Changed to flex */
+  flex-wrap: wrap; /* Allow wrapping */
+  justify-content: center; /* Center the items */
+  align-items: center; /* Center vertically */
+  gap: 20px;
+  margin-top: 200px;
+}
 `;
 
 export default EventsSection;

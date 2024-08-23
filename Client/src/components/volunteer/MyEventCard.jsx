@@ -1,11 +1,12 @@
 import React from 'react';
 
-function MyEventCard({ image, title, description }) {
+function MyEventCard({ event,getDetails }) {
   return (
     <div style={styles.card}>
-      <img src={image} alt={title} style={styles.image} />
+      {/* <img src={event.image} alt={event.title} style={styles.image} /> */}
+      <div style={styles.rectangle}></div> 
       <div style={styles.content}>
-         <div style={styles.topRight}><h2>{title}</h2>
+         <div style={styles.topRight}><h2>{event.title}</h2>
         <div>
             <label >
               Remind Me
@@ -13,8 +14,12 @@ function MyEventCard({ image, title, description }) {
             </label>
             <button style={styles.optionsButton}>⋮</button></div>
           </div>
-        <p style={styles.description}>{description}</p>
-        <button style={styles.readMore}>Read More</button>
+          <div style={{textAlign:'left'}}> 
+        <p style={styles.description}>{event.description}</p>
+        </div>
+        <div style={{textAlign:'left'}}> 
+        <button style={styles.readMore} onClick={getDetails}>Read More</button>
+        </div>
         <div style={styles.bottomRow}>
           <button style={styles.cancelButton}>Cancel</button>
          
@@ -32,6 +37,13 @@ const styles = {
     borderRadius: '8px',
     padding: '10px',
     marginBottom: '10px',
+  },
+  rectangle: {
+    width: '10%', // Full width
+    height: '200px', // Adjust height as needed
+    backgroundColor: '#ccc', // Color for the rectangle
+    marginBottom: '10px',
+    marginRight:'10px' // Space between rectangle and details
   },
   image: {
     width: '100px',

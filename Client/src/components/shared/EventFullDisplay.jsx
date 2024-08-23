@@ -1,11 +1,13 @@
 import React from 'react';
 
-function EventFullDisplay({ event, getDetails}) {
+function EventFullDisplay({ event, getDetails, register}) {
   return (
     <div style={styles.container}>
       <button style={styles.backButton} onClick={()=>{getDetails('')}}>Back</button>
+      
       <div style={styles.columnLeft}>
-        <img src={event.image} alt="Event" style={styles.image} />
+        {/* <img src={event.image} alt="Event" style={styles.image} /> */}
+        <div style={styles.rectangle}></div> 
         <div style={styles.details}>
           <p><strong>Time:</strong> {event.time}</p>
           <p><strong>Date:</strong> {event.date}</p>
@@ -22,7 +24,7 @@ function EventFullDisplay({ event, getDetails}) {
         <br/>
         <br/>
 
-        <button style={styles.registerButton}>Register</button>
+        <button style={styles.registerButton} onClick={()=>{getDetails(''); register(event.id)}}>Register</button>
       </div>
     </div>
   );
@@ -48,6 +50,12 @@ const styles = {
   image: {
     width: '100%',
     height: 'auto',
+  },
+  rectangle: {
+    width: '100%', // Full width
+    height: '200px', // Adjust height as needed
+    backgroundColor: '#ccc', // Color for the rectangle
+    marginBottom: '10px', // Space between rectangle and details
   },
   details: {
     marginTop: '10px',
