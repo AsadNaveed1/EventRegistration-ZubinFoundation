@@ -16,11 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-
+from . import views
 urlpatterns = [
-    path('webadmin/', admin.site.urls),
-    path('zubin_auth/', include("zubin_auth.urls")),
-    path('volunteer/', include("volunteer.urls")),
-    path('zubin_admin/', include("zubin_admin.urls")),
-    path('community_member/', include("community_member.urls")),
+    path('test/',views.say_hello),
+
 ]
