@@ -1,25 +1,46 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import logo from "../img/logo.png";
 
 function SignupPage() {
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [username, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
 
   const handleSignup = () => {
     if (password !== confirmPassword) {
-      alert('Passwords do not match');
+      alert("Passwords do not match");
       return;
     }
 
+    console.log("Signup Details:", { username, email, password });
 
-    console.log('Signup Details:', { fullName, email, password });
-
-    navigate('/');
+    // Call API to create account
+    // Redirect to login page
+    fetch("http://localhost:5000/zubin_auth/signup/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({ username, email, password }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          // Account created successfully
+          navigate("/");
+        } else {
+          // Handle error response
+          throw new Error("Failed to create account");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        // Handle error
+      });
   };
 
   return (
@@ -35,7 +56,7 @@ function SignupPage() {
             <input
               type="text"
               placeholder="Enter your full name"
-              value={fullName}
+              value={username}
               onChange={(e) => setFullName(e.target.value)}
             />
           </div>
@@ -66,7 +87,9 @@ function SignupPage() {
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </div>
-          <button onClick={handleSignup} type="button">Sign Up</button>
+          <button onClick={handleSignup} type="button">
+            Sign Up
+          </button>
         </form>
         <p>
           Already have an account? <a href="/">Login</a>
@@ -84,7 +107,7 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   padding: 30px;
-  
+
   .container {
     background: #fff;
     max-width: 360px;
