@@ -2,31 +2,31 @@ import React from 'react';
 import styled from 'styled-components';
 import { FaCalendarAlt, FaClock, FaInfoCircle, FaMapMarkerAlt } from 'react-icons/fa';
 
-function EventCard({ imageSrc, title, date, time, location }) {
+function EventCard({ event, getDetails}) {
   return (
     <Wrapper>
-      <img src={imageSrc} alt="Event" />
+      <img src={event.imageSrc} alt="Event" />
       <div className="content">
         <div className="title">
-          <h2>{title}</h2>
+          <h2>{event.title}</h2>
           <FaInfoCircle className="icon" />
         </div>
         <div className="details">
           <div className="detail-item">
             <FaCalendarAlt className="icon" />
-            <span>{date}</span>
+            <span>{event.date}</span>
           </div>
           <div className="detail-item">
             <FaClock className="icon" />
-            <span>{time}</span>
+            <span>{event.time}</span>
           </div>
           <div className="detail-item">
             <FaMapMarkerAlt className="icon" />
-            <span>{location}</span>
+            <span>{event.location}</span>
           </div>
         </div>
         <div className="button-container">
-          <button className="details-button">Details</button>
+          <button className="details-button" onClick={getDetails} >Details</button>
         </div>
       </div>
     </Wrapper>

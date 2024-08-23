@@ -1,12 +1,12 @@
 import React from 'react';
 
-function EventCard({ image, title, description }) {
+function MyEventCard({ image, title, description }) {
   return (
     <div style={styles.card}>
       <img src={image} alt={title} style={styles.image} />
       <div style={styles.content}>
          <div style={styles.topRight}><h2>{title}</h2>
-<div>
+        <div>
             <label >
               Remind Me
               <input type="checkbox" style={styles.switch} />
@@ -89,4 +89,4 @@ const styles = {
   },
 };
 
-export default EventCard;
+export default MyEventCard;

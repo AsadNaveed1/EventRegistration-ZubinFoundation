@@ -1,34 +1,52 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import EventCard from '../shared/EventCard';
+import EventFullDisplay from '../shared/EventFullDisplay';
 
 function EventsSection() {
+  const [showDetail, setShowDetail] = useState('');
+  const eventList = [
+{imageSrc:"../img/Img1.png",
+  title:"Charity Event",
+  date:"April 15, 2023",
+  time:"10:00 AM - 2:00 PM",
+  description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  location:"City Park, New York"},
+  {imageSrc:"../img/Img2.png",
+    title:"Fundraising Event",
+    date:"May 10, 2023",
+  description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    time:"10:00 AM - 2:00 PM",
+    location:"Community Center, Los Angeles"},
+  {imageSrc:"../img/Img2.png",
+    title:"Fundraising Event",
+    date:"May 10, 2023",
+  description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    time:"10:00 AM - 2:00 PM",
+    location:"Community Center, Los Angeles"},
+  ]
+  
   return (
     <Wrapper>
       <div className="container">
         <h1>Upcoming Events</h1>
         <div className="events-grid">
+        { 
+        !showDetail&& eventList.map((event) => (
           <EventCard
-            imageSrc="../img/Img1.png"
-            title="Charity Event"
-            date="April 15, 2023"
-            time="10:00 AM - 2:00 PM"
-            location="City Park, New York"
+          key={event}
+            event = {event}
+            getDetails ={()=>{
+              setShowDetail(event)
+            }}
           />
-          <EventCard
-            imageSrc="../img/Img2.png"
-            title="Fundraising Event"
-            date="May 10, 2023"
-            time="3:00 PM - 6:00 PM"
-            location="Community Center, Los Angeles"
+          ))}
+          {
+          showDetail&&<EventFullDisplay
+            event = {showDetail}
+            getDetails ={setShowDetail}
           />
-          <EventCard
-            imageSrc="../img/Img.png"
-            title="Community Cleanup"
-            date="June 5, 2023"
-            time="9:00 AM - 12:00 PM"
-            location="Downtown Plaza, Chicago"
-          />
+          }
 
         </div>
       </div>
