@@ -17,6 +17,8 @@ import './App.css';
 import EventFullDisplay from './components/shared/EventFullDisplay';
 import TrainingPage from './components/volunteer/TrainingPage';
 import MyEventsPage from './components/volunteer/MyEventsPage';
+import EventSearchPage from './components/volunteer/EventSearchPage';
+import EventsSection from './components/volunteer/EventsSection';
 
 function App() {
   return (
@@ -26,9 +28,10 @@ function App() {
           <Route path="/" element={<LoginPage />} />
           <Route path="/register" element={<SignupPage />} />
           <Route path="/volunteer" element={<VolunteerPage />} >
-            <Route path="myevents" element={<MyEventsPage />} />
-            <Route path="training" element={<TrainingPage />} />
-            <Route path="event" element={<EventFullDisplay />} />
+            <Route path="MyEvents" element={<MyEventsPage />} />
+            <Route path="" element={<div><EventSearchPage /><EventsSection/></div>} />
+            <Route path="Training" element={<TrainingPage />} />
+            <Route path="Event/:id" element={<EventFullDisplay />} />
           </Route>
           <Route path="/member" element={<MemberPage />}>
             <Route path="Home" element={<Home/>} />
