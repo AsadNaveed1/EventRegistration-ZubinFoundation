@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     'community_member',
     'general_api',
     ## For CORS 
+    'events',
     'corsheaders',
 ]
 
