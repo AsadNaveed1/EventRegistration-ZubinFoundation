@@ -1,46 +1,26 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import axios from '../axios';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import logo from "../img/logo.png";
 
 function SignupPage() {
-  const [username, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [fullName, setFullName] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleSignup = () => {
+  const handleSignup = (values) => {
     if (password !== confirmPassword) {
       alert("Passwords do not match");
       return;
     }
 
-    console.log("Signup Details:", { username, email, password });
+    console.log('Signup Details:', { fullName, ...values, password });
 
-    // Call API to create account
-    // Redirect to login page
-    fetch("http://localhost:5000/zubin_auth/signup/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({ username, email, password }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          // Account created successfully
-          navigate("/");
-        } else {
-          // Handle error response
-          throw new Error("Failed to create account");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        // Handle error
-      });
+    navigate('/');
   };
 
   return (
@@ -56,7 +36,7 @@ function SignupPage() {
             <input
               type="text"
               placeholder="Enter your full name"
-              value={username}
+              value={fullName}
               onChange={(e) => setFullName(e.target.value)}
             />
           </div>
@@ -87,9 +67,7 @@ function SignupPage() {
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </div>
-          <button onClick={handleSignup} type="button">
-            Sign Up
-          </button>
+          <button onClick={handleSignup} type="button">Sign Up</button>
         </form>
         <p>
           Already have an account? <a href="/">Login</a>
@@ -110,7 +88,7 @@ const Wrapper = styled.div`
 
   .container {
     background: #fff;
-    max-width: 360px;
+    max-width: 720px; /* Increase the max-width to take up more space horizontally */
     width: 100%;
     padding: 40px;
     border-radius: 8px;
@@ -131,6 +109,8 @@ const Wrapper = styled.div`
   .row {
     margin-bottom: 20px;
     text-align: left;
+    display: flex;
+    flex-direction: column;
   }
 
   .row label {
@@ -140,7 +120,8 @@ const Wrapper = styled.div`
     margin-bottom: 5px;
   }
 
-  .row input {
+  .row input,
+  .row select {
     width: 100%;
     padding: 10px;
     border: 1px solid #ddd;
@@ -172,8 +153,14 @@ const Wrapper = styled.div`
     margin-top: 10px;
   }
 
-  p a:hover {
+  p a {
     text-decoration: underline;
+  }
+
+  .error {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
   }
 `;
 
