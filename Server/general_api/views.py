@@ -286,3 +286,36 @@ def get_user_events(request):
         'status': 'error',
         'message': 'Invalid request method'
     }, status=405)
+
+def create_user(request):
+    if request.method == 'POST':
+        try:
+            # 1. Parse the JSON data from the request body
+            data = json.loads(request.body)
+            
+            # 2. Prepare a dictionary with only provided fields
+            user_data = {}
+            fields = [
+                'admin_code', 'age', 'email', 'ethnicity', 'gender',
+                'interest', 'user_type', 'password', 'address', 'username'
+            ]
+            
+            for field in fields:
+                if field in data:
+                    user_data[field] = data[field]
+            
+            # 3. Create a new User object with provided fields
+            user = User.objects.create(**user_data)
+            
+            # 4. Return a success response
+            return JsonResponse({'status': 'success', 'message': 'User created successfully', 'user_id': user.user_id}, status=201)
+        
+        except json.JSONDecodeError:
+            # Handle invalid JSON format
+            return JsonResponse({'status': 'error', 'message': 'Invalid JSON format'}, status=400)
+        
+        except Exception as e:
+            # Handle other potential errors
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)

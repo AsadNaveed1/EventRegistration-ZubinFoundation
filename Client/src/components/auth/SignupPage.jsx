@@ -20,7 +20,7 @@ function SignupPage() {
     console.log("Signup Details:", { fullName, email, password });
 
     // Call API to create account
-    axios.post("http://localhost:8000/volunteer/test", {
+    axios.post("http://localhost:8000/info/add_user", {
       fullName,
       email,
       password,
@@ -31,16 +31,16 @@ function SignupPage() {
       age,
       residence,
       interests,
-    }, {
+  }, {
       headers: {
-        "Content-Type": "application/json",
+          "Content-Type": "application/json",
       },
       withCredentials: true, // Use withCredentials for sending cookies
-    })
-      .then((response) => {
+  }).then((response) => {
         if (response.status === 200) {
           // Account created successfully
           navigate("/");
+          console.log(response)
         } else {
           // Handle error response
           throw new Error("Failed to create account");
