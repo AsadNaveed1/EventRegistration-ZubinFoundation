@@ -1,6 +1,15 @@
-import React from 'react';
+import React,{useState} from 'react';
+import ReminderSettings from './ReminderSettings';
 
 function MyEventCard({ event,getDetails }) {
+  const [showSettings, setShowSettings]=useState(false)
+  const handleSettings = ()=>{
+    setShowSettings(false)
+  }
+  const handleSubmit = (val)=>{
+    setShowSettings(false)
+    console.log(val)
+  }
   return (
     <div style={styles.card}>
       {/* <img src={event.image} alt={event.title} style={styles.image} /> */}
@@ -12,7 +21,8 @@ function MyEventCard({ event,getDetails }) {
               Remind Me
               <input type="checkbox" style={styles.switch} />
             </label>
-            <button style={styles.optionsButton}>⋮</button></div>
+            <button style={styles.optionsButton} onClick={()=>{setShowSettings(true)}}>⋮</button></div>
+            <ReminderSettings isOpen={showSettings} onClose={handleSettings} onSubmit={handleSubmit}/>
           </div>
           <div style={{textAlign:'left'}}> 
         <p style={styles.description}>{event.description}</p>
