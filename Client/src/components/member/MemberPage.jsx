@@ -1,11 +1,12 @@
 import React from 'react';
-import Navbar from '../shared/Navbar';
+import Navbar from './Nav';;
+import { Outlet } from 'react-router-dom';
 
 function MemberPage() {
   return (
     <div>
-      <Navbar />
-      <div>Welcome Community Member</div>
+      <Navbar/>
+      <Outlet />
     </div>
   );
 }

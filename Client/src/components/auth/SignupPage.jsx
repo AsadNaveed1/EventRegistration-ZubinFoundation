@@ -1,26 +1,55 @@
-import React, { useState } from 'react';
-import axios from '../axios';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
+import React, { useState } from "react";
+import axios from "../axios";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
 import logo from "../img/logo.png";
 
 function SignupPage() {
-  const [fullName, setFullName] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
 
   const handleSignup = (values) => {
+    const { fullName, email, password, confirmPassword, gender, userType, adminCode, ethnicity, age, residence, interests } = values;
+
     if (password !== confirmPassword) {
-      alert('Passwords do not match');
+      alert("Passwords do not match");
       return;
     }
 
-    console.log('Signup Details:', { fullName, ...values, password });
+    console.log("Signup Details:", { fullName, email, password });
 
-    navigate('/');
+    // Call API to create account
+    axios.post("http://localhost:8000/info/add_user", {
+      fullName,
+      email,
+      password,
+      gender,
+      userType,
+      adminCode,
+      ethnicity,
+      age,
+      residence,
+      interests,
+  }, {
+      headers: {
+          "Content-Type": "application/json",
+      },
+      withCredentials: true, // Use withCredentials for sending cookies
+  }).then((response) => {
+        if (response.status === 200) {
+          // Account created successfully
+          navigate("/");
+          console.log(response)
+        } else {
+          // Handle error response
+          throw new Error("Failed to create account");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        // Handle error
+      });
   };
 
   return (
@@ -32,7 +61,10 @@ function SignupPage() {
         <h1>Create Account</h1>
         <Formik
           initialValues={{
+            fullName: '',
             email: '',
+            password: '',
+            confirmPassword: '',
             gender: '',
             userType: '',
             adminCode: '',
@@ -42,17 +74,22 @@ function SignupPage() {
             interests: [],
           }}
           validationSchema={Yup.object({
+            fullName: Yup.string().required('Required'),
             email: Yup.string().email('Invalid email address').required('Required'),
+            password: Yup.string().required('Required'),
+            confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required('Required'),
             gender: Yup.string().required('Required'),
             userType: Yup.string().required('Required'),
             adminCode: Yup.string().when('userType', {
               is: 'admin',
               then: Yup.string().required('Admin code is required'),
             }),
-            ethnicity: Yup.string().required('Required'),
-            age: Yup.number().required('Required'),
-            residence: Yup.string().required('Required'),
-            interests: Yup.array().min(1, 'At least one interest must be selected').required('Required'),
+            ethnicity: Yup.string().required("Required"),
+            age: Yup.number().required("Required"),
+            residence: Yup.string().required("Required"),
+            interests: Yup.array()
+              .min(1, "At least one interest must be selected")
+              .required("Required"),
           })}
           onSubmit={handleSignup}
         >
@@ -60,35 +97,27 @@ function SignupPage() {
             <Form>
               <div className="row">
                 <label>Full Name</label>
-                <input
-                  type="text"
-                  placeholder="Enter your full name"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                />
+                <Field type="text" name="fullName" placeholder="Enter your full name" />
+                <ErrorMessage name="fullName" component="div" className="error" />
               </div>
               <div className="row">
                 <label>Email</label>
-                <Field type="email" name="email" placeholder="Email@example.com" />
+                <Field
+                  type="email"
+                  name="email"
+                  placeholder="Email@example.com"
+                />
                 <ErrorMessage name="email" component="div" className="error" />
               </div>
               <div className="row">
                 <label>Password</label>
-                <input
-                  type="password"
-                  placeholder="Create a password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
+                <Field type="password" name="password" placeholder="Create a password" />
+                <ErrorMessage name="password" component="div" className="error" />
               </div>
               <div className="row">
                 <label>Confirm Password</label>
-                <input
-                  type="password"
-                  placeholder="Confirm your password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
+                <Field type="password" name="confirmPassword" placeholder="Confirm your password" />
+                <ErrorMessage name="confirmPassword" component="div" className="error" />
               </div>
               <div className="row">
                 <label>Gender</label>
@@ -108,19 +137,39 @@ function SignupPage() {
                   <option value="admin">Admin</option>
                   <option value="volunteer">Volunteer</option>
                 </Field>
-                <ErrorMessage name="userType" component="div" className="error" />
+                <ErrorMessage
+                  name="userType"
+                  component="div"
+                  className="error"
+                />
               </div>
-              {values.userType === 'admin' && (
+              {values.userType === "admin" && (
                 <div className="row">
                   <label>Admin Code</label>
-                  <Field type="text" name="adminCode" placeholder="Enter admin code" />
-                  <ErrorMessage name="adminCode" component="div" className="error" />
+                  <Field
+                    type="text"
+                    name="adminCode"
+                    placeholder="Enter admin code"
+                  />
+                  <ErrorMessage
+                    name="adminCode"
+                    component="div"
+                    className="error"
+                  />
                 </div>
               )}
               <div className="row">
                 <label>Ethnicity</label>
-                <Field type="text" name="ethnicity" placeholder="Enter your ethnicity" />
-                <ErrorMessage name="ethnicity" component="div" className="error" />
+                <Field
+                  type="text"
+                  name="ethnicity"
+                  placeholder="Enter your ethnicity"
+                />
+                <ErrorMessage
+                  name="ethnicity"
+                  component="div"
+                  className="error"
+                />
               </div>
               <div className="row">
                 <label>Age</label>
@@ -135,17 +184,29 @@ function SignupPage() {
                   <option value="new territories">New Territories</option>
                   <option value="hong kong island">Hong Kong Island</option>
                 </Field>
-                <ErrorMessage name="residence" component="div" className="error" />
+                <ErrorMessage
+                  name="residence"
+                  component="div"
+                  className="error"
+                />
               </div>
               <div className="row">
                 <label>Interests</label>
                 <div role="group" aria-labelledby="checkbox-group">
                   <label>
-                    <Field type="checkbox" name="interests" value="women and girls" />
+                    <Field
+                      type="checkbox"
+                      name="interests"
+                      value="women and girls"
+                    />
                     Women and Girls
                   </label>
                   <label>
-                    <Field type="checkbox" name="interests" value="mental health" />
+                    <Field
+                      type="checkbox"
+                      name="interests"
+                      value="mental health"
+                    />
                     Mental Health
                   </label>
                   <label>
@@ -153,7 +214,11 @@ function SignupPage() {
                     Careers
                   </label>
                   <label>
-                    <Field type="checkbox" name="interests" value="emergency relief" />
+                    <Field
+                      type="checkbox"
+                      name="interests"
+                      value="emergency relief"
+                    />
                     Emergency Relief
                   </label>
                   <label>
@@ -161,7 +226,11 @@ function SignupPage() {
                     Family
                   </label>
                 </div>
-                <ErrorMessage name="interests" component="div" className="error" />
+                <ErrorMessage
+                  name="interests"
+                  component="div"
+                  className="error"
+                />
               </div>
               <button type="submit">Sign Up</button>
             </Form>

@@ -1,6 +1,32 @@
 import React from 'react';
 
-function TrainingPage({ modules }) {
+function TrainingPage() {
+  const modules = [
+    {
+      id: 1,
+      image:"/assets/Final-Women-and-Girls-2-1.png",
+      title:"how to properly make tea",
+      link:'https://www.youtube.com/watch?v=F898rbUvzV4&pp=ygUQaG93IHRvIG1ha2UgdGVhIA%3D%3D',
+      status:false
+  
+    },
+    {
+      id: 2,
+      image:"/assets/Final-Women-and-Girls-2-1.png",
+      title:"how to properly make tea",
+      link:'https://www.youtube.com/watch?v=F898rbUvzV4&pp=ygUQaG93IHRvIG1ha2UgdGVhIA%3D%3D',
+      status:true
+  
+    },
+    {
+      id: 3,
+      image:"/assets/Opportunities-2.png",
+      title:"how to interview properly",
+      link:'https://www.youtube.com/watch?v=WDOQBPYEaNs&pp=ygUQaG93IHRvIGludGVydmlldw%3D%3D',
+      status:false
+  
+    },
+   ]
   return (
     <div style={styles.container}>
       <div style={styles.header}>

@@ -21,6 +21,7 @@ function MyEventCard({ event,getDetails }) {
               Remind Me
               <input type="checkbox" style={styles.switch} />
             </label>
+           
             <button style={styles.optionsButton} onClick={()=>{setShowSettings(true)}}>⋮</button></div>
             <ReminderSettings isOpen={showSettings} onClose={handleSettings} onSubmit={handleSubmit}/>
           </div>
@@ -32,6 +33,13 @@ function MyEventCard({ event,getDetails }) {
         </div>
         <div style={styles.bottomRow}>
           <button style={styles.cancelButton}>Cancel</button>
+           {event.complete ? (
+        <span>✔️ Completed</span> // You can replace this with any completed icon
+      ) : (
+        <span style={styles.incomplete}>
+          <span style={styles.icon}>!</span> Incomplete Training
+        </span>
+      )}
          
         </div>
       </div>
@@ -108,6 +116,13 @@ const styles = {
     fontSize: '1.5em',
     cursor: 'pointer',
     
+  },
+  incomplete: {
+    color: 'red', // You can change the color as needed
+    fontWeight: 'bold',
+  },
+  icon: {
+    marginRight: '5px', // Space between icon and text
   },
 };
 
