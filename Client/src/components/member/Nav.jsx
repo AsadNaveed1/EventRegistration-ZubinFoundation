@@ -26,6 +26,9 @@ function Navbar() {
           <Link to="/member/Home">Home</Link>
         </li>
         <li>
+          <Link to="/member/MakeAppointment">Make An Appointment</Link>
+        </li>
+        <li>
           <Link to="/member/MyEvents">My Events</Link>
         </li>
         <li>
@@ -35,6 +38,11 @@ function Navbar() {
           <Link to="/member/Profile">Profile</Link>
         </li>        
             </ul>
+            <div className={`${styles.hamburger} ${isActive ? styles.active : ''}`}  onClick={toggleActiveClass}>
+              <span className={`${styles.bar}`}></span>
+              <span className={`${styles.bar}`}></span>
+              <span className={`${styles.bar}`}></span>
+            </div>
           </nav>
         </header>
       </div>
