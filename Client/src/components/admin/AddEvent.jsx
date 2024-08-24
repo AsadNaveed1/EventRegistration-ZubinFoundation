@@ -114,7 +114,7 @@ function AddEventForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Simulate updating sample.json by saving to localStorage
+
     const existingEvents = JSON.parse(localStorage.getItem('events')) || [];
     const newEvent = {
       ...formData,
@@ -144,7 +144,6 @@ function AddEventForm() {
     });
   };
 
-  // Function to save events to sample.json
   const saveToSampleJson = async (events) => {
     const response = await fetch('sample.json', {
       method: 'PUT',

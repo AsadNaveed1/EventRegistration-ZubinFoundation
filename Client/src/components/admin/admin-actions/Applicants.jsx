@@ -43,9 +43,9 @@ function Applicants({ event, onClose }) {
 }
 
 const Wrapper = styled.div`
-  padding: 20px; /* Adjusted for the side navbar width */
-  margin-top: 20px; /* Adjusted for spacing below the events table */
-  width: calc(100% - 270px); /* Adjusted for the side navbar width */
+  padding: 20px; 
+  margin-top: 20px; 
+  width: calc(100% - 270px); 
 `;
 
 const CloseButton = styled.button`

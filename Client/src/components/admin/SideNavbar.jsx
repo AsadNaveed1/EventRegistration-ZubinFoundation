@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FaHome, FaPlus, FaList, FaEnvelopeOpenText } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 function SideNavbar() {
   return (
@@ -11,28 +11,28 @@ function SideNavbar() {
       </div>
       <ul>
         <li>
-          <Link to="/admin/dashboard">
+          <NavLink to="/admin/dashboard" activeClassName="active">
             <FaHome className="icon" />
             Dashboard
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/admin/addevent">
+          <NavLink to="/admin/addevent" activeClassName="active">
             <FaPlus className="icon" />
             Add Event
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/admin/manageevents">
+          <NavLink to="/admin/manageevents" activeClassName="active">
             <FaList className="icon" />
             Manage Events
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/admin/applications">
+          <NavLink to="/admin/applications" activeClassName="active">
             <FaEnvelopeOpenText className="icon" />
             Applications
-          </Link>
+          </NavLink>
         </li>
       </ul>
     </Wrapper>
@@ -81,8 +81,8 @@ const Wrapper = styled.div`
     transition: background-color 0.3s;
   }
 
-  ul li a:hover {
-    background-color: #f0f0f0; 
+  ul li a:hover, ul li a.active {
+    background-color: #e0e0e0; 
   }
 
   .icon {

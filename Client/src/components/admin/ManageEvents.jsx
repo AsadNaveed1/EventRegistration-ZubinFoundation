@@ -154,9 +154,9 @@ function ManageEvents() {
 
 const Wrapper = styled.div`
   padding: 20px;
-  margin-left: 270px; /* Adjusted for the side navbar width */
+  margin-left: 270px; 
   margin-top: 60px;
-  width: calc(100% - 270px); /* Adjusted for the side navbar width */
+  width: calc(100% - 270px); 
 `;
 
 const SearchBar = styled.div`
