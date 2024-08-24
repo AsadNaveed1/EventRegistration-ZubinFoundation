@@ -7,20 +7,49 @@ import * as Yup from 'yup';
 import logo from "../img/logo.png";
 
 function SignupPage() {
-  const [fullName, setFullName] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
 
   const handleSignup = (values) => {
+    const { fullName, email, password, confirmPassword, gender, userType, adminCode, ethnicity, age, residence, interests } = values;
+
     if (password !== confirmPassword) {
-      alert('Passwords do not match');
+      alert("Passwords do not match");
       return;
     }
 
-    console.log('Signup Details:', { fullName, ...values, password });
+    console.log("Signup Details:", { fullName, email, password });
 
-    navigate('/');
+    // Call API to create account
+    axios.post("http://localhost:5000/signup/", {
+      fullName,
+      email,
+      password,
+      gender,
+      userType,
+      adminCode,
+      ethnicity,
+      age,
+      residence,
+      interests,
+    }, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true, // Use withCredentials for sending cookies
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          // Account created successfully
+          navigate("/");
+        } else {
+          // Handle error response
+          throw new Error("Failed to create account");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        // Handle error
+      });
   };
 
   return (
@@ -32,7 +61,10 @@ function SignupPage() {
         <h1>Create Account</h1>
         <Formik
           initialValues={{
+            fullName: '',
             email: '',
+            password: '',
+            confirmPassword: '',
             gender: '',
             userType: '',
             adminCode: '',
@@ -42,7 +74,10 @@ function SignupPage() {
             interests: [],
           }}
           validationSchema={Yup.object({
+            fullName: Yup.string().required('Required'),
             email: Yup.string().email('Invalid email address').required('Required'),
+            password: Yup.string().required('Required'),
+            confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required('Required'),
             gender: Yup.string().required('Required'),
             userType: Yup.string().required('Required'),
             adminCode: Yup.string().when('userType', {
@@ -60,12 +95,8 @@ function SignupPage() {
             <Form>
               <div className="row">
                 <label>Full Name</label>
-                <input
-                  type="text"
-                  placeholder="Enter your full name"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                />
+                <Field type="text" name="fullName" placeholder="Enter your full name" />
+                <ErrorMessage name="fullName" component="div" className="error" />
               </div>
               <div className="row">
                 <label>Email</label>
@@ -74,21 +105,13 @@ function SignupPage() {
               </div>
               <div className="row">
                 <label>Password</label>
-                <input
-                  type="password"
-                  placeholder="Create a password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
+                <Field type="password" name="password" placeholder="Create a password" />
+                <ErrorMessage name="password" component="div" className="error" />
               </div>
               <div className="row">
                 <label>Confirm Password</label>
-                <input
-                  type="password"
-                  placeholder="Confirm your password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
+                <Field type="password" name="confirmPassword" placeholder="Confirm your password" />
+                <ErrorMessage name="confirmPassword" component="div" className="error" />
               </div>
               <div className="row">
                 <label>Gender</label>
