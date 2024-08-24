@@ -1,22 +1,23 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from "../img/logo.png";
 import { FaUserCircle } from 'react-icons/fa';
 import { FiLogOut } from 'react-icons/fi';
 
-function Navbar() {
+function Navbar({ userTypeLinks, nav }) {
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation(); // To get the current route
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
   };
 
   const handleLogout = () => {
-  
     navigate('/'); 
   };
+
 
   return (
     <Wrapper>
@@ -25,7 +26,13 @@ function Navbar() {
         <span>Event Registration</span>
       </div>
       <ul className="nav-links">
-        <li><a href="/events">Events</a></li>
+        {userTypeLinks.map((link) => (
+          <li key={link} >
+            <button onClick={()=>{nav(link)}}>
+            {link}
+            </button>
+          </li>
+        ))}
         <li>
           <FaUserCircle className="user-icon" onClick={togglePopup} />
           {showPopup && (
@@ -33,7 +40,6 @@ function Navbar() {
               <div className="user-info">
                 <span className="name">Name</span>
               </div>
-
               <button className="logout-button" onClick={handleLogout}>
                 <FiLogOut /> Logout
               </button>
@@ -115,25 +121,15 @@ const Popup = styled.div`
     display: block;
   }
 
-  .skills {
-    color: #666;
-    font-size: 14px;
-  }
-
-  .profile-link, .logout-button {
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-    color: #333;
-    text-decoration: none;
-    margin: 5px 0;
-  }
-
   .logout-button {
     background: none;
     border: none;
     cursor: pointer;
     font-size: 16px;
+    display: flex;
+    align-items: center;
+    color: #333;
+    margin: 5px 0;
   }
 `;
 
