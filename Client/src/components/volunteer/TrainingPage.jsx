@@ -1,152 +1,85 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { FaSearch } from 'react-icons/fa';
+import React from 'react';
 
-
-function TrainingPage() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [eventType, setEventType] = useState('');
-  const [gender, setGender] = useState('');
-
-  const handleSearch = () => {
-
-    console.log('Search Query:', searchQuery);
-    console.log('Event Type:', eventType);
-    console.log('Gender:', gender);
-  };
-
+function TrainingPage({ modules }) {
   return (
-    <Wrapper>
-      <HeroSection>
-        <div className="container">
-          <h1>
-            Volunteer for <span>Dream Events</span>
-          </h1>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-          <div className="search-bar">
-            <input
-              type="text"
-              placeholder="Find your events..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <button onClick={handleSearch}>
-              <FaSearch />
-            </button>
+    <div style={styles.container}>
+      <div style={styles.header}>
+        <div style={styles.leftHeader}>Training Modules</div>
+        <div style={styles.rightHeader}>Status</div>
+      </div>
+      {modules.map((module) => (
+        <div key={module.id} style={styles.listItem}>
+          <div style={styles.left}>
+            <img src={module.image} alt={module.title} style={styles.image} />
+            <div>
+              <h3 style={styles.title}>{module.title}</h3>
+              <a href={module.link} target="_blank" rel="noopener noreferrer" style={styles.link}>
+                Complete the module
+              </a>
+            </div>
           </div>
-          <div className="filters">
-            <div className="filter">
-              <label>Event Type:</label>
-              <select value={eventType} onChange={(e) => setEventType(e.target.value)}>
-                <option value="">All</option>
-                <option value="online">Families</option>
-                <option value="offline">Mental Health</option>
-              </select>
-            </div>
-            <div className="filter">
-              <label>Gender:</label>
-              <select value={gender} onChange={(e) => setGender(e.target.value)}>
-                <option value="">All</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
+          <div style={styles.right}>
+            <input type="checkbox" 
+              checked={module.status} 
+              disabled />
           </div>
         </div>
-      </HeroSection>
-    </Wrapper>
+      ))}
+    </div>
   );
 }
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-`;
-
-const HeroSection = styled.div`
-  background-color: #f8f9fa;
-  padding: 60px 20px;
-  text-align: center;
-  width: 100%;
-
-  .container {
-    max-width: 900px;
-    width: 100%;
-    margin: 0 auto;
-  }
-
-  h1 {
-    font-size: 36px;
-    color: #333;
-    margin-bottom: 10px;
-
-    span {
-      color: #00a9ff;
-    }
-  }
-
-  p {
-    color: #666;
-    margin-bottom: 40px;
-  }
-
-  .search-bar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 30px;
-
-    input {
-      width: 70%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 25px 0 0 25px;
-      margin-right: -1px;
-      font-size: 16px;
-    }
-
-    button {
-      padding: 12px 20px;
-      background-color: #00a9ff;
-      color: #fff;
-      border: none;
-      border-radius: 0 25px 25px 0;
-      cursor: pointer;
-      font-size: 16px;
-
-      svg {
-        vertical-align: middle;
-      }
-    }
-  }
-
-  .filters {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 30px;
-
-    .filter {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 5px;
-
-      label {
-        font-size: 16px;
-        color: #555;
-      }
-
-      select {
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-      }
-    }
-  }
-`;
+const styles = {
+  container: {
+    width: '80%',
+    margin: '0 auto',
+    padding: '20px',
+    boxSizing: 'border-box',
+  },
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginBottom: '20px',
+    fontWeight: 'bold',
+  },
+  leftHeader: {
+    flex: 1,
+    textAlign: 'left',
+  },
+  rightHeader: {
+    width: '100px',
+    textAlign: 'right',
+  },
+  listItem: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderBottom: '1px solid #ccc',
+    padding: '20px 0', // Increased padding for larger item
+    fontSize: '1.3em', // Larger font size
+  },
+  left: {
+    display: 'flex',
+    alignItems: 'center',
+    flex: 1,
+  },
+  image: {
+    width: '70px', // Increased image width
+    height: '70px', // Increased image height
+    marginRight: '15px', // Adjust margin for spacing
+  },
+  title: {
+    margin: 0, // Remove default margin for h3
+  },
+  link: {
+    color: '#007bff',
+    textDecoration: 'none',
+    fontSize: '1.1em', // Slightly larger font size for link
+  },
+  right: {
+    width: '100px',
+    textAlign: 'right',
+  },
+};
 
 export default TrainingPage;
