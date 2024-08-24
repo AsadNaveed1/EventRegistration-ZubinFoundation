@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { FaEye, FaEdit, FaTrash } from 'react-icons/fa';
+import EditEvent from './admin-actions/EditEvent';
+import ConfirmDelete from './admin-actions/ComfirmDelete';
 import ViewEvent from './admin-actions/ViewEvent';
 import sampleData from './sample.json';
 
@@ -9,6 +11,8 @@ function ManageEvents() {
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [isDeleteConfirmation, setIsDeleteConfirmation] = useState(false);
+  const [isViewingEvent, setIsViewingEvent] = useState(false);
   const eventsPerPage = 10;
 
   useEffect(() => {
@@ -39,10 +43,36 @@ function ManageEvents() {
 
   const handleViewEvent = (event) => {
     setSelectedEvent(event);
+    setIsViewingEvent(true);
   };
 
   const handleCloseEvent = () => {
     setSelectedEvent(null);
+    setIsDeleteConfirmation(false);
+    setIsViewingEvent(false);
+  };
+
+  const handleEditEvent = (event) => {
+    setSelectedEvent(event);
+  };
+
+  const handleSaveEvent = (updatedEvent) => {
+    const updatedEvents = events.map(e => e.id === updatedEvent.id ? updatedEvent : e);
+    setEvents(updatedEvents);
+    localStorage.setItem('events', JSON.stringify(updatedEvents));
+    handleCloseEvent();
+  };
+
+  const handleDeleteEvent = (event) => {
+    setIsDeleteConfirmation(true);
+    setSelectedEvent(event);
+  };
+
+  const handleConfirmDelete = (event) => {
+    const updatedEvents = events.filter(e => e.id !== event.id);
+    setEvents(updatedEvents);
+    localStorage.setItem('events', JSON.stringify(updatedEvents));
+    handleCloseEvent();
   };
 
   const isUpcoming = (date) => new Date(date) > new Date();
@@ -83,8 +113,8 @@ function ManageEvents() {
               </td>
               <td>
                 <ActionButton onClick={() => handleViewEvent(event)}><FaEye /></ActionButton>
-                <ActionButton><FaEdit /></ActionButton>
-                <ActionButton><FaTrash /></ActionButton>
+                <ActionButton onClick={() => handleEditEvent(event)}><FaEdit /></ActionButton>
+                <ActionButton onClick={() => handleDeleteEvent(event)}><FaTrash /></ActionButton>
               </td>
             </tr>
           ))}
@@ -97,15 +127,36 @@ function ManageEvents() {
           </button>
         ))}
       </Pagination>
-      {selectedEvent && <ViewEvent event={selectedEvent} onClose={handleCloseEvent} />}
+      {selectedEvent && isViewingEvent && (
+        <ViewEvent
+          event={selectedEvent}
+          onClose={handleCloseEvent}
+        />
+      )}
+      {selectedEvent && !isDeleteConfirmation && !isViewingEvent && (
+        <EditEvent
+          event={selectedEvent}
+          onClose={handleCloseEvent}
+          onSave={handleSaveEvent}
+        />
+      )}
+      {isDeleteConfirmation && (
+        <ConfirmDelete
+          event={selectedEvent}
+          onClose={handleCloseEvent}
+          onDelete={handleConfirmDelete}
+        />
+      )}
     </Wrapper>
   );
 }
 
+
 const Wrapper = styled.div`
   padding: 20px;
-  margin-left: 250px;
+  margin-left: 270px; 
   margin-top: 60px;
+  width: calc(100% - 270px); 
 `;
 
 const SearchBar = styled.div`
