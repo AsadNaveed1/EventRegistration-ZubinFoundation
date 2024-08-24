@@ -20,7 +20,7 @@ function SignupPage() {
 
     // Call API to create account
     // Redirect to login page
-    fetch("http://localhost:5000/user/signup/", {
+    fetch("http://localhost:5000/zubin_auth/signup/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
