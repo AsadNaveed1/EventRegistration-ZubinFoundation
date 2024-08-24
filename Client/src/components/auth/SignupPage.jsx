@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import axios from '../axios';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
+import React, { useState } from "react";
+import axios from "../axios";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
 import logo from "../img/logo.png";
 
 function SignupPage() {
@@ -84,10 +84,12 @@ function SignupPage() {
               is: 'admin',
               then: Yup.string().required('Admin code is required'),
             }),
-            ethnicity: Yup.string().required('Required'),
-            age: Yup.number().required('Required'),
-            residence: Yup.string().required('Required'),
-            interests: Yup.array().min(1, 'At least one interest must be selected').required('Required'),
+            ethnicity: Yup.string().required("Required"),
+            age: Yup.number().required("Required"),
+            residence: Yup.string().required("Required"),
+            interests: Yup.array()
+              .min(1, "At least one interest must be selected")
+              .required("Required"),
           })}
           onSubmit={handleSignup}
         >
@@ -100,7 +102,11 @@ function SignupPage() {
               </div>
               <div className="row">
                 <label>Email</label>
-                <Field type="email" name="email" placeholder="Email@example.com" />
+                <Field
+                  type="email"
+                  name="email"
+                  placeholder="Email@example.com"
+                />
                 <ErrorMessage name="email" component="div" className="error" />
               </div>
               <div className="row">
@@ -131,19 +137,39 @@ function SignupPage() {
                   <option value="admin">Admin</option>
                   <option value="volunteer">Volunteer</option>
                 </Field>
-                <ErrorMessage name="userType" component="div" className="error" />
+                <ErrorMessage
+                  name="userType"
+                  component="div"
+                  className="error"
+                />
               </div>
-              {values.userType === 'admin' && (
+              {values.userType === "admin" && (
                 <div className="row">
                   <label>Admin Code</label>
-                  <Field type="text" name="adminCode" placeholder="Enter admin code" />
-                  <ErrorMessage name="adminCode" component="div" className="error" />
+                  <Field
+                    type="text"
+                    name="adminCode"
+                    placeholder="Enter admin code"
+                  />
+                  <ErrorMessage
+                    name="adminCode"
+                    component="div"
+                    className="error"
+                  />
                 </div>
               )}
               <div className="row">
                 <label>Ethnicity</label>
-                <Field type="text" name="ethnicity" placeholder="Enter your ethnicity" />
-                <ErrorMessage name="ethnicity" component="div" className="error" />
+                <Field
+                  type="text"
+                  name="ethnicity"
+                  placeholder="Enter your ethnicity"
+                />
+                <ErrorMessage
+                  name="ethnicity"
+                  component="div"
+                  className="error"
+                />
               </div>
               <div className="row">
                 <label>Age</label>
@@ -158,17 +184,29 @@ function SignupPage() {
                   <option value="new territories">New Territories</option>
                   <option value="hong kong island">Hong Kong Island</option>
                 </Field>
-                <ErrorMessage name="residence" component="div" className="error" />
+                <ErrorMessage
+                  name="residence"
+                  component="div"
+                  className="error"
+                />
               </div>
               <div className="row">
                 <label>Interests</label>
                 <div role="group" aria-labelledby="checkbox-group">
                   <label>
-                    <Field type="checkbox" name="interests" value="women and girls" />
+                    <Field
+                      type="checkbox"
+                      name="interests"
+                      value="women and girls"
+                    />
                     Women and Girls
                   </label>
                   <label>
-                    <Field type="checkbox" name="interests" value="mental health" />
+                    <Field
+                      type="checkbox"
+                      name="interests"
+                      value="mental health"
+                    />
                     Mental Health
                   </label>
                   <label>
@@ -176,7 +214,11 @@ function SignupPage() {
                     Careers
                   </label>
                   <label>
-                    <Field type="checkbox" name="interests" value="emergency relief" />
+                    <Field
+                      type="checkbox"
+                      name="interests"
+                      value="emergency relief"
+                    />
                     Emergency Relief
                   </label>
                   <label>
@@ -184,7 +226,11 @@ function SignupPage() {
                     Family
                   </label>
                 </div>
-                <ErrorMessage name="interests" component="div" className="error" />
+                <ErrorMessage
+                  name="interests"
+                  component="div"
+                  className="error"
+                />
               </div>
               <button type="submit">Sign Up</button>
             </Form>
