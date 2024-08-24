@@ -1,7 +1,8 @@
 import React from 'react';
+
 import Navbar from './Nav';
-import { Outlet, Navigate } from 'react-router-dom';
-import Home from './Home';
+import { Outlet } from 'react-router-dom';
+
 
 function MemberPage() {
   return (

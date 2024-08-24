@@ -2,8 +2,11 @@ import { useState } from 'react'
 import styles from "../styles/NavBar.module.css/"
 import {Link, useNavigate} from 'react-router-dom'
 import Home from './Home';
+import logo from "../img/logo.png";
+import { FaUserCircle } from 'react-icons/fa';
+import { FiLogOut } from 'react-icons/fi';
 
-function Navbar() {
+function Navbar({ userTypeLinks, nav }) {
     // adding the states 
     const [isActive, setIsActive] = useState(false);
     //add the active class

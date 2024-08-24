@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation,Link } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from "../img/logo.png";
 import { FaUserCircle } from 'react-icons/fa';
 import { FiLogOut } from 'react-icons/fi';
 
-function Navbar({ userTypeLinks, nav }) {
+function Navbar({ routes }) {
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
   const location = useLocation(); // To get the current route
@@ -26,11 +26,9 @@ function Navbar({ userTypeLinks, nav }) {
         <span>Event Registration</span>
       </div>
       <ul className="nav-links">
-        {userTypeLinks.map((link) => (
-          <li key={link} >
-            <button onClick={()=>{nav(link)}}>
-            {link}
-            </button>
+        {routes.map((route) => (
+          <li key={route.title} >
+            <Link to={route.link}>{route.title}</Link>
           </li>
         ))}
         <li>
