@@ -21,7 +21,6 @@ import EventFullDisplay from './components/shared/EventFullDisplay';
 import TrainingPage from './components/volunteer/TrainingPage';
 import MyEventsPage from './components/volunteer/MyEventsPage';
 import EventSearchPage from './components/volunteer/EventSearchPage';
-import EventsSection from './components/volunteer/EventsSection';
 
 
 function App() {
