@@ -35,4 +35,5 @@ urlpatterns = [
     path("zubin_auth/", include("rest_framework.urls")),
     path('zubin_auth/', include("zubin_auth.urls")),
     
+    path("info/", include("general_api.urls.py")), 
 ]
