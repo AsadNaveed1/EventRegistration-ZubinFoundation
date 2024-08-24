@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { useNavigate, useLocation,Link } from 'react-router-dom';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import styled from "styled-components";
 import logo from "../img/logo.png";
-import { FaUserCircle } from 'react-icons/fa';
-import { FiLogOut } from 'react-icons/fi';
+import { FaUserCircle } from "react-icons/fa";
+import { FiLogOut } from "react-icons/fi";
+import axios from "axios";
 
 function Navbar({ routes }) {
   const [showPopup, setShowPopup] = useState(false);
@@ -15,9 +16,10 @@ function Navbar({ routes }) {
   };
 
   const handleLogout = () => {
-    navigate('/'); 
+    axios.post("http://localhost:5000/user/log_out").then(() => {
+      sessionStorage.removeItem("sessionId");
+    });
   };
-
 
   return (
     <Wrapper>
@@ -27,7 +29,7 @@ function Navbar({ routes }) {
       </div>
       <ul className="nav-links">
         {routes.map((route) => (
-          <li key={route.title} >
+          <li key={route.title}>
             <Link to={route.link}>{route.title}</Link>
           </li>
         ))}

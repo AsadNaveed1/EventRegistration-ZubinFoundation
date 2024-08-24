@@ -1,36 +1,33 @@
 import json
 from django.http import HttpResponse, HttpResponseServerError, JsonResponse
+from django.shortcuts import redirect as HttpRedirectResponse
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from user.models import User
 # Create your views here.
 
 @csrf_exempt
 def login(request):
-    print(request.session)
-    if request.session.get('user_id') is not None:
-        user = User.objects.get(user_id=request.session.get('user_id'))
-        return JsonResponse({ "message": "User authenticated", "user_type": user.user_type }, status=200)
+    if request.method == 'POST':
+        # get all parameters from the request.body
+        data = json.loads(request.body)
+        email = data.get('email')
+        password = data.get('password')
+
+        # perform validation on the parameters
+        if not email or not password:
+            return HttpResponseServerError("Error: Missing required parameters")
+
+        # authenticate the user
+        user = User.objects.get(email=email)
+        if user is None:
+            return HttpResponseServerError("Error: User not found")
+        if user.password != password:
+            return HttpResponseServerError("Error: Incorrect password")
+        request.session['user_id'] = user.user_id
+        request.session.modified = True
+        return JsonResponse({ "message": "User authenticated", "user_type": user.user_type, "session_id": request.session['user_id'] }, status=200)
     else:
-        if request.method == 'POST':
-            # get all parameters from the request.body
-            data = json.loads(request.body)
-            email = data.get('email')
-            password = data.get('password')
-
-            # perform validation on the parameters
-            if not email or not password:
-                return HttpResponseServerError("Error: Missing required parameters")
-
-            # authenticate the user
-            user = User.objects.get(email=email)
-            if user is None:
-                return HttpResponseServerError("Error: User not found")
-            if user.password != password:
-                return HttpResponseServerError("Error: Incorrect password")
-            request.session['user_id'] = user.user_id
-            return JsonResponse({ "message": "User authenticated", "user_type": user.user_type }, status=200)
-        else:
-            return HttpResponseServerError("Error: Invalid request method")
+        return HttpResponseServerError("Error: Invalid request method")
 
 @csrf_exempt
 def sign_up(request):
@@ -104,7 +101,8 @@ def find_user(request):
 @csrf_exempt
 def log_out(request):
     if request.method == 'POST':
-        request.session.flush()
-        return HttpResponse("Success: User logged out", status=200)
+        del request.session['user_id']
+        request.session.modified = True
+        return HttpRedirectResponse("/", status=200)
     else:
         return HttpResponseServerError("Error: Invalid request method")
