@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from .models import Event
 from user.models import User
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
@@ -287,6 +288,7 @@ def get_user_events(request):
         'message': 'Invalid request method'
     }, status=405)
 
+@csrf_exempt
 def create_user(request):
     if request.method == 'POST':
         try:
@@ -297,7 +299,7 @@ def create_user(request):
             user_data = {}
             fields = [
                 'admin_code', 'age', 'email', 'ethnicity', 'gender',
-                'interest', 'user_type', 'password', 'address', 'username'
+                'interests', 'user_type', 'password', 'residence', 'username'
             ]
             
             for field in fields:
@@ -305,10 +307,10 @@ def create_user(request):
                     user_data[field] = data[field]
             
             # 3. Create a new User object with provided fields
-            user = User.objects.create(**user_data)
+            user = User(**user_data)
             
             # 4. Return a success response
-            return JsonResponse({'status': 'success', 'message': 'User created successfully', 'user_id': user.user_id}, status=201)
+            return JsonResponse({'status': 'success', 'message': 'User created successfully', 'user_id': user.user_id}, status=200)
         
         except json.JSONDecodeError:
             # Handle invalid JSON format
