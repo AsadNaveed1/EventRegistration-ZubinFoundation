@@ -1,9 +1,10 @@
 import styled from 'styled-components';
+import {Outlet} from "react-router-dom"
 
 function Home() {
-    return <Wrapper>
-        <h1>Home</h1>
-        </Wrapper>
+    return <div>
+    Hello
+    </div>
         
 }
 const Wrapper = styled.div`
