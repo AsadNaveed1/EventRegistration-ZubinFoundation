@@ -44,6 +44,9 @@ CORS_ORIGIN_WHITELIST = [
     'http://localhost:5173',
 ]
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+
+SESSION_COOKIE_AGE = 1800 # 30 minutes in seconds
 
 # Application definition
 REST_FRAMEWORK = {

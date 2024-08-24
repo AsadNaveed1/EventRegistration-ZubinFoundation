@@ -1,30 +1,40 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import logo from "../img/logo.png";
+import axios from "axios";
 
 function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    if (email === 'user@gmail.com' && password === '1234') {
-      navigate('/volunteer');
-    } else if (email === 'member@gmail.com' && password === '1234') {
-      navigate('/member');
-    } else if (email === 'admin@gmail.com' && password === '1234') {
-      navigate('/admin');
-    } else {
-      alert('Invalid credentials');
-    }
+    axios
+      .post("http://localhost:5000/user/login", { email, password })
+      .then((res) => {
+        const user_type = res.data.user_type;
+        // localStorage.setItem("token", res.data.token);
+        if (user_type === "participant") {
+          navigate("/member");
+        }
+        if (user_type === "admin") {
+          navigate("/admin");
+        }
+        if (user_type === "volunteer") {
+          navigate("/volunteer");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
     <Wrapper>
       <div className="container">
         <div className="logo">
-        <img src={logo} alt="Logo" />
+          <img src={logo} alt="Logo" />
         </div>
         <h1>Login</h1>
         <form>
@@ -46,7 +56,9 @@ function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button onClick={handleLogin} type="button">Login</button>
+          <button onClick={handleLogin} type="button">
+            Login
+          </button>
         </form>
         <p>
           Don't have an account? <a href="/register">Signup</a>
@@ -64,7 +76,7 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   padding: 30px;
-  
+
   .container {
     background: #fff;
     max-width: 360px;

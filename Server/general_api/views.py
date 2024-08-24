@@ -1,14 +1,8 @@
 import json
 from django.contrib.auth import authenticate
 from django.http import JsonResponse
-from django.shortcuts import render
 from .models import Event
 from user.models import User
-from django.views.decorators.csrf import csrf_exempt
-
-# Create your views here.
-
-
 
 ### Internal Method ###
 def find_eventID_by_event_name(event_name: str) -> str:
@@ -20,109 +14,6 @@ def find_eventID_by_event_name(event_name: str) -> str:
     except Event.DoesNotExist:
         # If no event is found with the given name, return a message
         return "Event not found"
-
-
-
-### Request ####
-def user(request):
-    if request.method == 'GET':
-        data = {
-            "message": "This is a GET request",
-        }
-
-        return JsonResponse(data)
-
-    elif request.method == 'POST':
-        # 处理 POST 请求的数据
-        posted_data = request.POST  # 或者 request.body 解析 JSON 数据
-        response_data = {
-            "message": "This is a POST request",
-            "data_received": posted_data,
-        }
-        return JsonResponse(response_data)
-
-    elif request.method == 'PUT':
-        # 处理 PUT 请求的数据
-        put_data = request.body  # 需要手动解析 PUT 数据
-        response_data = {
-            "message": "This is a PUT request",
-            "data_received": put_data,
-        }
-        return JsonResponse(response_data)
-
-    else:
-        data = {
-            "message": "Invalid request method.",
-        }
-
-        return JsonResponse(data)
-
-
-'''
-Get Method
-Find a user by email and password
-Param: email, password
-return: status
-'''
-def find_user_by_EP(request):
-
-    if request.method == 'Get':
-        try:
-            # 1. 获取原始请求体
-            body = request.body
-            
-            # 2. 解码 JSON 数据
-            data = json.loads(body)
-            
-            # 3. 获取 email 和 password
-            email = data.get('email')
-            password = data.get('password')
-            
-            # 4. 使用 authenticate 函数进行认证
-            user = authenticate(username=email, password=password)
-            
-            if user is not None:
-                # 认证成功
-                return JsonResponse({
-                    'message': 'User found',
-                    'status': 'success',
-                    'user_id': user.id,
-                    'email': user.email
-                })
-            else:
-                # 认证失败
-                return JsonResponse({'message': 'Invalid email or password','status': 'error' }, status=401)
-        
-        except json.JSONDecodeError:
-            # 处理无效 JSON 的情况
-            return JsonResponse({'message': 'Invalid JSON', 'status': 'error'}, status=400)
-
-'''
-Get Method
-Find all users 
-Param: /
-return: all users
-'''
-def all_users(request):
-    if request.method == 'GET':
-        data = {
-            "message": "This is a GET request",
-            'status': 'success'
-        }
-        users = User.objects.all()  # 从 PostgreSQL 中提取所有 Product 数据
-        user_list = list(users.values())
-        data["info"] = user_list
-        return JsonResponse(data)
-    
-    
-    else:
-        data = {
-            "message": "Invalid request method.",
-            'status': 'error'
-        }
-
-        return JsonResponse(data)
-
 
 '''
 Put Method
@@ -287,37 +178,3 @@ def get_user_events(request):
         'status': 'error',
         'message': 'Invalid request method'
     }, status=405)
-
-@csrf_exempt
-def create_user(request):
-    if request.method == 'POST':
-        try:
-            # 1. Parse the JSON data from the request body
-            data = json.loads(request.body)
-            
-            # 2. Prepare a dictionary with only provided fields
-            user_data = {}
-            fields = [
-                'admin_code', 'age', 'email', 'ethnicity', 'gender',
-                'interests', 'user_type', 'password', 'residence', 'username'
-            ]
-            
-            for field in fields:
-                if field in data:
-                    user_data[field] = data[field]
-            
-            # 3. Create a new User object with provided fields
-            user = User(**user_data)
-            
-            # 4. Return a success response
-            return JsonResponse({'status': 'success', 'message': 'User created successfully', 'user_id': user.user_id}, status=200)
-        
-        except json.JSONDecodeError:
-            # Handle invalid JSON format
-            return JsonResponse({'status': 'error', 'message': 'Invalid JSON format'}, status=400)
-        
-        except Exception as e:
-            # Handle other potential errors
-            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
-    
-    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
