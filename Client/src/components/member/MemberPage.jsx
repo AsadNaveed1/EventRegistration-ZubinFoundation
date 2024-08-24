@@ -1,11 +1,10 @@
 import React from 'react';
-import Navbar from '../shared/Navbar';
+import Navbar from './Nav';;
 
 function MemberPage() {
   return (
     <div>
-      <Navbar />
-      <div>Welcome Community Member</div>
+      <Navbar/>
     </div>
   );
 }
