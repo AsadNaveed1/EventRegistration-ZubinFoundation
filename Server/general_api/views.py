@@ -2,7 +2,8 @@ import json
 from django.contrib.auth import authenticate
 from django.http import JsonResponse
 from django.shortcuts import render
-from .models import User, Event
+from .models import Event
+from user.models import User
 
 # Create your views here.
 

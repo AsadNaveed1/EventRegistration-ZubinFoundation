@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'zubin_admin',
     'volunteer',
     'community_member',
+    'general_api',
     ## For CORS 
     'corsheaders',
 ]

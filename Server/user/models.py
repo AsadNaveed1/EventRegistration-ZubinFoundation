@@ -8,10 +8,10 @@ class User(models.Model):
     email = models.EmailField(max_length=100)
     ethnicity = models.CharField(max_length=100, null=True)
     gender = models.CharField(max_length=100, null=True)
-    interest = ArrayField(models.CharField(max_length=100), size=5, blank=True, null=True)
+    interests = ArrayField(models.CharField(max_length=100), size=5, blank=True, null=True)
     user_type = models.CharField(max_length=100)
     password = models.CharField(max_length=100)
-    address = models.CharField(max_length=100, null=True)
+    residence = models.CharField(max_length=100, null=True)
     username = models.CharField(max_length=100)
     user_id = models.AutoField(primary_key=True)
 

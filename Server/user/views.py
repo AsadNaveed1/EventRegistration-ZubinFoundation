@@ -28,14 +28,20 @@ def signup(request):
             return HttpResponseServerError("Error: Missing parameters")
 
         # create User entity object
-        # user = User(
-        #     username=username,
-        #     email=email,
-        #     password=password,
-        #     user_type='Participant'
-        # )
+        user = User(
+            username=username,
+            password=password,
+            email=email,
+            admin_code=admin_code,
+            age=age,
+            ethnicity=ethnicity,
+            gender=gender,
+            interests=interests,
+            residence=residence,
+            user_type=user_type
+        )
 
         # save the user object to the database
-        # user.save()
+        user.save()
 
         return HttpResponse("Success: User created", status=200)
