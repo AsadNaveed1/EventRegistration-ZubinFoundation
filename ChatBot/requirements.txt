@@ -1,0 +1,5 @@
+google-api-core
+telegram.ext
+python-telegram-bot
+pandas
+google-cloud-dialogflow

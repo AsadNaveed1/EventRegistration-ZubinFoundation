@@ -1,40 +1,37 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import EventCard from '../shared/EventCard';
+import React,{useState}from 'react';
 import EventFullDisplay from '../shared/EventFullDisplay';
+import styled from 'styled-components';
 
-function EventsSection() {
+import MyEventCard from './MyEventCard';
+
+const events = [
+  {imageSrc:"../img/Img2.png",
+    title:"Fundraising Event",
+    date:"May 10, 2023",
+  description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    time:"10:00 AM - 2:00 PM",
+    location:"Community Center, Los Angeles"},
+  {imageSrc:"../img/Img2.png",
+    title:"Fundraising Event",
+    date:"May 10, 2023",
+  description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    time:"10:00 AM - 2:00 PM",
+    location:"Community Center, Los Angeles"},
+  // Add more events here
+];
+
+function MyEventsPage() {
   const [showDetail, setShowDetail] = useState('');
-  const eventList = [
-{imageSrc:"../img/Img1.png",
-  title:"Charity Event",
-  date:"April 15, 2023",
-  time:"10:00 AM - 2:00 PM",
-  description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-  location:"City Park, New York"},
-  {imageSrc:"../img/Img2.png",
-    title:"Fundraising Event",
-    date:"May 10, 2023",
-  description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    time:"10:00 AM - 2:00 PM",
-    location:"Community Center, Los Angeles"},
-  {imageSrc:"../img/Img2.png",
-    title:"Fundraising Event",
-    date:"May 10, 2023",
-  description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    time:"10:00 AM - 2:00 PM",
-    location:"Community Center, Los Angeles"},
-  ]
-  const handleRegister = (val)=>{
-      console.log(val)
-  }
+const handleRegister = (val)=>{
+  setShowDetail('')
+  console.log(val)
+}
   return (
     <Wrapper>
-    <div className="container">
-      {!showDetail && <h1>Upcoming Events</h1>}
-      <div className="events-grid">
-        {!showDetail && eventList.map((event) => (
-          <EventCard
+    <div style={{ padding: '20px' }}>
+      {!showDetail && <h1>My Events</h1>}
+        {!showDetail && events.map((event) => (
+          <MyEventCard
             key={event}
             event={event}
             getDetails={() => {
@@ -43,17 +40,21 @@ function EventsSection() {
           />
         ))}
         {showDetail && (
+      <div className="events-grid">
+
           <EventFullDisplay
             event={showDetail}
             getDetails={setShowDetail}
             register ={handleRegister}
           />
+        </div>
+
         )}
-      </div>
     </div>
-  </Wrapper>
+    </Wrapper>
   );
 }
+
 
 const Wrapper = styled.div`
 padding: 50px 20px;
@@ -81,4 +82,4 @@ h1 {
 }
 `;
 
-export default EventsSection;
+export default MyEventsPage;
