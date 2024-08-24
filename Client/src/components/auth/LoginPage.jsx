@@ -10,13 +10,17 @@ function LoginPage() {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-
     if (
       (email === "admin@gmail.com" && password === "1234") ||
       (email === "member@gmail.com" && password === "1234") ||
       (email === "user@gmail.com" && password === "1234")
     ) {
-      const user_type = email === "admin@gmail.com" ? "admin" : email === "member@gmail.com" ? "participant" : "volunteer";
+      const user_type =
+        email === "admin@gmail.com"
+          ? "admin"
+          : email === "member@gmail.com"
+          ? "participant"
+          : "volunteer";
       if (user_type === "participant") {
         navigate("/member");
       }
@@ -27,11 +31,11 @@ function LoginPage() {
         navigate("/volunteer");
       }
     } else {
-
       axios
         .post("http://localhost:5000/user/login", { email, password })
         .then((res) => {
           const user_type = res.data.user_type;
+          sessionStorage.setItem("sessionId", res.data.session_id);
           if (user_type === "participant") {
             navigate("/member");
           }

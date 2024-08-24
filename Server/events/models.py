@@ -11,7 +11,6 @@ class Event(models.Model):
     time = models.TimeField()
     location = models.CharField(max_length=255)
     eventid = models.CharField(max_length=255, unique=True)
-    required_modules =  model
     volunteers = models
 
     def __str__(self):
