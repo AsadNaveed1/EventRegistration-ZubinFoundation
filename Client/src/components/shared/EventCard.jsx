@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FaCalendarAlt, FaClock, FaInfoCircle, FaMapMarkerAlt } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 function EventCard({ event, getDetails}) {
   return (
@@ -26,7 +27,7 @@ function EventCard({ event, getDetails}) {
           </div>
         </div>
         <div className="button-container">
-          <button className="details-button" onClick={getDetails} >Details</button>
+        <Link to={`Event/${event.id}`}> <button className="details-button"  >Details</button></Link>
         </div>
       </div>
     </Wrapper>
