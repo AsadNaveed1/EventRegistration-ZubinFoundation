@@ -25,6 +25,7 @@ urlpatterns = [
     path('webadmin/', admin.site.urls),
     path('user/', include("user.urls")),
     path('volunteer/', include("volunteer.urls")),
+    path('events/', include("events.urls")),
     path('zubin_admin/', include("zubin_admin.urls")),
     path('community_member/', include("community_member.urls")),
 

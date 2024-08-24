@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     'volunteer',
     'community_member',
     'general_api',
+    'events',
     ## For CORS 
     'corsheaders',
 ]
