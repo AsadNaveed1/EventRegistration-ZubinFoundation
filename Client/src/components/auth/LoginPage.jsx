@@ -1,22 +1,64 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import logo from "../img/logo.png";
+import axios from "axios";
 
 function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    if (email === 'user@gmail.com' && password === '1234') {
-      navigate('/volunteer');
-    } else if (email === 'member@gmail.com' && password === '1234') {
-      navigate('/member');
-    } else if (email === 'admin@gmail.com' && password === '1234') {
-      navigate('/admin');
+    if (
+      (email === "admin@gmail.com" && password === "1234") ||
+      (email === "member@gmail.com" && password === "1234") ||
+      (email === "user@gmail.com" && password === "1234")
+    ) {
+      const user_type =
+        email === "admin@gmail.com"
+          ? "admin"
+          : email === "member@gmail.com"
+          ? "participant"
+          : "volunteer";
+      if (user_type === "participant") {
+        navigate("/member");
+      }
+      if (user_type === "admin") {
+        navigate("/admin");
+      }
+      if (user_type === "volunteer") {
+        navigate("/volunteer");
+      }
     } else {
-      alert('Invalid credentials');
+      axios
+        .post(
+          "http://localhost:5001/user/login",
+          { email, password },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            withCredentials: true, // Use withCredentials for sending cookies
+          }
+        )
+        .then((res) => {
+          const user_type = res.data.user_type;
+          console.log(res)
+          sessionStorage.setItem("sessionId", res.data.session_id);
+          if (user_type === "participant") {
+            navigate("/member");
+          }
+          if (user_type === "admin") {
+            navigate(`/admin${res.data.userid}`);
+          }
+          if (user_type === "volunteer") {
+            navigate("/volunteer");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
@@ -24,7 +66,7 @@ function LoginPage() {
     <Wrapper>
       <div className="container">
         <div className="logo">
-        <img src={logo} alt="Logo" />
+          <img src={logo} alt="Logo" />
         </div>
         <h1>Login</h1>
         <form>
@@ -46,7 +88,9 @@ function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button onClick={handleLogin} type="button">Login</button>
+          <button onClick={handleLogin} type="button">
+            Login
+          </button>
         </form>
         <p>
           Don't have an account? <a href="/register">Signup</a>
@@ -64,7 +108,7 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   padding: 30px;
-  
+
   .container {
     background: #fff;
     max-width: 360px;

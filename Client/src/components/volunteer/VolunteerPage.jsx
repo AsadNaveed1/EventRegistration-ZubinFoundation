@@ -1,12 +1,23 @@
-import React from 'react';
+import React,{useState} from 'react';
 import Navbar from '../shared/Navbar';
-import EventSearchPage from './EventSearchPage';
-
+import { Outlet } from 'react-router-dom';
 function VolunteerPage() {
+ const routes= [
+  {title:'Events Search',
+    link:''
+  },
+  {title:'My Events',
+    link:'MyEvents'
+  },
+  {title:'Trainings',
+    link:'Training'
+  },
+]
   return (
     <div>
-      <Navbar />
-      <EventSearchPage />
+    <Navbar routes={routes} />
+     <Outlet></Outlet>
+
     </div>
   );
 }
