@@ -33,7 +33,7 @@ function LoginPage() {
     } else {
       axios
         .post(
-          "http://localhost:5000/user/login",
+          "user/login",
           { email, password },
           {
             headers: {
@@ -44,12 +44,13 @@ function LoginPage() {
         )
         .then((res) => {
           const user_type = res.data.user_type;
+          console.log(res)
           sessionStorage.setItem("sessionId", res.data.session_id);
           if (user_type === "participant") {
             navigate("/member");
           }
           if (user_type === "admin") {
-            navigate("/admin");
+            navigate(`/admin${res.data.userid}`);
           }
           if (user_type === "volunteer") {
             navigate("/volunteer");

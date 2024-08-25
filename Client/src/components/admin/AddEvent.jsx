@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Select from 'react-select';
+import axios from '../axios';
 
 function AddEventForm() {
   const [formData, setFormData] = useState({
@@ -111,28 +112,35 @@ function AddEventForm() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-
-    const existingEvents = JSON.parse(localStorage.getItem('events')) || [];
+// const userDetails ={
+//   username: 'user1',
+//   password:'password'
+// }
+// const token  = await axios.post ( 'zubin_auth/user/register/',userDetails)
+// console.log (token)
     const newEvent = {
       ...formData,
       skills: formData.skills.map(skill => skill.value),
       language: formData.language.map(lang => lang.value),
       image: formData.image ? formData.image.name : ''  
     };
-    existingEvents.push(newEvent);
-    localStorage.setItem('events', JSON.stringify(existingEvents));
+   axios.post('/events/add_event',newEvent).then(
+      async()=>{
+        const response  = await axios.get('/events/all_events')
+        console.log(response)
+      }
+    );
+
 
   
-    saveToSampleJson(existingEvents);
 
     alert('Event added successfully!');
     setFormData({
       title: '',
       description: '',
-      interests: '',
+      interests: [],
       location: '',
       time: '',
       skills: [],
@@ -144,20 +152,6 @@ function AddEventForm() {
     });
   };
 
-  const saveToSampleJson = async (events) => {
-    const response = await fetch('sample.json', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(events)
-    });
-    if (response.ok) {
-      console.log('Events saved to sample.json');
-    } else {
-      console.error('Failed to save events to sample.json');
-    }
-  };
 
   return (
     <Wrapper>
