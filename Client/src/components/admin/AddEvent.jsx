@@ -15,7 +15,7 @@ function AddEventForm() {
     gender: '',
     language: [],
     learningLinks: [],
-    image: null
+    image: null,
   });
 
   const interestOptions = [

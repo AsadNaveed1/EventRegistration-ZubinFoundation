@@ -1,32 +1,33 @@
-import React from 'react';
+import React,{useState,useEffect}from 'react';
+import { useParams } from 'react-router-dom';
+import axios from '../axios';
+
 
 function TrainingPage() {
-  const modules = [
-    {
-      id: 1,
-      image:"/assets/Final-Women-and-Girls-2-1.png",
-      title:"how to properly make tea",
-      link:'https://www.youtube.com/watch?v=F898rbUvzV4&pp=ygUQaG93IHRvIG1ha2UgdGVhIA%3D%3D',
-      status:false
-  
-    },
-    {
-      id: 2,
-      image:"/assets/Final-Women-and-Girls-2-1.png",
-      title:"how to properly make tea",
-      link:'https://www.youtube.com/watch?v=F898rbUvzV4&pp=ygUQaG93IHRvIG1ha2UgdGVhIA%3D%3D',
-      status:true
-  
-    },
-    {
-      id: 3,
-      image:"/assets/Opportunities-2.png",
-      title:"how to interview properly",
-      link:'https://www.youtube.com/watch?v=WDOQBPYEaNs&pp=ygUQaG93IHRvIGludGVydmlldw%3D%3D',
-      status:false
-  
-    },
-   ]
+  const [user,setUser]=useState([]);
+  const { userId } = useParams();
+  console.log(userId)
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        // Use the correct endpoint and include the event ID in the URL
+        console.log("response")
+        const res = await axios.get(`user/find_user/${userId}`)
+        
+        setUser(res.data)
+      } catch (error) {
+        console.error('Error fetching events:', error);
+        // Fallback to Sample.json on error, if you have it imported
+        // setEventList(data); // Uncomment if you have Sample.json data
+      }
+    };
+
+    fetch();
+  }, []);
+  const modules = user.registered_events
+  .map(x => ({ title: x.title, image: x.image, link: x.learninglink })) // Use parentheses for object
+  .filter(x => !user.completed_materials.includes(x.link));
+
   return (
     <div style={styles.container}>
       <div style={styles.header}>

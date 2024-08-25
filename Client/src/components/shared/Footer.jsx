@@ -19,7 +19,7 @@ const Footer = () => {
           ageRange: event.ageRange,
           gender: event.gender,
           language: event.language,
-          learningLink: event.learningLink,
+          learningLink: [event.learningLink],
           applicants: event.applicants // Include applicants if needed
         });
         console.log(`Event added: ${response.data}`); // Log success response

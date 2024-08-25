@@ -38,22 +38,11 @@ function EventSection({ searchQuery }) {
 
 
   const eventsWithImages = filteredEvents.map(event => {
-    const eventDate = new Date(event.time);
-    const formattedDate = eventDate.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-    const formattedTime = eventDate.toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-    });
+ 
     
 
     return {
       ...event,
-      date: formattedDate,
-      time: formattedTime,
       imageSrc: images[Math.floor(Math.random() * images.length)],
     };
   });
