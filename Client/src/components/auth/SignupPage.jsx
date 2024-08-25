@@ -32,6 +32,7 @@ function SignupPage() {
     // Call API to create account
     axios
       .post(
+
         "http://localhost:5001/user/sign_up",
         {
           fullName,
@@ -100,10 +101,10 @@ function SignupPage() {
               .required("Required"),
             gender: Yup.string().required("Required"),
             userType: Yup.string().required("Required"),
-            adminCode: Yup.string().when("userType", {
-              is: "admin",
-              then: Yup.string().required("Admin code is required"),
-            }),
+            // adminCode: Yup.string().when("userType", {
+            //   is: "admin",
+            //   then: Yup.string().required("Admin code is required"),
+            // }),
             ethnicity: Yup.string().required("Required"),
             age: Yup.number().required("Required"),
             residence: Yup.string().required("Required"),
