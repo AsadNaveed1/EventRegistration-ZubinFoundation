@@ -41,3 +41,29 @@ def book_appointment(request, pk):
         appointment.save()
         serializer = AppointmentSerializer(appointment)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+@api_view(('GET',))
+@renderer_classes((TemplateHTMLRenderer, JSONRenderer))    
+def get_myappointments(request):
+        if request.method == 'GET':
+            appointments = Appointment.objects.all().filter(is_booked=True)
+            serializer = AppointmentSerializer(appointments, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+
+@csrf_exempt
+@api_view(('PUT',))
+@renderer_classes((TemplateHTMLRenderer, JSONRenderer))
+def unbook_appointment(request, pk):
+    if request.method == 'PUT':
+        try:
+            appointment = Appointment.objects.get(pk=pk)
+        except Appointment.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        if appointment.is_booked:
+            appointment.is_booked = False
+            appointment.save()
+            return Response(status=status.HTTP_200_OK)
+            
+        return Response({'error': 'Appointment is not booked'}, status=status.HTTP_200_OK)

@@ -1,110 +1,118 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
-
-function MyAppointments() {
-  return (
-    <Container>
-      <AppointmentsHeader>My appointments</AppointmentsHeader>
-      <AppointmentsContainer>
-        <Appointment>
-          <AppointmentImage src="placeholder.jpg" alt="Mental Health Counselling" />
-          <AppointmentInfo>
-            <h2>Mental Health Counselling</h2>
-            <p>
-              Body text for whatever you'd like to say. Add main takeaway points,
-              quotes, anecdotes, or even a very very short story.
-            </p>
-            <Button>Read More</Button>
-          </AppointmentInfo>
-        </Appointment>
-        <Appointment>
-          <AppointmentImage src="placeholder.jpg" alt="Title" />
-          <AppointmentInfo>
-            <h2>Title</h2>
-            <p>
-              Body text for whatever you'd like to say. Add main takeaway points,
-              quotes, anecdotes, or even a very very short story.
-            </p>
-            <Button>Button</Button>
-          </AppointmentInfo>
-        </Appointment>
-        <Appointment>
-          <AppointmentImage src="placeholder.jpg" alt="Title" />
-          <AppointmentInfo>
-            <h2>Title</h2>
-            <p>
-              Body text for whatever you'd like to say. Add main takeaway points,
-              quotes, anecdotes, or even a very very short story.
-            </p>
-            <Button>Button</Button>
-          </AppointmentInfo>
-        </Appointment>
-      </AppointmentsContainer>
-    </Container>
-  );
-}
+import { List, ListItem, ListItemText, Button, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 
 const Container = styled.div`
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 1em;
+  padding: 20px;
 `;
 
-const AppointmentsHeader = styled.h1`
-  text-align: left;
-  margin-bottom: 1em;
-`;
-
-const AppointmentsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const Appointment = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 2rem;
-  background-color: #f5f5f5;
+const StyledList = styled(List)`
+  background-color: #f9f9f9;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px;
 `;
 
-const AppointmentImage = styled.img`
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
+const StyledListItem = styled(ListItem)`
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ddd;
 `;
 
-const AppointmentInfo = styled.div`
-  flex-grow: 1;
-  padding: 1.5rem;
-
-  h2 {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-  }
-
-  p {
-    color: #666;
-    margin-bottom: 1rem;
-  }
+const StyledButton = styled(Button)`
+  margin-left: 10px;
 `;
+function refreshPage(){
+  window.location.reload();
+}
+const AppointmentList = () => {
+  const [appointments, setAppointments] = useState([]);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
+  const [open, setOpen] = useState(false);
 
-const Button = styled.button`
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 0.6rem 1.2rem;
-  font-size: 0.9rem;
-  cursor: pointer;
+  // Fetch CSRF token from cookies
+  const csrfToken = document.cookie.split(';').find(cookie => cookie.trim().startsWith('csrftoken=')).split('=')[1];
+  axios.defaults.headers.common['X-CSRFToken'] = csrfToken;
 
-  &:hover {
-    background-color: #0056b3;
-  }
-`;
+  // Fetch appointments from the API
+  useEffect(() => {
+    axios.get('http://localhost:5001/api/myappointments/')
+      .then(response => {
+        setAppointments(response.data);
+        console.log('Fetched appointments:', response.data);
+      })
+      .catch(error => console.error('Error fetching appointments:', error));
+  }, []);
 
-export default MyAppointments;
+  // Handle appointment selection
+  const handleSelect = (appointment) => {
+    setSelectedAppointment(appointment);
+  };
+
+  // Handle appointment confirmation
+  const handleConfirm = () => {
+    if (selectedAppointment) {
+      axios.put(`http://localhost:5001/api/unbook/${selectedAppointment.id}/`)
+        .then(response => {
+          console.log('Appointment booked:', response.data);
+          setOpen(true); // Open the dialog box
+        })
+        .catch(error => console.error('Error booking appointment:', error));
+    }
+  };
+
+  // Handle dialog close
+  const handleClose = () => {
+    setOpen(false);
+    refreshPage();
+  };
+
+  return (
+    <Container>
+      <StyledList>
+        {appointments.map((appointment) => (
+          <StyledListItem key={appointment.id}>
+            <ListItemText
+              primary={`${appointment.type} - ${appointment.time}`}
+              secondary={`Details: ${appointment.details}`}
+            />
+            <StyledButton 
+              variant="contained" 
+              color="primary" 
+              onClick={() => handleSelect(appointment)}
+            >
+              Select
+            </StyledButton>
+          </StyledListItem>
+        ))}
+      </StyledList>
+      {selectedAppointment && (
+        <div>
+          <Typography variant="h6">Selected Appointment:</Typography>
+          <Typography>{`${selectedAppointment.type} - ${selectedAppointment.time}`}</Typography>
+          <Button 
+            variant="contained" 
+            color="secondary" 
+            onClick={handleConfirm}
+          >
+            Cancel Booking
+          </Button>
+        </div>
+      )}
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Appointment </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Your appointment has been removed.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Container>
+  );
+};
+
+export default AppointmentList;
