@@ -47,13 +47,13 @@ function LoginPage() {
           console.log(res)
           sessionStorage.setItem("sessionId", res.data.session_id);
           if (user_type === "participant") {
-            navigate("/member");
+            navigate(`/member${res.data.user_id}`);
           }
           if (user_type === "admin") {
             navigate(`/admin${res.data.userid}`);
           }
           if (user_type === "volunteer") {
-            navigate("/volunteer");
+            navigate(`/volunteer${res.data.user_id}`);
           }
         })
         .catch((err) => {

@@ -5,42 +5,68 @@ import { FaMapMarkerAlt, FaCalendarAlt } from 'react-icons/fa';
 import data from './Sample.json';
 import Navbar from '../shared/Navbar';
 import { useEventContext } from './context/EventContext'; 
+import axios from '../axios'
 
 function EventDetails() {
-  const { id } = useParams();
-  
-  const event = data.find((e) => e.event_id.toString() === id.toString());
-  const { registeredEvents, registerEvent, withdrawEvent } = useEventContext();
-  const [seatsAvailable, setSeatsAvailable] = useState(Math.floor(Math.random() * 100) + 1);
-  
+  const [event, setEvent]=useState('')
+  const { user_id , id } = useParams();
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const res = await axios.get('/events/find_event', id);
+       setEvent(res.data) // Use fetched data or fallback to Sample.json
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      }
+    };
 
-  const isRegistered = registeredEvents.some(e => e.id === event.id);
-  const [registered, setRegistered] = useState(isRegistered);
+    fetchEvents();
+  }, []);
+  console.log(event)
+  const [user, setUser] = useState('');
+  const [registered, setRegistered] = useState(false);
 
   useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get('/user/find_user', id);
+        setUser(res.data) // Use fetched data or fallback to Sample.json
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      }
+    };
 
-    setRegistered(isRegistered);
-  }, [id, isRegistered]);
+    fetchUser();
+  }, []);
+  user.registered_events.find((x)=>x===event)?setRegistered(true):setRegistered(false);
 
-  const handleRegister = () => {
-    if (seatsAvailable > 0 && !registered) {
-      setSeatsAvailable(seatsAvailable - 1);
-      registerEvent(event); 
-      setRegistered(true);
-    }
+  console.log(event)
+  const [seatsAvailable, setSeatsAvailable] = useState(event.capacity);
+  
+
+  // const isRegistered = registeredEvents.some(e => e.id === event.id);
+
+  // useEffect(() => {
+
+  //   setRegistered(isRegistered);
+  // }, [id, isRegistered]);
+
+  const handleRegister = async () => {
+   axios.post('events/add_event_to_user',user_id)
+   setSeatsAvailable(seatsAvailable-1)
+    setRegistered(true)
   };
 
   const handleWithdraw = () => {
     if (registered) {
-      withdrawEvent(event.id); 
       setSeatsAvailable(seatsAvailable + 1);
       setRegistered(false);
     }
   };
 
-  if (!event) {
-    return <div>Event not found</div>;
-  }
+  // if (!event) {
+  //   return <div>Event not found</div>;
+  // }
 
   return (
     <Wrapper>

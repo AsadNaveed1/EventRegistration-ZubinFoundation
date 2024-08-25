@@ -33,15 +33,15 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/register" element={<SignupPage />} />
-          <Route path="/volunteer" element={<VolunteerPage />}>
+          <Route path="/volunteer:userId" element={<VolunteerPage />}>
             <Route path="MyEvents" element={<MyEventsPage />} />
             <Route index element={<Landing />} />
             <Route path="" element={<Landing />} />
             <Route path="Training" element={<TrainingPage />} />
-            <Route path="Event/:id" element={<EventFullDisplay />} />
+            <Route path="Event/:id" element={<EventDetails />} />
           </Route>
 
-          <Route path="/member" element={<MemberPage />}>
+          <Route path="/member:userId" element={<MemberPage />}>
             <Route index element={<Home />} />
             <Route path="home" element={<Home />} />
             <Route path="myevents" element={<MyEvents />} />
@@ -54,7 +54,7 @@ function App() {
           </Route>
           
 
-          <Route path="/admin" element={<AdminPage />}>
+          <Route path="/admin:userId" element={<AdminPage />}>
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="addevent" element={<AddEvent />} />
             <Route path="manageevents" element={<ManageEvents />} />

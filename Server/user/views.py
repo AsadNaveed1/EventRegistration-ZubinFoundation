@@ -28,7 +28,7 @@ def login(request):
             return HttpResponseServerError("Error: Incorrect password")
         request.session['user_id'] = user.user_id
         request.session.modified = True
-        return JsonResponse({ "message": "User authenticated", "user_type": user.user_type, "session_id": request.session['user_id'] }, status=200)
+        return JsonResponse({ "message": "User authenticated", "user_type": user.user_type, "session_id": request.session['user_id'], 'user_id' :user.user_id }, status=200)
     else:
         return HttpResponseServerError("Error: Invalid request method")
 
