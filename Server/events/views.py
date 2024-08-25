@@ -13,6 +13,7 @@ from rest_framework import status
 from .models import Event
 from .serializers import EventSerializer
 from user.serializers import UserSerializer
+from reminder_wts.send_message import send_whatsapp_message, create_message,send_sms_message
 
 # Create your views here.
 
@@ -79,6 +80,13 @@ def add_event_to_user(request):
   
             user.registered_events.add(event)
             user.save()
+            ####
+
+            notification_message = create_message(event)
+            # send_whatsapp_message("+85252243017", notification_message)
+            send_sms_message("+85252243017", notification_message)
+            
+            ###
             
             # 使用序列化器將用戶對象轉換為 JSON
             serializer = UserSerializer(user)

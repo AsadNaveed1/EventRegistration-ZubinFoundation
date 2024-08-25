@@ -36,5 +36,6 @@ urlpatterns = [
     path('zubin_auth/', include("zubin_auth.urls")),
     
     path("info/", include("general_api.urls")), 
-    path("events/", include("events.urls")), 
+    path("events/", include("events.urls")),
+    path("reminder_wts/", include("reminder_wts.urls")) 
 ]

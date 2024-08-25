@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class GeneralApiConfig(AppConfig):
+class ReminderWtsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'general_api'
+    name = 'reminder_wts'
