@@ -37,4 +37,5 @@ urlpatterns = [
     
     path("info/", include("general_api.urls")), 
     path("events/", include("events.urls")), 
+    path('api/', include('appointments.urls')),    
 ]
