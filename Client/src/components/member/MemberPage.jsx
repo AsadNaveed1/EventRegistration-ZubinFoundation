@@ -22,6 +22,7 @@ function MemberPage() {
     <PageContainer>
       <Navbar routes={memberRoutes} />
       <Outlet/>
+      <ChatBot/>
     </PageContainer>
       <Footer/>
       </>
