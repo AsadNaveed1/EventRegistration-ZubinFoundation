@@ -5,16 +5,14 @@ import data from '../member/sample.json';
 const Footer = () => {
   const addEvents = async () => {
     for (const event of data) {
-      const [date, time] = event.time.split('T');
       try {
         const response = await axios.post('/events/add_event', {
           title: event.title,
           description: event.description,
           eventType: event.eventType,
           location: event.location,
-          date:date,
+          start_datetime:event.time,
           interests:event.eventType,
-          time: time,
           skills: event.skills,
           ageRange: event.ageRange,
           gender: event.gender,

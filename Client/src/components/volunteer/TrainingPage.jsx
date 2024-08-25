@@ -4,7 +4,7 @@ import axios from '../axios';
 
 
 function TrainingPage() {
-  const [user,setUser]=useState([]);
+  const [user,setUser]=useState('');
   const { userId } = useParams();
   console.log(userId)
   useEffect(() => {

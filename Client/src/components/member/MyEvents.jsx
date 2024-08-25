@@ -15,7 +15,7 @@ function MyEvents() {
         console.log("response")
         const res = await axios.get(`user/find_user/${userId}`)
         
-        setRegisteredEvents(res.data.registered_events)
+        setRegisteredEvents(res.data)
       } catch (error) {
         console.error('Error fetching events:', error);
         // Fallback to Sample.json on error, if you have it imported
@@ -24,7 +24,7 @@ function MyEvents() {
     };
 
     fetch();
-  }, []);
+  }, [userId]);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
   const handleViewDetails = (event) => {
