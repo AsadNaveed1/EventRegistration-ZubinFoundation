@@ -5,8 +5,8 @@ from celery import shared_task
 from events.models import Event
 def send_sms_message(to_number, message_body):
 
-    account_sid = 'ACfe0f894e5eaad2ce03738fa6597bb6cf'
-    auth_token = '2d976826cd51ff6578253e32e715c556'
+    account_sid = ''
+    auth_token = ''
     client = Client(account_sid, auth_token)
     try:
         message = client.messages.create(
@@ -19,8 +19,8 @@ def send_sms_message(to_number, message_body):
         return f"Failed to send message: {e}"
 
 def send_whatsapp_message(to_number, message_body):
-    account_sid = 'ACfe0f894e5eaad2ce03738fa6597bb6cf'
-    auth_token = '2d976826cd51ff6578253e32e715c556'
+    account_sid = ''
+    auth_token = ''
     client = Client(account_sid, auth_token)
 
     try:

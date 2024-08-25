@@ -1,10 +1,11 @@
-import React from 'react';
-import styled, { createGlobalStyle } from 'styled-components';
+import React from "react";
+import styled, { createGlobalStyle } from "styled-components";
 
 const DialogflowMessenger = () => {
   React.useEffect(() => {
-    const scriptElement = document.createElement('script');
-    scriptElement.src = 'https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/df-messenger.js';
+    const scriptElement = document.createElement("script");
+    scriptElement.src =
+      "https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/df-messenger.js";
     scriptElement.async = true;
     document.body.appendChild(scriptElement);
 
@@ -18,7 +19,7 @@ const DialogflowMessenger = () => {
       <MessengerContainer>
         <df-messenger
           project-id="ai-tester-433403"
-          agent-id="7ab3816e-89e5-4caa-aa5e-02b1d6228d74"
+          agent-id=""
           language-code="en"
           max-query-length="-1"
         >
@@ -40,8 +41,8 @@ const MessengerContainer = styled.div`
 
   --df-messenger-font-color: #000;
   --df-messenger-font-family: Lato;
-  --df-messenger-chat-background: #FEF8E6;
-  --df-messenger-message-user-background: #C6DAFC;
+  --df-messenger-chat-background: #fef8e6;
+  --df-messenger-message-user-background: #c6dafc;
   --df-messenger-message-bot-background: #fff;
 `;
 
