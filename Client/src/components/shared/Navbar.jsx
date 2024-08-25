@@ -1,23 +1,39 @@
-import React, { useState } from 'react';
-import { useNavigate, useLocation,Link } from 'react-router-dom';
-import styled from 'styled-components';
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import styled from "styled-components";
 import logo from "../img/logo.png";
-import { FaUserCircle } from 'react-icons/fa';
-import { FiLogOut } from 'react-icons/fi';
+import { FaUserCircle, FaUser } from "react-icons/fa";
+import { FiLogOut } from "react-icons/fi";
 
 function Navbar({ routes }) {
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation(); 
+  const popupRef = useRef();
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
   };
 
   const handleLogout = () => {
-    navigate('/'); 
+    navigate("/");
   };
 
+  const handleProfile = () => {
+    navigate("profile");
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (popupRef.current && !popupRef.current.contains(event.target)) {
+        setShowPopup(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <Wrapper>
@@ -27,17 +43,20 @@ function Navbar({ routes }) {
       </div>
       <ul className="nav-links">
         {routes.map((route) => (
-          <li key={route.title} >
+          <li key={route.title}>
             <Link to={route.link}>{route.title}</Link>
           </li>
         ))}
         <li>
           <FaUserCircle className="user-icon" onClick={togglePopup} />
           {showPopup && (
-            <Popup>
+            <Popup ref={popupRef}>
               <div className="user-info">
-                <span className="name">Name</span>
+                <span className="name">User 1</span>
               </div>
+              <button className="profile-button" onClick={handleProfile}>
+                <FaUser /> Profile
+              </button>
               <button className="logout-button" onClick={handleLogout}>
                 <FiLogOut /> Logout
               </button>
@@ -98,6 +117,7 @@ const Wrapper = styled.nav`
   }
 `;
 
+
 const Popup = styled.div`
   position: absolute;
   right: 20px;
@@ -119,7 +139,7 @@ const Popup = styled.div`
     display: block;
   }
 
-  .logout-button {
+  .profile-button, .logout-button {
     background: none;
     border: none;
     cursor: pointer;
