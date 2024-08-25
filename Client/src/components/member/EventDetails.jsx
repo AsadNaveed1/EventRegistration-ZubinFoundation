@@ -1,79 +1,87 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useParams,useLocation  } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { FaMapMarkerAlt, FaCalendarAlt } from 'react-icons/fa';
-import data from './Sample.json';
-import Navbar from '../shared/Navbar';
-import { useEventContext } from './context/EventContext'; 
-import axios from '../axios'
+import axios from '../axios';
 
 function EventDetails() {
   const { userId } = useParams();
   const location = useLocation();
   const { event_id } = location.state || {}; 
-  const [event, setEvent]=useState('');
-  const [user, setUser]=useState('');
+  const [event, setEvent] = useState('');
+  const [user, setUser] = useState('');
   const [registered, setRegistered] = useState(false);
+  const [seatsAvailable, setSeatsAvailable] = useState(0);
 
-  console.log("event id", event_id)
-  const id = userId
   useEffect(() => {
     const fetch = async () => {
       try {
-        // Use the correct endpoint and include the event ID in the URL
         const response = await axios.post('/events/find_event', {
           event_id: event_id // Send event_id in the request body
-        }); // Convert to integer
-        
-        console.log("response",response);
-        setEvent(response.data)
-        const res = await axios.get(`user/find_user/${userId}`)
-        console.log('res',res.data)
-        setUser(res.data)
+        });
 
+        setEvent(response.data.event);
+        setSeatsAvailable(response.data.event.capacity); // Set initial seats available
+
+        const res = await axios.get(`user/find_user/${userId}`);
+        setUser(res.data);
       } catch (error) {
         console.error('Error fetching events:', error);
-        // Fallback to Sample.json on error, if you have it imported
-        // setEventList(data); // Uncomment if you have Sample.json data
       }
     };
 
     fetch();
-  }, [id]);  // Runs once on mount
-  console.log('events')
-  console.log(user,event)
-  const [seatsAvailable, setSeatsAvailable] = useState(event.capacity)
-  
+  }, [userId, event_id]);
+
   useEffect(() => {
     if (user && event) {
       const isRegistered = user.registered_events?.some(e => e.event_id === event.event_id);
-      console.log(isRegistered)
       setRegistered(isRegistered || false);
     }
   }, [user, event]);
 
   const handleRegister = async () => {
-    // if (seatsAvailable > 0 && !registered) {
-      const res = await axios.post('events/add_event_to_user',{
-        user_id :userId,
-        event_id:event_id
-      })
-      console.log(res)
-      setSeatsAvailable(seatsAvailable - 1);
-      setRegistered(true);
-    // }
+    const res = await axios({
+      method: 'post',
+      url: 'events/add_event_to_user',
+      headers: {
+        'Content-Type': 'application/json', // Ensure the content type is set to JSON
+      },
+      data: {
+        user_id: userId,
+        event_id: event_id,
+      },
+    });
+    setSeatsAvailable(seatsAvailable - 1);
+    setRegistered(true);
   };
 
-  const handleWithdraw = () => {
+  const handleWithdraw = async () => {
     if (registered) {
       setSeatsAvailable(seatsAvailable + 1);
       setRegistered(false);
+      const res = await axios({
+        method: 'post',
+        url: 'events/unregister',
+        headers: {
+          'Content-Type': 'application/json', // Ensure the content type is set to JSON
+        },
+        data: {
+          user_id: userId,
+          event_id: event_id,
+        },
+      });
     }
   };
 
   if (!event) {
     return <div>Event not found</div>;
   }
+
+  // Extract date and time for display
+  const startDateTime = new Date(event.start_datetime); // Assuming start_datetime is the correct field
+  const formattedDate = startDateTime.toLocaleDateString(); // Format as needed
+  const formattedTime = startDateTime.toLocaleTimeString(); // Format as needed
 
   return (
     <Wrapper>
@@ -88,8 +96,12 @@ function EventDetails() {
         </div>
         <div className="details">
           <div className="detail-item">
-            <h3><FaCalendarAlt /> Date and time</h3>
-            <p>{new Date(event.time).toLocaleString()}</p>
+            <h3><FaCalendarAlt /> Date</h3>
+            <p>{formattedDate}</p>
+          </div>
+          <div className="detail-item">
+            <h3><FaCalendarAlt /> Time</h3>
+            <p>{formattedTime}</p>
           </div>
           <div className="detail-item">
             <h3><FaMapMarkerAlt /> Location</h3>

@@ -3,8 +3,10 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 function EventCard({ event }) {
-
   const randomImage = event.imageSrc;
+
+  // Splitting the datetime string
+  const [date, time] = event.start_datetime.split('T'); // Assuming start_datetime is the datetime string
 
   return (
     <Wrapper>
@@ -16,11 +18,11 @@ function EventCard({ event }) {
         <div className="details">
           <div className="detail-item">
             <span>Date:</span>
-            <span>{event.date.toString()}</span>
+            <span>{date}</span> {/* Displaying the date */}
           </div>
           <div className="detail-item">
             <span>Time:</span>
-            <span>{event.time.toString()}</span>
+            <span>{time}</span> {/* Displaying the time */}
           </div>
           <div className="detail-item">
             <span>Location:</span>
@@ -32,7 +34,7 @@ function EventCard({ event }) {
           </div>
         </div>
         <div className="button-container">
-        <Link to={`Event`} state={{ event_id: event.event_id }}>
+          <Link to={`Event`} state={{ event_id: event.event_id }}>
             <button className="details-button">Details</button>
           </Link>
         </div>

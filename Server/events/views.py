@@ -41,7 +41,7 @@ def find_event_by_id(request) :
 
 @csrf_exempt
 def find_event(request):
-    if request.method == 'GET':
+    if request.method == 'GET' or request.method=="POST":
         body = json.loads(request.body)
         
         event_id = body.get('event_id')
@@ -147,11 +147,11 @@ def add_event_to_user(request):
             # Schedule reminder task
             print("okay")
             # start_datetime= datetime.strptime(event.start_datetime.isoformat(), "%Y-%m-%dT%H:%M:%S.%f")
-            start_datetime = datetime.fromisoformat(event.start_datetime)
-            reminder_time = start_datetime - datetime.timedelta(hours=1)
-            print("reminder_time: "+ str(reminder_time))
-            if reminder_time > timezone.now():
-                send_sync_reminder_message.apply_async((user.phone_number, event),eta=reminder_time)
+            # start_datetime = datetime.fromisoformat(event.start_datetime)
+            # reminder_time = start_datetime - datetime.timedelta(hours=1)
+            # print("reminder_time: "+ str(reminder_time))
+            # if reminder_time > timezone.now():
+            #     send_sync_reminder_message.apply_async((user.phone_number, event),eta=reminder_time)
 
             # 使用序列化器將用戶對象轉換為 JSON
             serializer = UserSerializer(user)
