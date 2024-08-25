@@ -1,19 +1,17 @@
 import React from 'react';
 import Navbar from '../shared/Navbar.jsx';
 import { Outlet } from 'react-router-dom';
-import Home from './Home.jsx'
 import Footer from '../shared/Footer.jsx';
-import EventSection from './EventSection.jsx';
 import styled from 'styled-components';
 
 
 // Define the routes for the Navbar
 const memberRoutes = [
-  { title: 'Home', link: '' },
-  { title: 'My Events', link: 'MyEvents' },
-  { title: 'My Appointments', link: 'MyAppointments' },
-  { title: 'Make An Appointment', link: 'MakeAppointment' },
-  { title: 'Profile', link: 'Profile' },
+
+  { title: 'Home', link: '/member' },
+  { title: 'My Events', link: '/member/MyEvents' },
+  { title: 'My Appointments', link: '/member/MyAppointments' },
+  { title: 'Make An Appointment', link: '/member/MakeAppointment' },
 ];
 
 function MemberPage() {
@@ -37,6 +35,3 @@ const PageContainer = styled.div`
   flex-direction: column;
   min-height: 90vh;
 `;
-
-
-

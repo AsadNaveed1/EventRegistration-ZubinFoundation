@@ -8,9 +8,13 @@ function TopNavbar() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
+
+    navigate('/'); 
+ 
     axios.post("http://localhost:5001/user/logout").then(() => {
       sessionStorage.removeItem("sessionId");
     });
+
   };
 
   return (

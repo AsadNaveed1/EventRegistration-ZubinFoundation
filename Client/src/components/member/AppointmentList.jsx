@@ -1,38 +1,57 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import styled from 'styled-components';
 import { List, ListItem, ListItemText, Button, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 
+const Container = styled.div`
+  padding: 20px;
+`;
+
+const StyledList = styled(List)`
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 10px;
+`;
+
+const StyledListItem = styled(ListItem)`
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+`;
+
+const StyledButton = styled(Button)`
+  margin-left: 10px;
+`;
+function refreshPage(){
+  window.location.reload();
+}
 const AppointmentList = () => {
   const [appointments, setAppointments] = useState([]);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [open, setOpen] = useState(false);
-  console.log("cry")
 
+  // Fetch CSRF token from cookies
+  const csrfToken = document.cookie.split(';').find(cookie => cookie.trim().startsWith('csrftoken=')).split('=')[1];
+  axios.defaults.headers.common['X-CSRFToken'] = csrfToken;
 
-
-const csrfToken = document.cookie.split(';').find(cookie => cookie.trim().startsWith('csrftoken=')).split('=')[1];
-
-axios.defaults.headers.common['X-CSRFToken'] = csrfToken;
-useEffect(() => {
-    axios.get('http://127.0.0.1:8000/api/appointments/')
+  // Fetch appointments from the API
+  useEffect(() => {
+    axios.get('http://localhost:5001/api/appointments/')
       .then(response => {
         setAppointments(response.data);
-        console.log(appointments)
+        console.log('Fetched appointments:', response.data);
       })
       .catch(error => console.error('Error fetching appointments:', error));
-  }, []);  
+  }, []);
 
-  console.log("happy")
-
+  // Handle appointment selection
   const handleSelect = (appointment) => {
     setSelectedAppointment(appointment);
   };
 
-
-
+  // Handle appointment confirmation
   const handleConfirm = () => {
     if (selectedAppointment) {
-      axios.put(`/api/book/${selectedAppointment.id}/`)
+      axios.put(`http://localhost:5001/api/book/${selectedAppointment.id}/`)
         .then(response => {
           console.log('Appointment booked:', response.data);
           setOpen(true); // Open the dialog box
@@ -41,29 +60,31 @@ useEffect(() => {
     }
   };
 
+  // Handle dialog close
   const handleClose = () => {
     setOpen(false);
+    refreshPage();
   };
 
   return (
-    <div>
-      <List>
+    <Container>
+      <StyledList>
         {appointments.map((appointment) => (
-          <ListItem key={appointment.id}>
+          <StyledListItem key={appointment.id}>
             <ListItemText
               primary={`${appointment.type} - ${appointment.time}`}
               secondary={`Details: ${appointment.details}`}
             />
-            <Button 
+            <StyledButton 
               variant="contained" 
               color="primary" 
               onClick={() => handleSelect(appointment)}
             >
               Select
-            </Button>
-          </ListItem>
+            </StyledButton>
+          </StyledListItem>
         ))}
-      </List>
+      </StyledList>
       {selectedAppointment && (
         <div>
           <Typography variant="h6">Selected Appointment:</Typography>
@@ -90,7 +111,7 @@ useEffect(() => {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </Container>
   );
 };
 

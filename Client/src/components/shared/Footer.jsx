@@ -36,7 +36,9 @@ const Footer = () => {
     <FooterContainer>
       <FooterContent>
         <About>
+
         <h3 onClick={handlePress}>MyEvents</h3>
+
           <p>Discover the best events happening around you every day.</p>
         </About>
         <SocialMedia>

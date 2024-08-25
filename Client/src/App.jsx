@@ -14,7 +14,6 @@ import MyEvents from "./components/member/MyEvents";
 import MyAppointments from "./components/member/MyAppointments";
 import Profile from "./components/member/Profile";
 import "./App.css";
-import MakeAppointment from "./components/member/MakeAppointment";
 import EventsSection from "./components/volunteer/EventsSection";
 import AppointmentList from "./components/member/AppointmentList";
 import EventFullDisplay from "./components/shared/EventFullDisplay";
@@ -47,9 +46,10 @@ function App() {
             <Route path="myevents" element={<MyEvents />} />
             <Route path="myappointments" element={<MyAppointments />} />
             <Route path="profile" element={<Profile />} />
-            <Route path="makeappointment" element={<MakeAppointment />} />
-            <Route path="appointmentlist" element={<AppointmentList />} />
+
+            <Route path="makeappointment" element={<AppointmentList />} />
             <Route path="Event" element={<EventDetails />} /> 
+
             
           </Route>
           
