@@ -22,4 +22,6 @@ urlpatterns = [
     path('signup', views.sign_up),
     path("users", views.get_all_users),
     path("find_user", views.find_user),
+    path("find_user/<int:user_id>", views.find_user_url),
+    path("user_all_event/<int:user_id>", views.user_all_event_url),
 ]

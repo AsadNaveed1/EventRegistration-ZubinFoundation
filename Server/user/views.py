@@ -128,3 +128,28 @@ def log_out(request):
         return HttpResponse("Success: User logged out", status=200)
     else:
         return HttpResponseServerError("Error: Invalid request method")
+    
+@csrf_exempt
+def user_all_event_url(request, user_id):
+    if request.method == 'GET':
+        try:
+            user = User.objects.get(user_id=user_id)
+            serializer = UserSerializer(user)
+            # Return only the 'registered_events' part of the serialized data
+            return JsonResponse(serializer.data['registered_events'], safe=False, status=200)
+        except User.DoesNotExist:
+            return JsonResponse({'message': 'User not found'}, status=404)
+    else:
+        return HttpResponseServerError("Error: Invalid request method")
+
+@csrf_exempt
+def find_user_url(request, user_id):
+    if request.method == 'GET':
+        try:
+            user = User.objects.get(user_id=user_id)
+            serializer = UserSerializer(user)
+            return JsonResponse(serializer.data, status=200)
+        except User.DoesNotExist:
+            return JsonResponse({'message': 'User not found'}, status=404)
+    else:
+        return HttpResponseServerError("Error: Invalid request method")
