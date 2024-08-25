@@ -22,6 +22,54 @@ from reminder.send_message import send_sync_reminder_message
 
 
 ### Request ####
+
+@csrf_exempt
+def find_event(request):
+    if request.method == 'GET':
+        body = json.loads(request.body)
+        
+        event_id = body.get('event_id')
+        
+        if not event_id:
+            return JsonResponse({
+                'status': 'error',
+                'message': 'event_id parameter is required'
+            }, status=400)
+        
+        # 2. Retrieve the Event instance
+        try:
+            event = Event.objects.get(event_id=event_id)
+        except Event.DoesNotExist:
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Event not found'
+            }, status=404)
+        
+        # 3. Serialize event data
+        event_data = {
+            'event_id': event.event_id,
+            'title': event.title,
+            'description': event.description,
+            'start_datetime': event.start_datetime,
+            'end_datetime': event.end_datetime,
+            'location': event.location,
+            'capacity': event.capacity,
+            'registered_users': [user.user_id for user in event.registered_users.all()],
+            # Include other fields as needed
+        }
+        
+        # 4. Return event data in the response
+        return JsonResponse({
+            'status': 'success',
+            'message': 'Event retrieved successfully',
+            'event': event_data
+        }, status=200)
+    
+    return JsonResponse({
+        'status': 'error',
+        'message': 'Invalid request method'
+    }, status=405)
+
 '''
 Get Method
 See all the events of a user
@@ -178,3 +226,54 @@ def add_event(request): ## tested
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return JsonResponse({'message': 'Invalid request method', 'status': 'error'}, status=405)
+
+
+@csrf_exempt
+def remove_user_from_event(request):
+    if request.method == 'POST':
+        try:
+            # 1. 解析請求的 JSON 體
+            body = json.loads(request.body)
+            
+            # 2. 獲取 event_id 和 user_id
+            event_id = body.get('event_id')
+            user_id = body.get('user_id')
+            
+            if not event_id or not user_id:
+
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'event_id and user_id parameters are required'
+                }, status=400)
+
+            try:
+                event = Event.objects.get(event_id=event_id)
+                user = User.objects.get(user_id=user_id)
+            except (Event.DoesNotExist, User.DoesNotExist):
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'Event or User not found'
+                }, status=404)
+
+            if user in event.registered_users.all():
+                event.registered_users.remove(user)
+                return JsonResponse({
+                    'status': 'success',
+                    'message': 'User removed from event successfully'
+                }, status=200)
+            else:
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'User not registered for this event'
+                }, status=400)
+        
+        except json.JSONDecodeError:
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Invalid JSON'
+            }, status=400)
+    
+    return JsonResponse({
+        'status': 'error',
+        'message': 'Invalid request method'
+    }, status=405)
