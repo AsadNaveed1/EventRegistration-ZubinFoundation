@@ -77,24 +77,22 @@ def sign_up(request):
 def get_all_users(request):
     if request.method == 'GET':
         users = User.objects.all()
-        user_list = dict(users.values())
-        return JsonResponse(user_list, status=200)
+        user_list = list(users.values())
+        return JsonResponse(user_list, status=200, safe=False)
     else:
         return HttpResponseServerError("Error: Invalid request method")
     
 @csrf_exempt
 def find_user(request):
     if request.method == 'GET':
-        body = request.body
-        data = json.loads(body)
-        
-        user_id = data.get('user_id')
-        user = User.objects.get(user_id=user_id)
-                    
+        user_id = request.GET.get('user_id')
+        print(user_id, flush=True)
+        user = list(User.objects.filter(user_id=user_id).values())
+        print(user, flush=True)
         if user is None:
             return JsonResponse({'message': 'User not found'}, status=404)
         else:
-            return JsonResponse(user, status=200)
+            return JsonResponse(user, status=200, safe=False)
     else:
         return HttpResponseServerError("Error: Invalid request method")
     
