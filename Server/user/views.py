@@ -115,7 +115,7 @@ def get_all_users(request):
 def find_user(request):
     if request.method == 'GET':
         user_id = request.GET.get('user_id')
-        user = User.objects.filter(user_id=user_id)
+        user = User.objects.filter(user_id=int(user_id))
         serializer = UserSerializer(user, many=True)
         if user is None:
             return JsonResponse({'message': 'User not found'}, status=404)

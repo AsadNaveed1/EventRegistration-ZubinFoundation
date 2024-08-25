@@ -19,12 +19,15 @@ from reminder_wts.send_message import send_whatsapp_message, create_message,send
 
 ### Internal Method ###
 @csrf_exempt
-def find_event_by_id(event_id: str) -> str:
+def find_event_by_id(request) :
     try:
         # Find the Event object that matches the given event name
-        event = Event.objects.get(id=event_id)
+        data = json.loads(request.body)
+        event_id = data.get('event_id')
+        event = Event.objects.get(event_id=event_id)
+        serializer = EventSerializer(event)
         # Return the ID of the found event as a string
-        return event
+        return JsonResponse(serializer.data, safe=False, status=200)
     except Event.DoesNotExist:
         # If no event is found with the given name, return a message
         return "Event not found"

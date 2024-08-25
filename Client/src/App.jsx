@@ -38,7 +38,7 @@ function App() {
             <Route index element={<Landing />} />
             <Route path="" element={<Landing />} />
             <Route path="Training" element={<TrainingPage />} />
-            <Route path="Event/:id" element={<EventDetails />} />
+            <Route path="Event" element={<EventDetails />} />
           </Route>
 
           <Route path="/member/:userId/" element={<MemberPage />}>
@@ -49,7 +49,7 @@ function App() {
             <Route path="profile" element={<Profile />} />
             <Route path="makeappointment" element={<MakeAppointment />} />
             <Route path="appointmentlist" element={<AppointmentList />} />
-            <Route path="Event/:id" element={<EventDetails />} /> 
+            <Route path="Event" element={<EventDetails />} /> 
             
           </Route>
           

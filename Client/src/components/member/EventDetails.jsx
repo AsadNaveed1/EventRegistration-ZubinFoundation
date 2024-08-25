@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
+import { useParams,useLocation  } from 'react-router-dom';
 import { FaMapMarkerAlt, FaCalendarAlt } from 'react-icons/fa';
 import data from './Sample.json';
 import Navbar from '../shared/Navbar';
@@ -8,62 +8,60 @@ import { useEventContext } from './context/EventContext';
 import axios from '../axios'
 
 function EventDetails() {
-  const [event, setEvent] = useState(null);
-  const [user, setUser] = useState(null);
+  const { userId } = useParams();
+  const location = useLocation();
+  const { event_id } = location.state || {}; 
+  const [event, setEvent]=useState('');
+  const [user, setUser]=useState('');
   const [registered, setRegistered] = useState(false);
-  const { userId, id } = useParams();
 
+  console.log("event id", event_id)
+  const id = userId
   useEffect(() => {
-    const fetchEvents = async () => {
+    const fetch = async () => {
       try {
-        const res = await axios.get(`/events/find_event/${id}`);
-        setEvent(res.data);
+        // Use the correct endpoint and include the event ID in the URL
+        const response = await axios.post('/events/find_event', {
+          event_id: event_id // Send event_id in the request body
+        }); // Convert to integer
+        
+        console.log("response",response);
+        setEvent(response.data)
+        const res = await axios.get(`user/find_user/${userId}`)
+        console.log('res',res.data)
+        setUser(res.data)
+
       } catch (error) {
         console.error('Error fetching events:', error);
+        // Fallback to Sample.json on error, if you have it imported
+        // setEventList(data); // Uncomment if you have Sample.json data
       }
     };
 
-    fetchEvents();
-  }, [id]);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await axios.get(`/user/find_user/${userId}`);
-        setUser(res.data);
-      } catch (error) {
-        console.error('Error fetching user:', error);
-      }
-    };
-
-    fetchUser();
-  }, [userId]);
-
+    fetch();
+  }, [id]);  // Runs once on mount
+  console.log('events')
+  console.log(user,event)
+  const [seatsAvailable, setSeatsAvailable] = useState(event.capacity)
+  
   useEffect(() => {
     if (user && event) {
-      // Check if the event ID is in the user's registered events
-      const isRegistered = user.registeredEvents.includes(event.id);
-      setRegistered(isRegistered);
+      const isRegistered = user.registered_events?.some(e => e.event_id === event.event_id);
+      console.log(isRegistered)
+      setRegistered(isRegistered || false);
     }
   }, [user, event]);
 
-  console.log(event);
-  console.log(user);
-  console.log(registered);
-  const [seatsAvailable, setSeatsAvailable] = useState(event.capacity);
-  
-
-  // const isRegistered = registeredEvents.some(e => e.id === event.id);
-
-  // useEffect(() => {
-
-  //   setRegistered(isRegistered);
-  // }, [id, isRegistered]);
-
   const handleRegister = async () => {
-   axios.post('events/add_event_to_user',user_id)
-   setSeatsAvailable(seatsAvailable-1)
-    setRegistered(true)
+    // if (seatsAvailable > 0 && !registered) {
+      const res = await axios.post('events/add_event_to_user',{
+        user_id :userId,
+        event_id:event_id
+      })
+      console.log(res)
+      setSeatsAvailable(seatsAvailable - 1);
+      setRegistered(true);
+    // }
   };
 
   const handleWithdraw = () => {
@@ -73,9 +71,9 @@ function EventDetails() {
     }
   };
 
-  // if (!event) {
-  //   return <div>Event not found</div>;
-  // }
+  if (!event) {
+    return <div>Event not found</div>;
+  }
 
   return (
     <Wrapper>

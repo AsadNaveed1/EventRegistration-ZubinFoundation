@@ -32,7 +32,7 @@ function EventCard({ event }) {
           </div>
         </div>
         <div className="button-container">
-          <Link to={`Event/${event.event_id}`}>
+        <Link to={`Event`} state={{ event_id: event.event_id }}>
             <button className="details-button">Details</button>
           </Link>
         </div>
