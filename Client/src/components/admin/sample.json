@@ -1,10 +1,10 @@
 [
   {
-    // "title": "Community Cleanup",
-    // "description": "Join us in cleaning up the local park.",
-    // "eventType": "Environment",
-    // "location": "Central Park",
-    // "time": "2024-09-15T10:00:00",
+    "title": "Community Cleanup",
+    "description": "Join us in cleaning up the local park.",
+    "eventType": "Environment",
+    "location": "Central Park",
+    "time": "2024-09-15T10:00:00",
     "skills": ["communication", "teamwork"],
     "ageRange": "18-40",
     "gender": "Any",

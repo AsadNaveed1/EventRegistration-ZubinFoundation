@@ -1,78 +1,81 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState,useEffect}from 'react';
 import styled from 'styled-components';
 import EventCard from '../shared/EventCard';
-import axios from '../axios'; // Import Axios
+import data from '../member/Sample.json';
+import img1 from '../img/Img1.png';
+import img2 from '../img/Img2.png';
+import img3 from '../img/Img3.png';
+import Footer from '../shared/Footer';
+import axios from '../axios';
 
-function EventsSection() {
-  const [events, setEvents] = useState([]); // State to store fetched events
-  const [showDetail, setShowDetail] = useState('');
+const images = [img1, img2, img3];
 
-  // Fetch events when the component mounts
+function EventSection({ searchQuery }) {
+  const [eventList, setEventList] = useState([]);
+
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         const response = await axios.get('/events/all_events');
-        console.log(response.data); // Check the full response
-        // Adjust this line based on your actual response structure
-        setEvents(response.data.info || response.data); // Use info if it exists, otherwise use data directly
+        const quer = response.data.info; // Adjust based on your API response structure
+        setEventList(quer || data); // Use fetched data or fallback to Sample.json
       } catch (error) {
         console.error('Error fetching events:', error);
+        setEventList(data); // Fallback to Sample.json on error
       }
     };
 
     fetchEvents();
-  }, []); // Empty dependency array means this runs once on mount
+  }, []); // Runs once on mount
+  console.log('events',eventList)
+  // Filtering based on search query
+  const filteredEvents = eventList.filter(event => {
+    const query = (searchQuery || '').toLowerCase();
+    const matchesTitle = event.title.toLowerCase().includes(query);
+    const matchesType = event.interests.toLowerCase().includes(query);
+    return matchesTitle || matchesType;
+  });
 
-  const handleRegister = (val) => {
-    console.log(val);
-  };
+
+  const eventsWithImages = filteredEvents.map(event => {
+    const eventDate = new Date(event.time);
+    const formattedDate = eventDate.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+    const formattedTime = eventDate.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+    
+
+    return {
+      ...event,
+      date: formattedDate,
+      time: formattedTime,
+      imageSrc: images[Math.floor(Math.random() * images.length)],
+    };
+  });
 
   return (
-    <Wrapper>
-      <div className="container">
-        <h1>Upcoming Events</h1>
-        <div className="events-grid">
-          {events.length > 0 ? (
-            events.map((event) => (
-              <EventCard
-                key={event.event_id}
-                event={event}
-                onRegister={handleRegister} // Pass the handleRegister function if needed
-              />
-            ))
-          ) : (
-            <p>No events available.</p> // Display a message if no events are found
-          )}
-        </div>
-      </div>
-    </Wrapper>
+    <>
+    <SectionWrapper>
+      {eventsWithImages.map(event => (
+        <EventCard key={event.title} event={event} />
+      ))}
+    </SectionWrapper>
+
+    </>
   );
 }
 
-const Wrapper = styled.div`
-  padding: 50px 20px;
-  text-align: center;
-
-  .container {
-    max-width: 1200px;
-    width: 100%;
-    margin: 0 auto;
-  }
-
-  h1 {
-    font-size: 32px; /* Increased font size */
-    color: #333;
-    margin-bottom: 30px;
-  }
-
-  .events-grid {
-    display: flex; /* Changed to flex */
-    flex-wrap: wrap; /* Allow wrapping */
-    justify-content: center; /* Center the items */
-    align-items: center; /* Center vertically */
-    gap: 20px;
-    margin-top: 200px;
-  }
+const SectionWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  justify-items: center;
+  padding: 20px;
 `;
 
-export default EventsSection;
+export default EventSection;

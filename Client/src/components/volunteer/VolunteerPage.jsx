@@ -1,6 +1,8 @@
-import React,{useState} from 'react';
-import Navbar from '../shared/Navbar';
+import React from 'react';
+import Navbar from '../shared/Navbar.jsx';
 import { Outlet } from 'react-router-dom';
+import Footer from '../shared/Footer.jsx';
+import styled from 'styled-components';
 function VolunteerPage() {
  const routes= [
   {title:'Events Search',
@@ -14,12 +16,19 @@ function VolunteerPage() {
   },
 ]
   return (
-    <div>
-    <Navbar routes={routes} />
-     <Outlet></Outlet>
-
-    </div>
+    <>
+    <PageContainer>
+      <Navbar routes={routes} />
+      <Outlet/>
+    </PageContainer>
+      <Footer/>
+      </>
   );
 }
-
+const PageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 90vh;
+`;
 export default VolunteerPage;
+
