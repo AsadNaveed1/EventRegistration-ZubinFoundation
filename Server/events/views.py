@@ -18,7 +18,6 @@ from .serializers import EventSerializer
 from user.serializers import UserSerializer
 from reminder.send_message import send_whatsapp_message, create_event_register_message,send_sms_message
 from django.utils import timezone
-from reminder.send_message import send_sync_reminder_message
 
 # Create your views here.
 
@@ -140,20 +139,10 @@ def add_event_to_user(request):
             ####
 
             # Send notification message once user registered
-            # notification_message = create_event_register_message(event)
-            # send_whatsapp_message(user.phone_number, notification_message)
-            # send_sms_message(user.phone_number, notification_message)
-            
-            # Schedule reminder task
-            print("okay")
-            # start_datetime= datetime.strptime(event.start_datetime.isoformat(), "%Y-%m-%dT%H:%M:%S.%f")
-            # start_datetime = datetime.fromisoformat(event.start_datetime)
-            # reminder_time = start_datetime - datetime.timedelta(hours=1)
-            # print("reminder_time: "+ str(reminder_time))
-            # if reminder_time > timezone.now():
-            #     send_sync_reminder_message.apply_async((user.phone_number, event),eta=reminder_time)
+            notification_message = create_event_register_message(event)
+            send_whatsapp_message(user.phone_number, notification_message)
+            send_sms_message(user.phone_number, notification_message)
 
-            # 使用序列化器將用戶對象轉換為 JSON
             serializer = UserSerializer(user)
             user_data = serializer.data
 
