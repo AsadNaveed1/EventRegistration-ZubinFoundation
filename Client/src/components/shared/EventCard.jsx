@@ -1,33 +1,40 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FaCalendarAlt, FaClock, FaInfoCircle, FaMapMarkerAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
-function EventCard({ event, getDetails}) {
+function EventCard({ event }) {
+  // Assuming images are imported and passed correctly as before
+  const randomImage = event.imageSrc;
+
   return (
     <Wrapper>
-      <img src={event.imageSrc} alt="Event" />
+      <img src={randomImage} alt="Event" />
       <div className="content">
         <div className="title">
           <h2>{event.title}</h2>
-          <FaInfoCircle className="icon" />
         </div>
         <div className="details">
           <div className="detail-item">
-            <FaCalendarAlt className="icon" />
+            <span>Date:</span>
             <span>{event.date}</span>
           </div>
           <div className="detail-item">
-            <FaClock className="icon" />
+            <span>Time:</span>
             <span>{event.time}</span>
           </div>
           <div className="detail-item">
-            <FaMapMarkerAlt className="icon" />
+            <span>Location:</span>
             <span>{event.location}</span>
+          </div>
+          <div className="detail-item">
+            <span>Event Type:</span>
+            <span>{event.eventType}</span>
           </div>
         </div>
         <div className="button-container">
-        <Link to={`Event/${event.id}`}> <button className="details-button"  >Details</button></Link>
+          <Link to={`/member/Event/${event.id}`}>
+            <button className="details-button">Details</button>
+          </Link>
         </div>
       </div>
     </Wrapper>
@@ -94,7 +101,7 @@ const Wrapper = styled.div`
   }
 
   .button-container {
-    margin-top: auto;
+    margin-top: 20px;
     display: flex;
     justify-content: center;
   }

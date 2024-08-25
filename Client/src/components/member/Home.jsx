@@ -1,23 +1,34 @@
+// Home.jsx
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FaSearch } from 'react-icons/fa';
-import EventCard from '../shared/EventCard';
-import EventFullDisplay from '../shared/EventFullDisplay';
+import EventFilter from './features/EventFilter';
+import EventSection from './EventSection';
 
 
 function Home() {
   const [searchQuery, setSearchQuery] = useState('');
   const [eventType, setEventType] = useState('');
-  const [gender, setGender] = useState('');
+  const [filters, setFilters] = useState({
+    interests: [],
+    age: '',
+    gender: '',
+    location: '',
+  });
 
-  const handleSearch = () => {
-
-    console.log('Search Query:', searchQuery);
-    console.log('Event Type:', eventType);
-    console.log('Gender:', gender);
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
   };
 
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters);
+    setEventType(newFilters.eventType || ''); // Assume eventType is part of filters
+  };
+
+
   return (
+  
+
     <Wrapper>
       <HeroSection>
         <div className="container">
@@ -30,34 +41,18 @@ function Home() {
               type="text"
               placeholder="Find your events..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={handleSearchChange}
             />
-            <button onClick={handleSearch}>
+            <button>
               <FaSearch />
             </button>
           </div>
-          <div className="filters">
-            <div className="filter">
-              <label>Event Type:</label>
-              <select value={eventType} onChange={(e) => setEventType(e.target.value)}>
-                <option value="">All</option>
-                <option value="online">Families</option>
-                <option value="offline">Mental Health</option>
-              </select>
-            </div>
-            <div className="filter">
-              <label>Gender:</label>
-              <select value={gender} onChange={(e) => setGender(e.target.value)}>
-                <option value="">All</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-          </div>
+          <EventFilter onFilterChange={handleFilterChange} />
         </div>
       </HeroSection>
+      <EventSection searchQuery={searchQuery} eventType={eventType} />
     </Wrapper>
+
   );
 }
 
@@ -121,31 +116,6 @@ const HeroSection = styled.div`
 
       svg {
         vertical-align: middle;
-      }
-    }
-  }
-
-  .filters {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 30px;
-
-    .filter {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 5px;
-
-      label {
-        font-size: 16px;
-        color: #555;
-      }
-
-      select {
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
       }
     }
   }

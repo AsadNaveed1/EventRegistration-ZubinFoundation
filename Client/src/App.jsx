@@ -1,50 +1,66 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import LoginPage from './components/auth/LoginPage';
-import SignupPage from './components/auth/SignupPage';
-import VolunteerPage from './components/volunteer/VolunteerPage';
-import MemberPage from './components/member/MemberPage';
-import AdminPage from './components/admin/AdminPage';
-import Dashboard from './components/admin/Dashboard';
-import AddEvent from './components/admin/AddEvent';
-import ManageEvents from './components/admin/ManageEvents';
-import Applications from './components/admin/Applications';
-import Home from './components/member/Home';
-import MyEvents from './components/member/MyEvents';
-import MyAppointments from './components/member/MyAppointments';
-import Profile from './components/member/Profile';
-import './App.css';
-import MakeAppointment from './components/member/MakeAppointment';
-import EventsSection from './components/volunteer/EventsSection';
-import AppointmentList from './components/member/AppointmentList';
-import EventFullDisplay from './components/shared/EventFullDisplay';
-import TrainingPage from './components/volunteer/TrainingPage';
-import MyEventsPage from './components/volunteer/MyEventsPage';
-import EventSearchPage from './components/volunteer/EventSearchPage';
-
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import LoginPage from "./components/auth/LoginPage";
+import SignupPage from "./components/auth/SignupPage";
+import VolunteerPage from "./components/volunteer/VolunteerPage";
+import MemberPage from "./components/member/MemberPage";
+import AdminPage from "./components/admin/AdminPage";
+import Dashboard from "./components/admin/Dashboard";
+import AddEvent from "./components/admin/AddEvent";
+import ManageEvents from "./components/admin/ManageEvents";
+import Applications from "./components/admin/Applications";
+import Home from "./components/member/Home";
+import MyEvents from "./components/member/MyEvents";
+import MyAppointments from "./components/member/MyAppointments";
+import Profile from "./components/member/Profile";
+import "./App.css";
+import MakeAppointment from "./components/member/MakeAppointment";
+import EventsSection from "./components/volunteer/EventsSection";
+import AppointmentList from "./components/member/AppointmentList";
+import EventFullDisplay from "./components/shared/EventFullDisplay";
+import TrainingPage from "./components/volunteer/TrainingPage";
+import MyEventsPage from "./components/volunteer/MyEventsPage";
+import EventSearchPage from "./components/volunteer/EventSearchPage";
+import EventDetails from "./components/member/EventDetails"; // Import EventDetails component
+import { EventProvider } from '../src/components/member/context/EventContext.jsx';
+import Footer from "./components/shared/Footer.jsx";
 
 function App() {
   return (
+    <EventProvider>
     <Router>
       <div className="App">
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/register" element={<SignupPage />} />
-          <Route path="/volunteer" element={<VolunteerPage />} >
+          <Route path="/volunteer" element={<VolunteerPage />}>
             <Route path="MyEvents" element={<MyEventsPage />} />
-            <Route path="" element={<div><EventSearchPage /><EventsSection/></div>} />
+            <Route
+              path=""
+              element={
+                <div>
+                  <EventSearchPage />
+                  <EventsSection />
+                </div>
+              }
+            />
             <Route path="Training" element={<TrainingPage />} />
             <Route path="Event/:id" element={<EventFullDisplay />} />
           </Route>
+
           <Route path="/member" element={<MemberPage />}>
-            <Route path="Home" element={<Home/>} />
-            <Route path="MyEvents" element={<MyEvents/>} />
-            <Route path="MyAppointments" element={<MyAppointments/>} />
-            <Route path="Profile" element={<Profile/>} />
-            <Route path ="MakeAppointment" element={<MakeAppointment/>}/>
-            <Route path="AppointmentList" element={<AppointmentList/>}/>
+            <Route index element={<Home />} />
+            <Route path="home" element={<Home />} />
+            <Route path="myevents" element={<MyEvents />} />
+            <Route path="myappointments" element={<MyAppointments />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="makeappointment" element={<MakeAppointment />} />
+            <Route path="appointmentlist" element={<AppointmentList />} />
+            <Route path="Event/:id" element={<EventDetails />} /> {/* Correctly nested under /member */}
+            
           </Route>
-          {/* <Route path="" element={<div><EventSearchPage /><EventsSection/></div>} /> */}
+          
+
           <Route path="/admin" element={<AdminPage />}>
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="addevent" element={<AddEvent />} />
@@ -52,8 +68,10 @@ function App() {
             <Route path="applications" element={<Applications />} />
           </Route>
         </Routes>
+
       </div>
     </Router>
+    </EventProvider>
   );
 }
 
