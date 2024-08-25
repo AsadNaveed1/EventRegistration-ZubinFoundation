@@ -14,6 +14,7 @@ class User(models.Model):
     residence = models.CharField(max_length=100, null=True)
     username = models.CharField(max_length=100)
     user_id = models.AutoField(primary_key=True)
+    registered_events = models.ManyToManyField('events.Event', related_name='registered_users', blank=True)
 
     def __str__(self):
         return self.username

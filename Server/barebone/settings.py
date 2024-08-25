@@ -40,22 +40,24 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
 ]
 
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:5173',
-]
+CORS_ALLOW_ALL_ORIGINS = True
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
 SESSION_COOKIE_AGE = 1800 # 30 minutes in seconds
 
+SESSION_COOKIE_HTTPONLY = True
+
+SESSION_SAVE_EVERY_REQUEST = True
+
 # Application definition
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ),
+
+    "DEFAULT_AUTHENTICATION_CLASSES": [],  # Remove JWT Authentication
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
+        "rest_framework.permissions.AllowAny",  # Allow any request
     ],
+
 }
 
 INSTALLED_APPS = [
@@ -66,24 +68,25 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'rest_framework_simplejwt',
+    # 'rest_framework_simplejwt',  # Optional: remove if you don't need it
     'user',
     'zubin_auth',
     'zubin_admin',
     'volunteer',
     'community_member',
     'general_api',
-    ## For CORS 
     'events',
     'corsheaders',
+    'appointments',
+    'django_seed',
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
+    # 'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',

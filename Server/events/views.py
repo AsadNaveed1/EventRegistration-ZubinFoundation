@@ -7,6 +7,12 @@ from django.shortcuts import render
 from .models import Event
 from user.models import User
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from .models import Event
+from .serializers import EventSerializer
+from user.serializers import UserSerializer
 
 # Create your views here.
 
@@ -24,6 +30,8 @@ def find_event_by_id(event_id: str) -> str:
 
 ### Request ####
 
+
+
 @csrf_exempt
 def all_events(request):
     if request.method == 'GET':
@@ -31,26 +39,21 @@ def all_events(request):
             "message": "This is a GET request",
             'status': 'success'
         }
-        events = Event.objects.all()  # 从 PostgreSQL 中提取所有 Product 数据
-        
-        event_list = list(events.values())
+        events = Event.objects.all()  # Fetch all events from the database
+
+        # Serialize the event data, including registered users
+        serializer = EventSerializer(events, many=True)
+        event_list = serializer.data
         
         data["info"] = event_list
-        return JsonResponse(data)
-    
+        return JsonResponse(data, safe=False)  # Return the serialized data as a JSON response
     
     else:
         data = {
             "message": "Invalid request method.",
             'status': 'error'
         }
-
         return JsonResponse(data)
-
-
-
-
-
 
 '''
 Post Method
@@ -58,6 +61,7 @@ add a event to a user
 Param: userid, event_name/ userid, eventid
 return: 
 '''
+@csrf_exempt
 def add_event_to_user(request):
     if request.method == 'POST':
         try:
@@ -73,10 +77,15 @@ def add_event_to_user(request):
             event = Event.objects.get(pk=event_id)
             
   
-            user.events.add(event)
+            user.registered_events.add(event)
+            user.save()
             
+            # 使用序列化器將用戶對象轉換為 JSON
+            serializer = UserSerializer(user)
+            user_data = serializer.data
+
   
-            return JsonResponse({'message': 'Event added to user successfully', 'status': 'success', }, status=200)
+            return JsonResponse({'message': 'Event added to user successfully', 'status': 'success', "user":user_data }, status=200)
         
         except User.DoesNotExist:
             return JsonResponse({'message': 'User not found', 'status': 'error'}, status=404)
@@ -96,6 +105,7 @@ See all the events of a user
 Param: user email 
 return: 
 '''
+
 def get_user_events(request):
     if request.method == 'Get':
         try:
@@ -144,5 +154,17 @@ def get_user_events(request):
         'status': 'error',
         'message': 'Invalid request method'
     }, status=405)
+
+
+
+@csrf_exempt
+@api_view(['POST'])
+def add_event(request): ## tested
+    serializer = EventSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 

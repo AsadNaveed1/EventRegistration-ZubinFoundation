@@ -23,10 +23,10 @@ RUN sed -i "s/'HOST': 'localhost'/'HOST': '${POSTGRES_HOST}'/g" barebone/setting
 RUN sed -i "s/'PORT': '5432'/'PORT': '${POSTGRES_PORT}'/g" barebone/settings.py
 
 # Expose the port that the Django development server will run on
-EXPOSE 5000
+EXPOSE 5001
 
 # Wait for the database to be ready
 RUN apt-get update && apt-get install -y wait-for-it
 
 # Run the database migrations
-CMD ["bash", "-c", "wait-for-it db:5432 -- python manage.py makemigrations --no-input && python manage.py migrate --no-input && python -u manage.py runserver 0.0.0.0:5000"]
+CMD ["bash", "-c", "wait-for-it db:5432 -- python manage.py makemigrations --no-input && python manage.py migrate --no-input && python -u manage.py runserver 0.0.0.0:5001"]
