@@ -44,7 +44,7 @@ function TrainingPage() {
     console.log('link', link);
     axios.post('user/complete_materials', {
       user_id: userId,
-      completed_materials: [link]
+      completed_materials: link
     });
 
     // Open the link in a new tab
