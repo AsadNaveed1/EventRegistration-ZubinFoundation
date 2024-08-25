@@ -32,7 +32,16 @@ function LoginPage() {
       }
     } else {
       axios
-        .post("http://localhost:5000/user/login", { email, password })
+        .post(
+          "http://localhost:5000/user/login",
+          { email, password },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            withCredentials: true, // Use withCredentials for sending cookies
+          }
+        )
         .then((res) => {
           const user_type = res.data.user_type;
           sessionStorage.setItem("sessionId", res.data.session_id);
