@@ -8,39 +8,48 @@ import { useEventContext } from './context/EventContext';
 import axios from '../axios'
 
 function EventDetails() {
-  const [event, setEvent]=useState('')
-  const { user_id , id } = useParams();
+  const [event, setEvent] = useState(null);
+  const [user, setUser] = useState(null);
+  const [registered, setRegistered] = useState(false);
+  const { userId, id } = useParams();
+
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await axios.get('/events/find_event', id);
-       setEvent(res.data) // Use fetched data or fallback to Sample.json
+        const res = await axios.get(`/events/find_event/${id}`);
+        setEvent(res.data);
       } catch (error) {
         console.error('Error fetching events:', error);
       }
     };
 
     fetchEvents();
-  }, []);
-  console.log(event)
-  const [user, setUser] = useState('');
-  const [registered, setRegistered] = useState(false);
+  }, [id]);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get('/user/find_user', id);
-        setUser(res.data) // Use fetched data or fallback to Sample.json
+        const res = await axios.get(`/user/find_user/${userId}`);
+        setUser(res.data);
       } catch (error) {
-        console.error('Error fetching events:', error);
+        console.error('Error fetching user:', error);
       }
     };
 
     fetchUser();
-  }, []);
-  user.registered_events.find((x)=>x===event)?setRegistered(true):setRegistered(false);
+  }, [userId]);
 
-  console.log(event)
+  useEffect(() => {
+    if (user && event) {
+      // Check if the event ID is in the user's registered events
+      const isRegistered = user.registeredEvents.includes(event.id);
+      setRegistered(isRegistered);
+    }
+  }, [user, event]);
+
+  console.log(event);
+  console.log(user);
+  console.log(registered);
   const [seatsAvailable, setSeatsAvailable] = useState(event.capacity);
   
 

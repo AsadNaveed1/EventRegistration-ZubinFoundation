@@ -22,13 +22,13 @@ function LoginPage() {
           ? "participant"
           : "volunteer";
       if (user_type === "participant") {
-        navigate("/member");
+        navigate("/member/0");
       }
       if (user_type === "admin") {
-        navigate("/admin");
+        navigate("/admin/0");
       }
       if (user_type === "volunteer") {
-        navigate("/volunteer");
+        navigate("/volunteer/0");
       }
     } else {
       axios
@@ -47,13 +47,13 @@ function LoginPage() {
           console.log(res)
           sessionStorage.setItem("sessionId", res.data.session_id);
           if (user_type === "participant") {
-            navigate(`/member${res.data.user_id}`);
+            navigate(`/member/${res.data.user_id}`);
           }
           if (user_type === "admin") {
-            navigate(`/admin${res.data.userid}`);
+            navigate(`/admin/${res.data.userid}`);
           }
           if (user_type === "volunteer") {
-            navigate(`/volunteer${res.data.user_id}`);
+            navigate(`/volunteer/${res.data.user_id}`);
           }
         })
         .catch((err) => {
