@@ -8,21 +8,25 @@ class Event(models.Model):
     image_src = models.URLField()
 
     # event main infro
-    
+    event_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=255)
     date = models.DateField()
     time = models.TimeField()
     location = models.CharField(max_length=255)
-    # eventid = models.CharField(max_length=255, unique=True)
+    capacity = models.IntegerField(default=0)  # Add this line to include the capacity field
     description = models.TextField(null=True, blank=True)
 
     # user trait
     interests = models.CharField(max_length=255)
     required_skills = ArrayField(models.CharField(max_length=100), blank=True, null=True)
     gender = models.CharField(max_length=100, blank=True, null=True)
+    '''["All", "Male", "Female"]'''
+
     language = ArrayField(models.CharField(max_length=100), blank=True, null=True)
-    event_id = models.AutoField(primary_key=True)
-    # registered_users = models.ManyToManyField('user.User', related_name='registered_events', blank=True)
+    learning_materials = ArrayField(models.CharField(max_length=255), blank=True, null=True)
+    
+
+    
 
     def __str__(self):
         return self.eventid
