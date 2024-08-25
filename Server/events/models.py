@@ -6,7 +6,6 @@ from user.models import User
 
 
 class Event(models.Model):
-    
 
     # event main infro
     event_id = models.AutoField(primary_key=True)
@@ -19,7 +18,8 @@ class Event(models.Model):
     description = models.TextField(null=True, blank=True)
     image_src = models.URLField()
     event_type = models.CharField(max_length=30, blank=True, null=True)
-    
+    '''["All", "Volunteer", "Participant"]'''
+
     # user trait
     interests = ArrayField(models.CharField(max_length=100), blank=True, null=True)
     required_skills = ArrayField(models.CharField(max_length=100), blank=True, null=True)

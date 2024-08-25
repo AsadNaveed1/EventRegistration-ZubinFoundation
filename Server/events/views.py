@@ -20,17 +20,6 @@ from reminder.send_message import send_sync_reminder_message
 
 # Create your views here.
 
-### Internal Method ###
-@csrf_exempt
-def find_event_by_id(event_id: str) -> str:
-    try:
-        # Find the Event object that matches the given event name
-        event = Event.objects.get(id=event_id)
-        # Return the ID of the found event as a string
-        return event
-    except Event.DoesNotExist:
-        # If no event is found with the given name, return a message
-        return "Event not found"
 
 ### Request ####
 '''
