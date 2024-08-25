@@ -11,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['user_id', 'username', 'email', 'age', 'gender', 'interests', 'residence', 'user_type', 'admin_code', 'ethnicity']
+        fields = '__all__'
 
 
 class EventSerializer(serializers.ModelSerializer):
@@ -19,7 +19,7 @@ class EventSerializer(serializers.ModelSerializer):
     # registered_users = serializers.SerializerMethodField()
     class Meta:
         model = Event
-        fields = ['event_id', 'title', 'date', 'time', 'location', 'description', 'interests', 'required_skills', 'gender', 'language', 'registered_users']
+        fields = '__all__'
 
     # def get_registered_users(self, obj):
     #     from user.serializer import UserSerializer

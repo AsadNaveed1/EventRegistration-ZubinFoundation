@@ -37,5 +37,5 @@ urlpatterns = [
     
     path("info/", include("general_api.urls")), 
     path("events/", include("events.urls")),
-    path("reminder_wts/", include("reminder_wts.urls")) 
+    # path("reminder_wts/", include("reminder_wts.urls")) 
 ]

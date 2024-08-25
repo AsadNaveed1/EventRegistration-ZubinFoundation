@@ -3,20 +3,30 @@ from django.contrib.postgres.fields import ArrayField
 
 # Create your models here.
 class User(models.Model):
-    admin_code = models.CharField(max_length=100, null=True)
+
+    user_id = models.AutoField(primary_key=True)
+    username = models.CharField(max_length=100)
     age = models.IntegerField(null=True)
-    email = models.EmailField(max_length=100)
+    first_name = models.CharField(max_length=40, null=True)
+    middle_name = models.CharField(max_length=40, null=True)
+    last_name = models.CharField(max_length=40, null=True)
     ethnicity = models.CharField(max_length=100, null=True)
     gender = models.CharField(max_length=100, null=True)
+
+    # Contacts
+    phone_number = models.CharField(max_length=20, null=True, blank=True)
+    email = models.EmailField(max_length=100)
+
+    # Other info
     interests = ArrayField(models.CharField(max_length=100), size=5, blank=True, null=True)
     user_type = models.CharField(max_length=100)
+    '''[Admin, Participant, Volunteer]'''
     password = models.CharField(max_length=100)
     residence = models.CharField(max_length=100, null=True)
-    username = models.CharField(max_length=100)
-    user_id = models.AutoField(primary_key=True)
+    
     registered_events = models.ManyToManyField('events.Event', related_name='registered_users', blank=True)
-    phone_number = models.CharField(max_length=20, null=True, blank=True)  # Add this line
-
+    admin_code = models.CharField(max_length=100, null=True)  # Add this line
+    completed_materials = ArrayField(models.CharField(max_length=100), size=5, blank=True, null=True)
 
     def __str__(self):
         return self.username
