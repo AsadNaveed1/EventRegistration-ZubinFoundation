@@ -1,14 +1,16 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import logo from "../img/logo.png";
-import { FiLogOut } from 'react-icons/fi';
+import { FiLogOut } from "react-icons/fi";
 
 function TopNavbar() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    navigate('/'); 
+    axios.post("http://localhost:5001/user/logout").then(() => {
+      sessionStorage.removeItem("sessionId");
+    });
   };
 
   return (

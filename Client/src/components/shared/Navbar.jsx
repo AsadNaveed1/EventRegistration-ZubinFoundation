@@ -9,14 +9,14 @@ import axios from "axios";
 function Navbar({ routes }) {
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation(); 
+  const location = useLocation();
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
   };
 
   const handleLogout = () => {
-    axios.post("http://localhost:5000/user/log_out").then(() => {
+    axios.post("http://localhost:5001/user/logout").then(() => {
       sessionStorage.removeItem("sessionId");
     });
   };
