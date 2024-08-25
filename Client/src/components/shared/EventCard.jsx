@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 function EventCard({ event }) {
-  // Assuming images are imported and passed correctly as before
+
   const randomImage = event.imageSrc;
 
   return (
@@ -80,7 +80,7 @@ const Wrapper = styled.div`
 
   .icon {
     font-size: 20px;
-    color: #5a67d8;
+    color: #00a9ff;
   }
 
   .details {
@@ -107,7 +107,7 @@ const Wrapper = styled.div`
   }
 
   .details-button {
-    background-color: #5a67d8;
+    background-color: #00a9ff;
     color: #fff;
     border: none;
     border-radius: 4px;

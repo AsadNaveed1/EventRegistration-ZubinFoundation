@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { FaMapMarkerAlt, FaCalendarAlt } from 'react-icons/fa';
 import data from './Sample.json';
 import Navbar from '../shared/Navbar';
-import { useEventContext } from './context/EventContext'; // Ensure the path is correct
+import { useEventContext } from './context/EventContext'; 
 
 function EventDetails() {
   const { id } = useParams();
@@ -12,27 +12,26 @@ function EventDetails() {
   const { registeredEvents, registerEvent, withdrawEvent } = useEventContext();
   const [seatsAvailable, setSeatsAvailable] = useState(Math.floor(Math.random() * 100) + 1);
   
-  // Check if the event is already registered
+
   const isRegistered = registeredEvents.some(e => e.id === event.id);
   const [registered, setRegistered] = useState(isRegistered);
 
   useEffect(() => {
-    // Effect for fetching dynamic data if needed
-    // Optionally update local registration state based on global state
+
     setRegistered(isRegistered);
   }, [id, isRegistered]);
 
   const handleRegister = () => {
     if (seatsAvailable > 0 && !registered) {
       setSeatsAvailable(seatsAvailable - 1);
-      registerEvent(event); // Update global state
+      registerEvent(event); 
       setRegistered(true);
     }
   };
 
   const handleWithdraw = () => {
     if (registered) {
-      withdrawEvent(event.id); // Update global state
+      withdrawEvent(event.id); 
       setSeatsAvailable(seatsAvailable + 1);
       setRegistered(false);
     }

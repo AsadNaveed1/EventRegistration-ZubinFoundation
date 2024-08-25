@@ -1,4 +1,3 @@
-// src/components/AppointmentList.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { List, ListItem, ListItemText, Button, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
@@ -10,14 +9,6 @@ const AppointmentList = () => {
   console.log("cry")
 
 
-//   useEffect(() => {
-//   [{"type": "Consultation", "time": "10:00 AM", "details": "General health consultation"},
-//   {"type": "Dental Checkup", "time": "11:00 AM", "details": "Routine dental examination"},
-//   {"type": "Therapy Session", "time": "1:00 PM", "details": "Mental health therapy session"},
-//   {"type": "Eye Examination", "time": "2:30 PM", "details": "Comprehensive eye exam"},
-//   {"type": "Physical Therapy", "time": "4:00 PM", "details": "Physical therapy for back pain"}
-//   ]
-//   }, []);
 
 const csrfToken = document.cookie.split(';').find(cookie => cookie.trim().startsWith('csrftoken=')).split('=')[1];
 

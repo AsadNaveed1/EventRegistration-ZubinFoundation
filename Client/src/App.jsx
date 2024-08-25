@@ -56,7 +56,7 @@ function App() {
             <Route path="profile" element={<Profile />} />
             <Route path="makeappointment" element={<MakeAppointment />} />
             <Route path="appointmentlist" element={<AppointmentList />} />
-            <Route path="Event/:id" element={<EventDetails />} /> {/* Correctly nested under /member */}
+            <Route path="Event/:id" element={<EventDetails />} /> 
             
           </Route>
           

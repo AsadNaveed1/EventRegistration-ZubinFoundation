@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useEventContext } from './context/EventContext'; // Adjust import based on your actual path
+import { useEventContext } from './context/EventContext'; 
 import Footer from '../shared/Footer';
 
 function MyEvents() {
@@ -59,34 +59,34 @@ const EventsWrapper = styled.div`
   }
 
   .event-card {
-    background: #ffffff; // Brighter white for a cleaner look
+    background: #ffffff; 
     padding: 40px;
     border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1); // Softer shadow
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
     width: 80%;
-    max-width: 900px; // Smaller max width for better layout
-    transition: transform 0.3s ease-in-out; // Smooth transform on hover
+    max-width: 900px; 
+    transition: transform 0.3s ease-in-out; 
   }
 
   .event-card:hover {
-    transform: translateY(-3px); // Slight lift effect on hover
+    transform: translateY(-3px); 
   }
 
   button {
     margin-top: 30px;
-    padding: 12px 24px; // More padding for a better button feel
-    background-color: #0056b3; // Darker blue as the main color
+    padding: 12px 24px; 
+    background-color: #00a9ff; 
     color: white;
-    font-weight: bold; // Bold text on buttons
+    font-weight: bold; 
     border: none;
     border-radius: 5px;
     cursor: pointer;
     margin-right: 10px;
-    transition: background-color 0.2s; // Smooth background color transition
+    transition: background-color 0.2s; 
   }
 
   button:hover {
-    background-color: #003d82; // Even darker on hover
+    background-color: #003d82; 
   }
 `;
 
@@ -100,33 +100,33 @@ const Modal = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; // Ensure it's above all other content
+  z-index: 1000; 
 
   .modal-content {
     background: #fff;
     padding: 30px;
-    border-radius: 15px; // More pronounced rounded corners
+    border-radius: 15px; 
     width: 90%;
     max-width: 500px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.2); // Stronger shadow for more depth
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2); 
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: 15px; // Space out content more
+    gap: 15px; 
   }
 
   .close-button {
     position: absolute;
     top: 10px;
     right: 15px;
-    font-size: 28px; // Larger close button
+    font-size: 28px; 
     cursor: pointer;
     color: #333;
-    transition: color 0.2s; // Transition for hover effect
+    transition: color 0.2s; 
   }
 
   .close-button:hover {
-    color: #000; // Darken color on hover
+    color: #000; 
   }
 `;
 

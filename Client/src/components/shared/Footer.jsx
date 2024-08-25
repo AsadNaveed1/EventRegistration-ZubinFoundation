@@ -38,7 +38,7 @@ const FooterContainer = styled.footer`
   left: 0;
   bottom: 0;
   width: 100%;
- // Optional, to ensure it stays above other elements
+
 `;
 const FooterContent = styled.div`
   display: flex;
