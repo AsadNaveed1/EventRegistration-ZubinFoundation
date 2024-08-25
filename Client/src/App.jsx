@@ -54,8 +54,7 @@ function App() {
             <Route path="myevents" element={<MyEvents />} />
             <Route path="myappointments" element={<MyAppointments />} />
             <Route path="profile" element={<Profile />} />
-            <Route path="makeappointment" element={<MakeAppointment />} />
-            <Route path="appointmentlist" element={<AppointmentList />} />
+            <Route path="makeappointment" element={<AppointmentList />} />
             <Route path="Event/:id" element={<EventDetails />} /> 
             
           </Route>
