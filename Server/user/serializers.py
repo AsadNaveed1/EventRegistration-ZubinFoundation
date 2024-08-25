@@ -18,7 +18,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['user_id', 'username', 'email', 'registered_events', 'age', 'gender', 'interests', 'residence', 'user_type', 'admin_code', 'ethnicity']
+        fields = "__all__"
     # def get_registered_events(self, obj):
     #     from events.serializers import EventSerializer
     #     events = obj.registered_events.all()

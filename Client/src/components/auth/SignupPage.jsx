@@ -32,7 +32,6 @@ function SignupPage() {
     // Call API to create account
     axios
       .post(
-
         "http://localhost:5001/user/sign_up",
         {
           fullName,
