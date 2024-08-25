@@ -19,7 +19,7 @@ import AppointmentList from "./components/member/AppointmentList";
 import EventFullDisplay from "./components/shared/EventFullDisplay";
 import TrainingPage from "./components/volunteer/TrainingPage";
 import MyEventsPage from "./components/volunteer/MyEventsPage";
-import EventSearchPage from "./components/volunteer/EventSearchPage";
+import Landing from './components/volunteer/Landing.jsx'
 import EventDetails from "./components/member/EventDetails"; // Import EventDetails component
 import { EventProvider } from '../src/components/member/context/EventContext.jsx';
 import Footer from "./components/shared/Footer.jsx";
@@ -32,34 +32,29 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/register" element={<SignupPage />} />
-          <Route path="/volunteer" element={<VolunteerPage />}>
+          <Route path="/volunteer/:userId/" element={<VolunteerPage />}>
             <Route path="MyEvents" element={<MyEventsPage />} />
-            <Route
-              path=""
-              element={
-                <div>
-                  <EventSearchPage />
-                  <EventsSection />
-                </div>
-              }
-            />
+            <Route index element={<Landing />} />
+            <Route path="" element={<Landing />} />
             <Route path="Training" element={<TrainingPage />} />
-            <Route path="Event/:id" element={<EventFullDisplay />} />
+            <Route path="Event" element={<EventDetails />} />
           </Route>
 
-          <Route path="/member" element={<MemberPage />}>
+          <Route path="/member/:userId/" element={<MemberPage />}>
             <Route index element={<Home />} />
             <Route path="home" element={<Home />} />
             <Route path="myevents" element={<MyEvents />} />
             <Route path="myappointments" element={<MyAppointments />} />
             <Route path="profile" element={<Profile />} />
+
             <Route path="makeappointment" element={<AppointmentList />} />
-            <Route path="Event/:id" element={<EventDetails />} /> 
+            <Route path="Event" element={<EventDetails />} /> 
+
             
           </Route>
           
 
-          <Route path="/admin" element={<AdminPage />}>
+          <Route path="/admin/:userId/" element={<AdminPage />}>
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="addevent" element={<AddEvent />} />
             <Route path="manageevents" element={<ManageEvents />} />

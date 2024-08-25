@@ -1,31 +1,10 @@
 import React from 'react';
 import { Link,useParams } from 'react-router-dom';
+import axios from '../axios';
 
 function EventFullDisplay() {
-  const { id } = useParams();
-  const eventList = [
-    { id: 1,
-      imageSrc:"../img/Img1.png",
-      title:"Charity Event",
-      date:"April 15, 2023",
-      time:"10:00 AM - 2:00 PM",
-      description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      location:"City Park, New York"},
-      {id: 2,imageSrc:"../img/Img2.png",
-        title:"Fundraising Event",
-        date:"May 10, 2023",
-      description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-        time:"10:00 AM - 2:00 PM",
-        location:"Community Center, Los Angeles"},
-      {id: 3,imageSrc:"../img/Img2.png",
-        title:"Fundraising Event",
-        date:"May 10, 2023",
-      description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-        time:"10:00 AM - 2:00 PM",
-        location:"Community Center, Los Angeles"},
-      ]
-      const selectedEvent = eventList.find(x => x.id === Number(id));
-      console.log(id)
+    const {id} = useParams()
+ const selectedEvent = axios.get('events/find_event',id)
       return (
         <div>
         <Link to='/volunteer' style={{marginTop:30,marginLeft:30}}>

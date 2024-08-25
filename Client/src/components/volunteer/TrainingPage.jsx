@@ -1,53 +1,78 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from '../axios';
 
 function TrainingPage() {
-  const modules = [
-    {
-      id: 1,
-      image:"/assets/Final-Women-and-Girls-2-1.png",
-      title:"how to properly make tea",
-      link:'https://www.youtube.com/watch?v=F898rbUvzV4&pp=ygUQaG93IHRvIG1ha2UgdGVhIA%3D%3D',
-      status:false
-  
-    },
-    {
-      id: 2,
-      image:"/assets/Final-Women-and-Girls-2-1.png",
-      title:"how to properly make tea",
-      link:'https://www.youtube.com/watch?v=F898rbUvzV4&pp=ygUQaG93IHRvIG1ha2UgdGVhIA%3D%3D',
-      status:true
-  
-    },
-    {
-      id: 3,
-      image:"/assets/Opportunities-2.png",
-      title:"how to interview properly",
-      link:'https://www.youtube.com/watch?v=WDOQBPYEaNs&pp=ygUQaG93IHRvIGludGVydmlldw%3D%3D',
-      status:false
-  
-    },
-   ]
+  const [user, setUser] = useState('');
+  const [modules, setModules] = useState([]);
+
+  const { userId } = useParams();
+  console.log(userId);
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const res = await axios.get(`user/find_user/${userId}`);
+        console.log("response", res);
+        setUser(res.data);
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      }
+    };
+
+    fetch();
+  }, [userId]);
+
+  useEffect(() => {
+    if (user.registered_events) {
+      const mod2 = user.registered_events.map(x => ({
+        title: x.title,
+        link: x.learning_materials
+      }));
+
+      let temp = mod2;
+      if (user.completed_materials) {
+        temp = temp.filter(x => !user.completed_materials.includes(x.link));
+      }
+      temp = temp.filter(x => x.link);
+      console.log('temp', temp);
+      setModules(temp);
+    }
+  }, [user]);
+
+  const handleLinkClick = (link) => {
+    console.log('link', link);
+    axios.post('user/complete_materials', {
+      user_id: userId,
+      completed_materials: link
+    });
+
+    // Open the link in a new tab
+    window.open(link, '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <div style={styles.container}>
       <div style={styles.header}>
         <div style={styles.leftHeader}>Training Modules</div>
-        <div style={styles.rightHeader}>Status</div>
       </div>
       {modules.map((module) => (
-        <div key={module.id} style={styles.listItem}>
+        <div key={module.link} style={styles.listItem}>
           <div style={styles.left}>
-            <img src={module.image} alt={module.title} style={styles.image} />
+            <span style={styles.exclamation}>!</span> {/* Exclamation mark instead of image */}
             <div>
               <h3 style={styles.title}>{module.title}</h3>
-              <a href={module.link} target="_blank" rel="noopener noreferrer" style={styles.link}>
+              <a 
+                href={module.link} 
+                onClick={(e) => {
+                  e.preventDefault(); // Prevent the default anchor behavior
+                  handleLinkClick(module.link); // Call your custom function
+                }} 
+                style={styles.link}
+              >
                 Complete the module
               </a>
             </div>
-          </div>
-          <div style={styles.right}>
-            <input type="checkbox" 
-              checked={module.status} 
-              disabled />
           </div>
         </div>
       ))}
@@ -72,39 +97,31 @@ const styles = {
     flex: 1,
     textAlign: 'left',
   },
-  rightHeader: {
-    width: '100px',
-    textAlign: 'right',
-  },
   listItem: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     borderBottom: '1px solid #ccc',
-    padding: '20px 0', // Increased padding for larger item
-    fontSize: '1.3em', // Larger font size
+    padding: '20px 0',
+    fontSize: '1.3em',
   },
   left: {
     display: 'flex',
     alignItems: 'center',
     flex: 1,
   },
-  image: {
-    width: '70px', // Increased image width
-    height: '70px', // Increased image height
+  exclamation: {
+    fontSize: '2em', // Size of the exclamation mark
     marginRight: '15px', // Adjust margin for spacing
+    color: 'red' // You can style it as needed
   },
   title: {
-    margin: 0, // Remove default margin for h3
+    margin: 0,
   },
   link: {
     color: '#007bff',
     textDecoration: 'none',
-    fontSize: '1.1em', // Slightly larger font size for link
-  },
-  right: {
-    width: '100px',
-    textAlign: 'right',
+    fontSize: '1.1em',
   },
 };
 

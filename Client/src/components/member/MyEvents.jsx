@@ -1,10 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import styled from 'styled-components';
-import { useEventContext } from './context/EventContext'; 
 import Footer from '../shared/Footer';
+import axios from '../axios'
+import { useParams } from 'react-router-dom';
 
 function MyEvents() {
-  const { registeredEvents, withdrawEvent } = useEventContext();
+  const [registeredEvents,setRegisteredEvents]=useState([]);
+  const { userId } = useParams();
+  console.log(userId)
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const res = await axios.get(`user/find_user/${userId}`)
+        console.log("response",res)
+
+        setRegisteredEvents(res.data.registered_events)
+      } catch (error) {
+        console.error('Error fetching events:', error);
+        // Fallback to Sample.json on error, if you have it imported
+        // setEventList(data); // Uncomment if you have Sample.json data
+      }
+    };
+
+    fetch();
+  }, [userId]);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
   const handleViewDetails = (event) => {
@@ -13,6 +32,17 @@ function MyEvents() {
 
   const handleCloseModal = () => {
     setSelectedEvent(null);
+  };
+  const withdrawEvent = async (event) => {
+    // if (seatsAvailable > 0 && !registered) {
+      await axios.post('events/unregister',{
+        user_id :userId,
+        event_id:event.event_id
+      })
+      setRegisteredEvents(prevEvents =>
+        prevEvents.filter(x => x.event_id !== event.event_id) // Adjust based on your event structure
+      );
+    // }
   };
 
   return (
@@ -24,7 +54,7 @@ function MyEvents() {
               <h3>{event.title}</h3>
               <p>{event.description}</p>
               <button onClick={() => handleViewDetails(event)}>View Details</button>
-              <button onClick={() => withdrawEvent(event.id)}>Withdraw</button>
+              <button onClick={() => withdrawEvent(event)}>Withdraw</button>
             </div>
           ))}
         </div>
@@ -38,7 +68,7 @@ function MyEvents() {
             <span className="close-button" onClick={handleCloseModal}>&times;</span>
             <h2>{selectedEvent.title}</h2>
             <p>{selectedEvent.description}</p>
-            <p>Date: {new Date(selectedEvent.time).toLocaleString()}</p>
+            <p>Date: {new Date(selectedEvent.start_datetime).toLocaleString()}</p>
             <p>Location: {selectedEvent.location}</p>
           </div>
         </Modal>

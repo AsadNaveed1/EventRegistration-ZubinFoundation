@@ -1,6 +1,7 @@
 import json
 from django.http import HttpResponse, HttpResponseServerError, JsonResponse
 from django.shortcuts import redirect as HttpRedirectResponse
+from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from user.models import User
 from .serializers import UserSerializer
@@ -28,7 +29,7 @@ def login(request):
             return HttpResponseServerError("Error: Incorrect password")
         request.session['user_id'] = user.user_id
         request.session.modified = True
-        return JsonResponse({ "message": "User authenticated", "user_type": user.user_type, "session_id": request.session['user_id'] }, status=200)
+        return JsonResponse({ "message": "User authenticated", "user_type": user.user_type, "session_id": request.session['user_id'], 'user_id' :user.user_id }, status=200)
     else:
         return HttpResponseServerError("Error: Invalid request method")
 
@@ -115,7 +116,7 @@ def get_all_users(request):
 def find_user(request):
     if request.method == 'GET':
         user_id = request.GET.get('user_id')
-        user = User.objects.filter(user_id=user_id)
+        user = User.objects.filter(user_id=int(user_id))
         serializer = UserSerializer(user, many=True)
         if user is None:
             return JsonResponse({'message': 'User not found'}, status=404)
@@ -123,3 +124,127 @@ def find_user(request):
             return JsonResponse(serializer.data, safe=False, status=200)
     else:
         return HttpResponseServerError("Error: Invalid request method")
+    
+@csrf_exempt
+def log_out(request):
+    if request.method == 'POST':
+        request.session.flush()
+        return HttpResponse("Success: User logged out", status=200)
+    else:
+        return HttpResponseServerError("Error: Invalid request method")
+    
+@csrf_exempt
+def user_all_event_url(request, user_id):
+    if request.method == 'GET':
+        try:
+            user = User.objects.get(user_id=user_id)
+            serializer = UserSerializer(user)
+            # Return only the 'registered_events' part of the serialized data
+            return JsonResponse(serializer.data['registered_events'], safe=False, status=200)
+        except User.DoesNotExist:
+            return JsonResponse({'message': 'User not found'}, status=404)
+    else:
+        return HttpResponseServerError("Error: Invalid request method")
+
+@csrf_exempt
+def find_user_url(request, user_id):
+    if request.method == 'GET':
+        try:
+            user = User.objects.get(user_id=user_id)
+            serializer = UserSerializer(user)
+            return JsonResponse(serializer.data, status=200)
+        except User.DoesNotExist:
+            return JsonResponse({'message': 'User not found'}, status=404)
+    else:
+        return HttpResponseServerError("Error: Invalid request method")
+    
+
+@csrf_exempt
+def update_user_info(request):
+    if request.method == 'PUT':
+        try:
+            # 從請求的 JSON 數據中獲取數據
+            data = json.loads(request.body)
+            user_id = data.get('user_id')
+            
+            if not user_id:
+                return JsonResponse({'error': 'user_id is required'}, status=400)
+            
+            # 查找用戶
+            user = get_object_or_404(User, user_id=user_id)
+            
+            # 使用 UserSerializer 進行數據驗證和更新
+            serializer = UserSerializer(user, data=data, partial=True)  # partial=True 允許部分更新
+            
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse(serializer.data, status=200)  # 返回更新後的數據和狀態碼
+            else:
+                return JsonResponse(serializer.errors, status=400)  # 返回錯誤信息和狀態碼
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON format'}, status=400)
+    else:
+        return JsonResponse({'error': 'Invalid HTTP method'}, status=405)  # 返回錯誤信息和狀態碼
+
+
+
+@csrf_exempt
+def complete_materials(request):
+    if request.method == 'POST':
+        try:
+            # Get parameters
+            data = json.loads(request.body)
+            user_id = data.get('user_id')
+            new_materials = data.get('completed_materials', [])
+
+            if not isinstance(new_materials, list):
+                return JsonResponse({
+                    'message': 'completed_materials should be an array of strings',
+                    'status': 'error'
+                }, status=400)
+
+            # Find the user object
+            user = User.objects.get(pk=user_id)
+
+            # Get current completed materials
+            if  user.completed_materials is None:
+                user.completed_materials = list(new_materials)
+                user.save()
+            else:
+                current_materials = set(user.completed_materials)
+
+                # Merge new materials, avoiding duplicates
+                updated_materials = current_materials.union(set(new_materials))
+
+                # Update user with new materials
+                user.completed_materials = list(updated_materials)
+                user.save()
+
+            return JsonResponse({
+                'message': 'Completed materials updated successfully',
+                'status': 'success',
+                'completed_materials': user.completed_materials
+            }, status=200)
+
+        except User.DoesNotExist:
+            return JsonResponse({
+                'message': 'User not found',
+                'status': 'error'
+            }, status=404)
+
+        except json.JSONDecodeError:
+            return JsonResponse({
+                'message': 'Invalid JSON',
+                'status': 'error'
+            }, status=400)
+
+        except Exception as e:
+            return JsonResponse({
+                'message': str(e),
+                'status': 'error'
+            }, status=500)
+
+    return JsonResponse({
+        'message': 'Invalid request method',
+        'status': 'error'
+    }, status=405)

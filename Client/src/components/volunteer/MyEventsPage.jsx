@@ -1,88 +1,183 @@
-import React,{useState}from 'react';
-import EventFullDisplay from '../shared/EventFullDisplay';
+import React, { useState,useEffect } from 'react';
 import styled from 'styled-components';
-
-import MyEventCard from './MyEventCard';
-
-const events = [
-  {imageSrc:"../img/Img2.png",
-    title:"Fundraising Event",
-    date:"May 10, 2023",
-  description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    time:"10:00 AM - 2:00 PM",
-    location:"Community Center, Los Angeles",
-    complete:false},
-  {imageSrc:"../img/Img2.png",
-    title:"Fundraising Event",
-    date:"May 10, 2023",
-  description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    time:"10:00 AM - 2:00 PM",
-    location:"Community Center, Los Angeles",
-    complete:true},
-  // Add more events here
-];
+import Footer from '../shared/Footer';
+import axios from '../axios'
+import { useParams } from 'react-router-dom';
 
 function MyEventsPage() {
-  const [showDetail, setShowDetail] = useState('');
-const handleRegister = (val)=>{
-  setShowDetail('')
-  console.log(val)
-}
+  const [registeredEvents,setRegisteredEvents]=useState([]);
+  const { userId } = useParams();
+  console.log(userId)
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        // Use the correct endpoint and include the event ID in the URL
+        console.log("response")
+        const res = await axios.get(`user/find_user/${userId}`)
+        const registeredEventsWithReady = res.data.registered_events.map(event => {
+          const hasLearningMaterials = event.learning_materials && event.learning_materials.length > 0;
+          const isCompleted = res.data.completed_materials ? res.data.completed_materials.includes(event.learning_materials) : false;
+        
+          return {
+            ...event, // Spread the existing event properties
+            ready: !hasLearningMaterials || isCompleted // Set ready based on the conditions
+          };
+        });
+        setRegisteredEvents(registeredEventsWithReady)
+      } catch (error) {
+        console.error('Error fetching events:', error);
+        // Fallback to Sample.json on error, if you have it imported
+        // setEventList(data); // Uncomment if you have Sample.json data
+      }
+    };
+
+    fetch();
+  }, []);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+
+  const handleViewDetails = (event) => {
+    setSelectedEvent(event);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedEvent(null);
+  };
+
+  const withdrawEvent = async (event) => {
+    // if (seatsAvailable > 0 && !registered) {
+      await axios.post('events/unregister',{
+        user_id :userId,
+        event_id:event.event_id
+      })
+      setRegisteredEvents(prevEvents =>
+        prevEvents.filter(x => x.event_id !== event.event_id) // Adjust based on your event structure
+      );
+    // }
+  };
+
   return (
-    <Wrapper>
-    <div style={{ padding: '20px' }}>
-      {!showDetail && <h1>My Events</h1>}
-        {!showDetail && events.map((event) => (
-          <MyEventCard
-            key={event}
-            event={event}
-            getDetails={() => {
-              setShowDetail(event);
-            }}
-          />
-        ))}
-        {showDetail && (
-      <div className="events-grid">
-
-          <EventFullDisplay
-            event={showDetail}
-            getDetails={setShowDetail}
-            register ={handleRegister}
-          />
-          
+    <EventsWrapper>
+      {registeredEvents.length > 0 ? (
+        <div className="events-list">
+          {registeredEvents.map((event) => (
+            <div key={event.id} className="event-card">
+              <h3>{event.title}</h3>
+              <p>{event.description}</p>
+              <button onClick={() => handleViewDetails(event)}>View Details</button>
+              <button onClick={() => withdrawEvent(event)}>Withdraw</button>
+              {event.ready ? (
+        <span>✔️ Completed</span> // You can replace this with any completed icon
+      ) : (
+        <span style={{marginRight:5}}>
+          <span style={{
+  color: 'red', // You can change the color as needed
+  fontWeight: 'bold',
+}}>!</span> Incomplete Training
+        </span>
+      )}
+            </div>
+          ))}
         </div>
+      ) : (
+        <div>No registered events found.</div>
+      )}
 
-        )}
-    </div>
-    </Wrapper>
+      {selectedEvent && (
+        <Modal>
+          <div className="modal-content">
+            <span className="close-button" onClick={handleCloseModal}>&times;</span>
+            <h2>{selectedEvent.title}</h2>
+            <p>{selectedEvent.description}</p>
+            <p>Date: {new Date(selectedEvent.time).toLocaleString()}</p>
+            <p>Location: {selectedEvent.location}</p>
+          </div>
+        </Modal>
+      )}
+
+    </EventsWrapper>
   );
 }
 
+const EventsWrapper = styled.div`
+  .events-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    align-items: center;
+    
+  }
 
-const Wrapper = styled.div`
-padding: 50px 20px;
-text-align: center;
+  .event-card {
+    background: #ffffff; 
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+    width: 80%;
+    max-width: 900px; 
+    transition: transform 0.3s ease-in-out; 
+  }
 
-.container {
-  max-width: 1200px;
+  .event-card:hover {
+    transform: translateY(-3px); 
+  }
+
+  button {
+    margin-top: 30px;
+    padding: 12px 24px; 
+    background-color: #00a9ff; 
+    color: white;
+    font-weight: bold; 
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: background-color 0.2s; 
+  }
+
+  button:hover {
+    background-color: #003d82; 
+  }
+`;
+
+const Modal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  margin: 0 auto;
-}
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; 
 
-h1 {
-  font-size: 32px; /* Increased font size */
-  color: #333;
-  margin-bottom: 30px;
-}
+  .modal-content {
+    background: #fff;
+    padding: 30px;
+    border-radius: 15px; 
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2); 
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 15px; 
+  }
 
-.events-grid {
-  display: flex; /* Changed to flex */
-  flex-wrap: wrap; /* Allow wrapping */
-  justify-content: center; /* Center the items */
-  align-items: center; /* Center vertically */
-  gap: 20px;
-  margin-top: 200px;
-}
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px; 
+    cursor: pointer;
+    color: #333;
+    transition: color 0.2s; 
+  }
+
+  .close-button:hover {
+    color: #000; 
+  }
 `;
 
 export default MyEventsPage;

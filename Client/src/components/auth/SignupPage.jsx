@@ -32,14 +32,13 @@ function SignupPage() {
     // Call API to create account
     axios
       .post(
-
-        "http://localhost:5001/user/sign_up",
+        "user/signup",
         {
-          fullName,
+          username:fullName,
           email,
           password,
           gender,
-          userType,
+          user_type :userType,
           adminCode,
           ethnicity,
           age,
@@ -54,7 +53,7 @@ function SignupPage() {
         }
       )
       .then((response) => {
-        if (response.status === 200) {
+        if (response.status === 201) {
           // Account created successfully
           navigate("/");
           console.log(response);
