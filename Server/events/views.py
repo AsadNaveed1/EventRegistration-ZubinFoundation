@@ -179,3 +179,35 @@ def add_event(request): ## tested
 
 
 
+@csrf_exempt
+def remove_event_from_user(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            event_id = data.get('event_id')
+            user_id = data.get('user_id')
+
+            # Fetch the user and event
+            user = User.objects.get(pk=user_id)
+            event = Event.objects.get(pk=event_id)
+
+            # Remove the event from the user's registered events
+            user.registered_events.remove(event)
+            user.save()
+
+            # Serialize user data to JSON
+            serializer = UserSerializer(user)
+            user_data = serializer.data
+
+            return JsonResponse({'message': 'Event removed from user successfully', 'status': 'success', 'user': user_data}, status=200)
+
+        except User.DoesNotExist:
+            return JsonResponse({'message': 'User not found', 'status': 'error'}, status=404)
+
+        except Event.DoesNotExist:
+            return JsonResponse({'message': 'Event not found', 'status': 'error'}, status=404)
+
+        except json.JSONDecodeError:
+            return JsonResponse({'message': 'Invalid JSON', 'status': 'error'}, status=400)
+
+    return JsonResponse({'message': 'Invalid request method', 'status': 'error'}, status=405)

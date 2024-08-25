@@ -10,6 +10,7 @@ urlpatterns = [
     path("find_event", views.find_event_by_id),
     # path("create_event", views.add_event),
     path("add_event_to_user", views.add_event_to_user),
+    path("unregister", views.remove_event_from_user),
     path("add_event", views.add_event),
 
 
