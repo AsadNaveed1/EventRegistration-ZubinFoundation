@@ -1,12 +1,41 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import axios from '../axios';
+import data from '../member/sample.json';
 const Footer = () => {
+  const addEvents = async () => {
+    for (const event of data) {
+      const [date, time] = event.time.split('T');
+      try {
+        const response = await axios.post('/events/add_event', {
+          title: event.title,
+          description: event.description,
+          eventType: event.eventType,
+          location: event.location,
+          date:date,
+          interests:event.eventType,
+          time: time,
+          skills: event.skills,
+          ageRange: event.ageRange,
+          gender: event.gender,
+          language: event.language,
+          learningLink: event.learningLink,
+          applicants: event.applicants // Include applicants if needed
+        });
+        console.log(`Event added: ${response.data}`); // Log success response
+      } catch (error) {
+        console.error(`Error adding event: ${event.title}`, error);
+      }
+    }
+  };
+  const handlePress = ()=>{addEvents();
+    
+  }
   return (
     <FooterContainer>
       <FooterContent>
         <About>
-          <h3>MyEvents</h3>
+        <h3 onClick={handlePress}>MyEvents</h3>
           <p>Discover the best events happening around you every day.</p>
         </About>
         <SocialMedia>

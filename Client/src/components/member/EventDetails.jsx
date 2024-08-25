@@ -8,7 +8,8 @@ import { useEventContext } from './context/EventContext';
 
 function EventDetails() {
   const { id } = useParams();
-  const event = data.find((e) => e.id.toString() === id.toString());
+  
+  const event = data.find((e) => e.event_id.toString() === id.toString());
   const { registeredEvents, registerEvent, withdrawEvent } = useEventContext();
   const [seatsAvailable, setSeatsAvailable] = useState(Math.floor(Math.random() * 100) + 1);
   

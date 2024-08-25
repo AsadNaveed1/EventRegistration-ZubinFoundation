@@ -2,14 +2,14 @@
   {
     "title": "Mental Health Workshop",
     "description": "Join us for a workshop on mental health and well-being.",
-    "eventType": "Mental Health",
+    "interests": "Mental Health",
     "location": "TST",
     "time": "2023-09-01T10:00:00",
     "skills": ["communication", "empathy"],
     "ageRange": "18-60",
     "gender": "Any",
     "language": ["english"],
-    "id": "1",
+    "event_id": "1",
     "learningLink": "https://example.com/mental-health-workshop",
     "applicants": [
       {
@@ -37,14 +37,14 @@
   {
     "title": "Women and Girls Empowerment Event",
     "description": "An event to empower women and girls in the community.",
-    "eventType": "Women and Girls",
+    "interests": "Women and Girls",
     "location": "Central",
     "time": "2023-09-15T14:00:00",
     "skills": ["leadership", "mentoring"],
     "ageRange": "18-60",
     "gender": "Female",
     "language": ["english"],
-    "id": "2",
+    "event_id": "2",
     "learningLink": "https://example.com/women-empowerment",
     "applicants": [
       {
@@ -72,14 +72,14 @@
   {
     "title": "Career Development Seminar",
     "description": "A seminar on career development and opportunities.",
-    "eventType": "Careers",
+    "interests": "Careers",
     "location": "Wan Chai",
     "time": "2023-10-01T18:00:00",
     "skills": ["networking", "resume building"],
     "ageRange": "18-60",
     "gender": "Any",
     "language": ["english"],
-    "id": "3",
+    "event_id": "3",
     "learningLink": "https://example.com/career-seminar",
     "applicants": [
       {
@@ -107,14 +107,14 @@
   {
     "title": "Emergency Relief Training",
     "description": "Learn how to respond to emergency situations.",
-    "eventType": "Emergency Relief",
+    "interests": "Emergency Relief",
     "location": "Central",
     "time": "2023-10-15T09:00:00",
     "skills": ["first aid", "crisis management"],
     "ageRange": "18-60",
     "gender": "Any",
     "language": ["english"],
-    "id": "4",
+    "event_id": "4",
     "learningLink": "https://example.com/emergency-relief",
     "applicants": [
       {
@@ -142,14 +142,14 @@
   {
     "title": "Family Support Workshop",
     "description": "Workshop focused on supporting family well-being.",
-    "eventType": "Family",
+    "interests": "Family",
     "location": "Causeway Bay",
     "time": "2023-11-01T13:00:00",
     "skills": ["family counseling", "support systems"],
     "ageRange": "18-60",
     "gender": "Any",
     "language": ["english"],
-    "id": "5",
+    "event_id": "5",
     "learningLink": "https://example.com/family-support",
     "applicants": [
       {
@@ -178,14 +178,14 @@
   {
     "title": "Community Cleanup",
     "description": "Join us in cleaning up the local park.",
-    "eventType": "Environment",
+    "interests": "Environment",
     "location": "Central Park",
     "time": "2024-09-15T10:00:00",
     "skills": ["communication", "teamwork"],
     "ageRange": "18-40",
     "gender": "Any",
     "language": ["english"],
-    "id": "6",
+    "event_id": "6",
     "learningLink": "https://youtube.com/example1",
     "applicants": [
       {
@@ -294,14 +294,14 @@
   {
     "title": "Food Drive",
     "description": "Help collect and distribute food to those in need.",
-    "eventType": "Charity",
+    "interests": "Charity",
     "location": "Community Center",
     "time": "2024-09-20T09:00:00",
     "skills": ["organization"],
     "ageRange": "18-60",
     "gender": "Any",
     "language": ["english", "spanish"],
-    "id": "7",
+    "event_id": "7",
     "learningLink": "https://youtube.com/example2",
     "applicants": [
       {
@@ -381,14 +381,14 @@
 {
   "title": "Art Exhibit",
   "description": "Showcase your artwork.",
-  "eventType": "Arts",
+  "interests": "Arts",
   "location": "Art Gallery",
   "time": "2023-08-15T14:00:00",
   "skills": ["creativity"],
   "ageRange": "18-35",
   "gender": "Any",
   "language": ["english"],
-  "id": "8",
+  "event_id": "8",
   "learningLink": "https://youtube.com/example5",
   "applicants": [
     {
@@ -436,14 +436,14 @@
     {
       "title": "Music Festival",
       "description": "Enjoy live music performances.",
-      "eventType": "Entertainment",
+      "interests": "Entertainment",
       "location": "City Square",
       "time": "2024-10-10T16:00:00",
       "skills": ["enthusiasm"],
       "ageRange": "18-40",
       "gender": "Any",
       "language": ["english"],
-      "id": "9",
+      "event_id": "9",
       "learningLink": "https://youtube.com/example6",
       "applicants": [
         {
@@ -491,14 +491,14 @@
     {
       "title": "Mental Health Workshop",
       "description": "Learn about mental health awareness.",
-      "eventType": "Mental Health",
+      "interests": "Mental Health",
       "location": "Wellness Center",
       "time": "2023-08-20T10:00:00",
       "skills": ["counseling"],
       "ageRange": "18-50",
       "gender": "Any",
       "language": ["english"],
-      "id": "10",
+      "event_id": "10",
       "learningLink": "https://youtube.com/example7",
       "applicants": [
         {
@@ -546,14 +546,14 @@
     {
       "title": "Coding Bootcamp",
       "description": "Intensive coding workshop.",
-      "eventType": "Education",
+      "interests": "Education",
       "location": "Tech Institute",
       "time": "2024-11-01T09:00:00",
       "skills": ["coding"],
       "ageRange": "18-30",
       "gender": "Any",
       "language": ["english"],
-      "id": "11",
+      "event_id": "11",
       "learningLink": "https://youtube.com/example8",
       "applicants": [
         {
@@ -601,14 +601,14 @@
     {
       "title": "Yoga Retreat",
       "description": "Relax and rejuvenate.",
-      "eventType": "Health",
+      "interests": "Health",
       "location": "Wellness Retreat",
       "time": "2023-08-28T07:00:00",
       "skills": ["flexibility"],
       "ageRange": "18-60",
       "gender": "Any",
       "language": ["english"],
-      "id": "12",
+      "event_id": "12",
       "learningLink": "https://youtube.com/example9",
       "applicants": [
         {
@@ -657,14 +657,14 @@
   {
     "title": "Cooking Class",
     "description": "Learn new recipes.",
-    "eventType": "Education",
+    "interests": "Education",
     "location": "Culinary School",
     "time": "2024-10-20T12:00:00",
     "skills": ["cooking"],
     "ageRange": "18-50",
     "gender": "Any",
     "language": ["english"],
-    "id": "13",
+  "event_id": "13",
     "learningLink": "https://youtube.com/example10",
     "applicants": [
       {
@@ -712,14 +712,14 @@
   {
     "title": "Photography Walk",
     "description": "Capture the beauty of nature.",
-    "eventType": "Arts",
+    "interests": "Arts",
     "location": "Nature Reserve",
     "time": "2023-09-05T09:00:00",
     "skills": ["photography"],
     "ageRange": "18-40",
     "gender": "Any",
     "language": ["english"],
-    "id": "14",
+    "event_id": "14",
     "learningLink": "https://youtube.com/example11",
     "applicants": [
       {
@@ -767,14 +767,14 @@
   {
     "title": "Environmental Awareness Seminar",
     "description": "Learn about environmental conservation.",
-    "eventType": "Environment",
+    "interests": "Environment",
     "location": "Conference Center",
     "time": "2024-10-15T10:00:00",
     "skills": ["public speaking"],
     "ageRange": "18-50",
     "gender": "Any",
     "language": ["english"],
-    "id": "15",
+    "event_id": "15",
     "learningLink": "https://youtube.com/example13",
     "applicants": [
       {
@@ -822,14 +822,14 @@
   {
     "title": "Book Club Meeting",
     "description": "Discuss the latest bestsellers.",
-    "eventType": "Education",
+    "interests": "Education",
     "location": "Library",
     "time": "2023-09-20T18:00:00",
     "skills": ["reading"],
     "ageRange": "18-40",
     "gender": "Any",
     "language": ["english"],
-    "id": "16",
+    "event_id": "16",
     "learningLink": "https://youtube.com/example14",
     "applicants": [
       {
@@ -877,14 +877,14 @@
   {
     "title": "Fitness Challenge",
     "description": "Get active and stay healthy.",
-    "eventType": "Health",
+    "interests": "Health",
     "location": "Community Gym",
     "time": "2024-11-05T08:00:00",
     "skills": ["fitness"],
     "ageRange": "18-60",
     "gender": "Any",
     "language": ["english"],
-    "id": "17",
+   "event_id": "17",
     "learningLink": "https://youtube.com/example15",
     "applicants": [
       {
