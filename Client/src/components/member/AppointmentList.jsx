@@ -63,6 +63,7 @@ const AppointmentList = () => {
   // Handle dialog close
   const handleClose = () => {
     setOpen(false);
+    refreshPage();
   };
 
   return (
@@ -105,7 +106,7 @@ const AppointmentList = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose, refreshPage} color="primary">
+          <Button onClick={handleClose} color="primary">
             OK
           </Button>
         </DialogActions>
