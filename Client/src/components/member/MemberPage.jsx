@@ -8,10 +8,10 @@ import styled from 'styled-components';
 // Define the routes for the Navbar
 const memberRoutes = [
 
-  { title: 'Home', link: '/member' },
-  { title: 'My Events', link: '/member/MyEvents' },
-  { title: 'My Appointments', link: '/member/MyAppointments' },
-  { title: 'Make An Appointment', link: '/member/MakeAppointment' },
+  { title: 'Home', link: '' },
+  { title: 'My Events', link: 'MyEvents' },
+  { title: 'My Appointments', link: 'MyAppointments' },
+  { title: 'Make An Appointment', link: 'MakeAppointment' },
 ];
 
 function MemberPage() {
