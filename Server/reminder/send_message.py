@@ -70,6 +70,36 @@ def create_event_register_message(event):
 
     return message_body
     
+def create_event_register_message_sms(event):
+
+    start_date = event.start_datetime.strftime("%Y-%m-%d")
+    start_time = event.start_datetime.strftime("%H:%M")
+    end_date = event.end_datetime.strftime("%Y-%m-%d")
+    end_time = event.end_datetime.strftime("%H:%M")
+
+    message_body = (
+        f"\nGreetings from Zubin Foundation! 🙂👋\n\n"
+        f"Thanks so much for your interest in the {event.title} event! 🌟 "
+        f"We are thrilled to extend an exclusive invitation to you for the event:\n\n"
+        f"🗓 Event: {event.title}\n"
+        f"📍 Location: {event.location}\n\n"
+        f"---\n\n"
+        f"🔔 Event Details:\n"
+        f"📅 Start Date: {start_date}\n"
+        f"🕒 Start Time: {start_time}\n"
+        f"📅 End Date: {end_date}\n"
+        f"🕓 End Time: {end_time}\n\n"
+        f"---\n\n"
+        f"Zubin Foundation\n"
+        f"We are committed to improving the lives of Hong Kong's ethnic minorities. "
+        f"Join us and connect with other members, our volunteers and mentors from different fields 💪🏼✨\n\n"
+        f"We are looking forward to engaging with you there! 🙂🫶\n"
+        f"https://www.zubinfoundation.org"
+
+    )
+
+    return message_body
+    
 
 def create_reminder_message(event):
 
@@ -81,7 +111,7 @@ def create_reminder_message(event):
     message_body = (
         f"Reminder: 🙂👋\n"
         f"The event {event.title} is starting at {start_date} {start_time}\n\n."
-        f" Event: {event.title}\n"
+        f"🗓 Event: {event.title}\n"
         f"📍 Location: {event.location}\n\n"
         f"---\n\n"
         f"🔔 Event Details:\n"
