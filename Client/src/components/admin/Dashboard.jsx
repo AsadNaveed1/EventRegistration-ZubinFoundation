@@ -39,7 +39,6 @@ function Dashboard() {
 
   return (
     <Wrapper>
-      <h1>Dashboard</h1>
       <div className="content">
         <div className="card-container">
           <TotalUpcomingEvents totalEvents={totalEvents} />
