@@ -14,7 +14,7 @@ function AddEventForm() {
     ageRange: '',
     gender: '',
     language: [],
-    learningLinks: [],
+    learning_materials: [],
     image: null,
   });
 
@@ -90,25 +90,25 @@ function AddEventForm() {
   };
 
   const handleLearningLinkChange = (index, value) => {
-    const newLinks = [...formData.learningLinks];
+    const newLinks = [...formData.learning_materials];
     newLinks[index] = value;
     setFormData({
       ...formData,
-      learningLinks: newLinks
+      learning_materials: newLinks
     });
   };
 
   const addLearningLink = () => {
     setFormData({
       ...formData,
-      learningLinks: [...formData.learningLinks, '']
+      learning_materials: [...formData.learning_materials, '']
     });
   };
 
   const removeLearningLink = (index) => {
     setFormData({
       ...formData,
-      learningLinks: formData.learningLinks.filter((_, i) => i !== index)
+      learning_materials: formData.learning_materials.filter((_, i) => i !== index)
     });
   };
 
@@ -120,15 +120,17 @@ function AddEventForm() {
 // }
 // const token  = await axios.post ( 'zubin_auth/user/register/',userDetails)
 // console.log (token)
-const [date, time] = formData.time.split('T'); // Assuming time is in the format 'YYYY-MM-DDTHH:mm'
 
 const newEvent = {
   ...formData,
-  date, // Send date as a separate field
-  time, // Send time as a separate field
+  learning_materials:formData.learning_materials,
+  start_datetime:formData.time, // Send date as a separate field
+  end_datetime:formData.time, // Send date as a separate field
   skills: formData.skills.map(skill => skill.value),
   language: formData.language.map(lang => lang.value),
-  image: formData.image ? formData.image.name : ''
+  image: formData.image ? formData.image.name : '',
+  capacity: 30, 
+  image_src: 'https://example.com/women-empowerment'
 };
    axios.post('/events/add_event',newEvent).then(
       async()=>{
@@ -151,7 +153,7 @@ const newEvent = {
     //   ageRange: '',
     //   gender: '',
     //   language: [],
-    //   learningLinks: [],
+    //   learning_materials: [],
     //   image: null
     // });
   };
@@ -274,7 +276,7 @@ const newEvent = {
         </FormGroup>
         <FormGroup style={{ marginTop: '20px' }}>
           <Label>Required Learning (YouTube Link) <RequiredIndicator /></Label>
-          {formData.learningLinks.map((link, index) => (
+          {formData.learning_materials.map((link, index) => (
             <LearningLinkWrapper key={index}>
               <Input
                 type="url"
