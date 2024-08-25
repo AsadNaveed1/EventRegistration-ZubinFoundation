@@ -13,7 +13,7 @@ const memberRoutes = [
   { title: 'My Events', link: '/member/MyEvents' },
   { title: 'My Appointments', link: '/member/MyAppointments' },
   { title: 'Make An Appointment', link: '/member/MakeAppointment' },
-  { title: 'Profile', link: '/member/Profile' },
+
 ];
 
 function MemberPage() {
