@@ -1,7 +1,9 @@
 import React,{useState} from 'react';
 import ReminderSettings from './ReminderSettings';
+import { Link } from 'react-router-dom';
 
-function MyEventCard({ event,getDetails }) {
+
+function MyEventCard({ event }) {
   const [showSettings, setShowSettings]=useState(false)
   const handleSettings = ()=>{
     setShowSettings(false)
@@ -29,7 +31,8 @@ function MyEventCard({ event,getDetails }) {
         <p style={styles.description}>{event.description}</p>
         </div>
         <div style={{textAlign:'left'}}> 
-        <button style={styles.readMore} onClick={getDetails}>Read More</button>
+        <Link to={`/volunteer/Event/${event.id}`}>
+        <button style={styles.readMore} >Read More</button></Link>
         </div>
         <div style={styles.bottomRow}>
           <button style={styles.cancelButton}>Cancel</button>

@@ -5,20 +5,25 @@ import styled from 'styled-components';
 import MyEventCard from './MyEventCard';
 
 const events = [
-  {imageSrc:"../img/Img2.png",
-    title:"Fundraising Event",
-    date:"May 10, 2023",
-  description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  { id: 1,
+    imageSrc:"../img/Img1.png",
+    title:"Charity Event",
+    date:"April 15, 2023",
     time:"10:00 AM - 2:00 PM",
-    location:"Community Center, Los Angeles",
-    complete:false},
-  {imageSrc:"../img/Img2.png",
-    title:"Fundraising Event",
-    date:"May 10, 2023",
-  description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    time:"10:00 AM - 2:00 PM",
-    location:"Community Center, Los Angeles",
-    complete:true},
+    description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    location:"City Park, New York"},
+    {id: 2,imageSrc:"../img/Img2.png",
+      title:"Fundraising Event",
+      date:"May 10, 2023",
+    description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      time:"10:00 AM - 2:00 PM",
+      location:"Community Center, Los Angeles"},
+    {id: 3,imageSrc:"../img/Img2.png",
+      title:"Fundraising Event",
+      date:"May 10, 2023",
+    description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      time:"10:00 AM - 2:00 PM",
+      location:"Community Center, Los Angeles"},
   // Add more events here
 ];
 

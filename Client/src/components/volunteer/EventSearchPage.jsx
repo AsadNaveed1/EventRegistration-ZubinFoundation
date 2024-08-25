@@ -7,7 +7,7 @@ function EventSearchPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [eventType, setEventType] = useState('');
   const [gender, setGender] = useState('');
-
+   
   const handleSearch = () => {
 
     console.log('Search Query:', searchQuery);

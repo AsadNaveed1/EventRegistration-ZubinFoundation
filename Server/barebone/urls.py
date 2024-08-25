@@ -27,6 +27,7 @@ urlpatterns = [
     path('volunteer/', include("volunteer.urls")),
     path('zubin_admin/', include("zubin_admin.urls")),
     path('community_member/', include("community_member.urls")),
+    path('events/', include("events.urls")),
 
     # For JWT
     path("zubin_auth/user/register/", CreateUserView.as_view(), name="register"),

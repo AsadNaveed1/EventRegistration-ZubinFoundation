@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Select from 'react-select';
-
+import axios from '../axios';
 function AddEventForm() {
   const [formData, setFormData] = useState({
     title: '',
@@ -9,7 +9,7 @@ function AddEventForm() {
     interests: '',
     location: '',
     time: '',
-    skills: [],
+    required_skills: [],
     ageRange: '',
     gender: '',
     language: [],
@@ -115,19 +115,22 @@ function AddEventForm() {
     e.preventDefault();
 
     // Simulate updating sample.json by saving to localStorage
-    const existingEvents = JSON.parse(localStorage.getItem('events')) || [];
     const newEvent = {
       ...formData,
       skills: formData.skills.map(skill => skill.value),
       language: formData.language.map(lang => lang.value),
       image: formData.image ? formData.image.name : ''  
     };
-    existingEvents.push(newEvent);
-    localStorage.setItem('events', JSON.stringify(existingEvents));
-
-  
-    saveToSampleJson(existingEvents);
-
+    axios.post('http://localhost:5000/events/add_event', newEvent)
+    .then(async () => {
+      // Handle success, e.g., update existingEvents if needed
+      const res = await axios.get('http://localhost:5000/events/all_events') // Assuming the response contains the added event
+      console.log(res)
+    })
+    .catch(error => {
+      // Handle error
+      console.error('There was an error!', error);
+    });
     alert('Event added successfully!');
     setFormData({
       title: '',
@@ -135,7 +138,7 @@ function AddEventForm() {
       interests: '',
       location: '',
       time: '',
-      skills: [],
+      required_skills: [],
       ageRange: '',
       gender: '',
       language: [],
@@ -144,21 +147,6 @@ function AddEventForm() {
     });
   };
 
-  // Function to save events to sample.json
-  const saveToSampleJson = async (events) => {
-    const response = await fetch('sample.json', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(events)
-    });
-    if (response.ok) {
-      console.log('Events saved to sample.json');
-    } else {
-      console.error('Failed to save events to sample.json');
-    }
-  };
 
   return (
     <Wrapper>
