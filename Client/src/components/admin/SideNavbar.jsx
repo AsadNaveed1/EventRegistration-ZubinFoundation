@@ -11,25 +11,25 @@ function SideNavbar() {
       </div>
       <ul>
         <li>
-          <NavLink to="/admin/dashboard" activeClassName="active">
+          <NavLink to="dashboard" activeClassName="active">
             <FaHome className="icon" />
             Dashboard
           </NavLink>
         </li>
         <li>
-          <NavLink to="/admin/addevent" activeClassName="active">
+          <NavLink to="addevent" activeClassName="active">
             <FaPlus className="icon" />
             Add Event
           </NavLink>
         </li>
         <li>
-          <NavLink to="/admin/manageevents" activeClassName="active">
+          <NavLink to="manageevents" activeClassName="active">
             <FaList className="icon" />
             Manage Events
           </NavLink>
         </li>
         <li>
-          <NavLink to="/admin/applications" activeClassName="active">
+          <NavLink to="applications" activeClassName="active">
             <FaEnvelopeOpenText className="icon" />
             Applications
           </NavLink>

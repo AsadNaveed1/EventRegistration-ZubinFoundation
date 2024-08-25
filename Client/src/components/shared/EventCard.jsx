@@ -16,11 +16,11 @@ function EventCard({ event }) {
         <div className="details">
           <div className="detail-item">
             <span>Date:</span>
-            <span>{event.date}</span>
+            <span>{event.date.toString()}</span>
           </div>
           <div className="detail-item">
             <span>Time:</span>
-            <span>{event.time}</span>
+            <span>{event.time.toString()}</span>
           </div>
           <div className="detail-item">
             <span>Location:</span>
