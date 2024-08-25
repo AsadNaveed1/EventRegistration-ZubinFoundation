@@ -13,7 +13,7 @@ function Navbar({ userTypeLinks, nav }) {
     const toggleActiveClass = () => {
       setIsActive(!isActive);
     };
-    //clean up function to remove the active class
+
     const removeActive = () => {
       setIsActive(false)
     }

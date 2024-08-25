@@ -67,9 +67,9 @@ const styles = {
     },
     content: {
         display: 'flex',
-        flexDirection: 'row', // Maintain two-column layout
+        flexDirection: 'row', 
         width: '100%',
-        maxWidth: '1200px', // Optional: limit max width
+        maxWidth: '1200px', 
     },
     columnLeft: {
         flex: '0 0 30%',

@@ -9,7 +9,7 @@ import axios from "axios";
 function Navbar({ routes }) {
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation(); // To get the current route
+  const location = useLocation(); 
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
