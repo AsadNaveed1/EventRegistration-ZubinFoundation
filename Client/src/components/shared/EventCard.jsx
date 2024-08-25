@@ -28,7 +28,7 @@ function EventCard({ event }) {
           </div>
           <div className="detail-item">
             <span>Event Type:</span>
-            <span>{event.eventType}</span>
+            <span>{event.interests}</span>
           </div>
         </div>
         <div className="button-container">

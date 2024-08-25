@@ -50,11 +50,9 @@ SESSION_COOKIE_AGE = 1800 # 30 minutes in seconds
 
 # Application definition
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ),
+    "DEFAULT_AUTHENTICATION_CLASSES": [],  # Remove JWT Authentication
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
+        "rest_framework.permissions.AllowAny",  # Allow any request
     ],
 }
 
@@ -66,14 +64,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'rest_framework_simplejwt',
+    # 'rest_framework_simplejwt',  # Optional: remove if you don't need it
     'user',
     'zubin_auth',
     'zubin_admin',
     'volunteer',
     'community_member',
     'general_api',
-    ## For CORS 
     'events',
     'corsheaders',
 ]

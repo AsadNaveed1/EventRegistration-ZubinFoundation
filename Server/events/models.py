@@ -17,7 +17,7 @@ class Event(models.Model):
     description = models.TextField(null=True, blank=True)
 
     # user trait
-    interests = ArrayField(models.CharField(max_length=100), blank=True, null=True)
+    interests = models.CharField(max_length=255)
     required_skills = ArrayField(models.CharField(max_length=100), blank=True, null=True)
     gender = models.CharField(max_length=100, blank=True, null=True)
     language = ArrayField(models.CharField(max_length=100), blank=True, null=True)
