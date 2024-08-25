@@ -157,7 +157,7 @@ def get_user_events(request):
 
 
 
-
+@csrf_exempt
 @api_view(['POST'])
 def add_event(request): ## tested
     serializer = EventSerializer(data=request.data)

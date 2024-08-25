@@ -52,8 +52,12 @@ SESSION_SAVE_EVERY_REQUEST = True
 
 # Application definition
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": [],
-    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"],
+
+    "DEFAULT_AUTHENTICATION_CLASSES": [],  # Remove JWT Authentication
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.AllowAny",  # Allow any request
+    ],
+
 }
 
 INSTALLED_APPS = [
@@ -64,14 +68,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'rest_framework_simplejwt',
+    # 'rest_framework_simplejwt',  # Optional: remove if you don't need it
     'user',
     'zubin_auth',
     'zubin_admin',
     'volunteer',
     'community_member',
     'general_api',
-    ## For CORS 
     'events',
     'corsheaders',
     'appointments',
