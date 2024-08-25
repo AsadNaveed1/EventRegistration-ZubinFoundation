@@ -6,6 +6,7 @@ import { FaUserCircle, FaUser } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import chatbot_logo from '../member/chatbot.svg';
 
+
 function Navbar({ routes }) {
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();

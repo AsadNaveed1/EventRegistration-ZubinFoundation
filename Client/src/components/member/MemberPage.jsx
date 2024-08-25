@@ -3,8 +3,6 @@ import Navbar from '../shared/Navbar.jsx';
 import { Outlet } from 'react-router-dom';
 import Footer from '../shared/Footer.jsx';
 import styled from 'styled-components';
-import {Button} from '@mui/material'
-import {Link} from 'react-router-dom'
 
 
 // Define the routes for the Navbar
@@ -13,11 +11,8 @@ const memberRoutes = [
   { title: 'My Events', link: '/member/MyEvents' },
   { title: 'My Appointments', link: '/member/MyAppointments' },
   { title: 'Make An Appointment', link: '/member/MakeAppointment' },
-];
 
-const StyledButton = styled(Button)`
-  margin-left: 10px;
-`;
+];
 
 function MemberPage() {
   return (
@@ -40,6 +35,3 @@ const PageContainer = styled.div`
   flex-direction: column;
   min-height: 90vh;
 `;
-
-
-
