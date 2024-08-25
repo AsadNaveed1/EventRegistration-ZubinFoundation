@@ -11,11 +11,10 @@ function MyEvents() {
   useEffect(() => {
     const fetch = async () => {
       try {
-        // Use the correct endpoint and include the event ID in the URL
-        console.log("response")
         const res = await axios.get(`user/find_user/${userId}`)
-        
-        setRegisteredEvents(res.data)
+        console.log("response",res)
+
+        setRegisteredEvents(res.data.registered_events)
       } catch (error) {
         console.error('Error fetching events:', error);
         // Fallback to Sample.json on error, if you have it imported
@@ -69,7 +68,7 @@ function MyEvents() {
             <span className="close-button" onClick={handleCloseModal}>&times;</span>
             <h2>{selectedEvent.title}</h2>
             <p>{selectedEvent.description}</p>
-            <p>Date: {new Date(selectedEvent.time).toLocaleString()}</p>
+            <p>Date: {new Date(selectedEvent.start_datetime).toLocaleString()}</p>
             <p>Location: {selectedEvent.location}</p>
           </div>
         </Modal>
