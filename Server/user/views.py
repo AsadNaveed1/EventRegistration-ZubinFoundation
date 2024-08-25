@@ -1,5 +1,6 @@
 import json
 from django.http import HttpResponse, HttpResponseServerError, JsonResponse
+from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from user.models import User
 from .serializers import UserSerializer
@@ -153,3 +154,31 @@ def find_user_url(request, user_id):
             return JsonResponse({'message': 'User not found'}, status=404)
     else:
         return HttpResponseServerError("Error: Invalid request method")
+    
+
+@csrf_exempt
+def update_user_info(request):
+    if request.method == 'PUT':
+        try:
+            # 從請求的 JSON 數據中獲取數據
+            data = json.loads(request.body)
+            user_id = data.get('user_id')
+            
+            if not user_id:
+                return JsonResponse({'error': 'user_id is required'}, status=400)
+            
+            # 查找用戶
+            user = get_object_or_404(User, user_id=user_id)
+            
+            # 使用 UserSerializer 進行數據驗證和更新
+            serializer = UserSerializer(user, data=data, partial=True)  # partial=True 允許部分更新
+            
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse(serializer.data, status=200)  # 返回更新後的數據和狀態碼
+            else:
+                return JsonResponse(serializer.errors, status=400)  # 返回錯誤信息和狀態碼
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON format'}, status=400)
+    else:
+        return JsonResponse({'error': 'Invalid HTTP method'}, status=405)  # 返回錯誤信息和狀態碼

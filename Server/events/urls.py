@@ -11,6 +11,7 @@ urlpatterns = [
     # path("create_event", views.add_event),
     path("add_event_to_user", views.add_event_to_user),
     path("add_event", views.add_event),
+    path("user_all_events",views.get_user_events)
 
 
 ]

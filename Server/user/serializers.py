@@ -8,7 +8,7 @@ class EventSerializer(serializers.ModelSerializer):
     # registered_users = serializers.SerializerMethodField()
     class Meta:
         model = Event
-        fields = ['event_id', 'title', 'date', 'time', 'location', 'description', 'interests', 'required_skills', 'gender', 'language']
+        fields = "__all__"
 
         
 class UserSerializer(serializers.ModelSerializer):
