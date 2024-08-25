@@ -24,6 +24,9 @@ function Home() {
     setEventType(newFilters.eventType || ''); 
   };
 
+  const handleClick = () => {
+    window.open("http://localhost:5001/api/chatbot", '_blank');
+  };
 
   return (
   
@@ -31,6 +34,7 @@ function Home() {
     <Wrapper>
       <HeroSection>
         <div className="container">
+        
           <h1>
             Signup for <span>Events</span>
           </h1>
@@ -105,7 +109,7 @@ const HeroSection = styled.div`
     }
 
     button {
-      padding: 12px 20px;
+      padding: 13px 20px;
       background-color: #00a9ff;
       color: #fff;
       border: none;

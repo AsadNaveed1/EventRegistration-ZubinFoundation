@@ -84,7 +84,7 @@ const FilterWrapper = styled.div`
   .filter-group {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 0px;
     flex: 1;
     min-width: 150px;
 

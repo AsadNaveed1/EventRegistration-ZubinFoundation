@@ -1,11 +1,9 @@
 import React from 'react';
 import Navbar from '../shared/Navbar.jsx';
 import { Outlet } from 'react-router-dom';
-import Home from './Home.jsx'
 import Footer from '../shared/Footer.jsx';
-import EventSection from './EventSection.jsx';
 import styled from 'styled-components';
-import ChatBot from '../../../../ChatBot/ChatBot.jsx';
+
 
 // Define the routes for the Navbar
 const memberRoutes = [
@@ -22,7 +20,6 @@ function MemberPage() {
     <PageContainer>
       <Navbar routes={memberRoutes} />
       <Outlet/>
-      <ChatBot/>
     </PageContainer>
       <Footer/>
       </>

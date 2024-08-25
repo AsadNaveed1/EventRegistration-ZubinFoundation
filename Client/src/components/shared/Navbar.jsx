@@ -4,6 +4,8 @@ import styled from "styled-components";
 import logo from "../img/logo.png";
 import { FaUserCircle, FaUser } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
+import chatbot_logo from '../member/chatbot.svg';
+
 
 function Navbar({ routes }) {
   const [showPopup, setShowPopup] = useState(false);
@@ -12,6 +14,10 @@ function Navbar({ routes }) {
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
+  };
+
+  const handleClick = () => {
+    window.open("http://localhost:5001/api/chatbot", '_blank');
   };
 
   const handleLogout = () => {
@@ -48,7 +54,11 @@ function Navbar({ routes }) {
           </li>
         ))}
         <li>
-          <FaUserCircle className="user-icon" onClick={togglePopup} />
+        <img src={chatbot_logo} width={45} height={45} alt="" onClick={handleClick}  />
+        </li>
+        
+        <li>
+          <FaUserCircle className="user-icon" fill="#00a9ff" onClick={togglePopup} />
           {showPopup && (
             <Popup ref={popupRef}>
               <div className="user-info">
@@ -111,7 +121,7 @@ const Wrapper = styled.nav`
   }
 
   .user-icon {
-    font-size: 28px;
+    font-size: 40px;
     color: #333;
     cursor: pointer;
   }
