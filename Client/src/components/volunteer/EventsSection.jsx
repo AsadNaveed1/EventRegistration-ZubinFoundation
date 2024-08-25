@@ -11,9 +11,10 @@ function EventsSection() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.get('/events/all_events'); // Adjust the URL as needed
-        console.log(response)
-        if (response.data){setEvents(response.data)}; // Assuming the response data is an array of events
+        const response = await axios.get('/events/all_events');
+        console.log(response.data); // Check the full response
+        // Adjust this line based on your actual response structure
+        setEvents(response.data.info || response.data); // Use info if it exists, otherwise use data directly
       } catch (error) {
         console.error('Error fetching events:', error);
       }
@@ -31,13 +32,17 @@ function EventsSection() {
       <div className="container">
         <h1>Upcoming Events</h1>
         <div className="events-grid">
-          {events.length>0 && events.map((event) => (
-            <EventCard
-              key={event.id}
-              event={event}
-              onRegister={handleRegister} // Pass the handleRegister function if needed
-            />
-          ))}
+          {events.length > 0 ? (
+            events.map((event) => (
+              <EventCard
+                key={event.event_id}
+                event={event}
+                onRegister={handleRegister} // Pass the handleRegister function if needed
+              />
+            ))
+          ) : (
+            <p>No events available.</p> // Display a message if no events are found
+          )}
         </div>
       </div>
     </Wrapper>

@@ -120,12 +120,16 @@ function AddEventForm() {
 // }
 // const token  = await axios.post ( 'zubin_auth/user/register/',userDetails)
 // console.log (token)
-    const newEvent = {
-      ...formData,
-      skills: formData.skills.map(skill => skill.value),
-      language: formData.language.map(lang => lang.value),
-      image: formData.image ? formData.image.name : ''  
-    };
+const [date, time] = formData.time.split('T'); // Assuming time is in the format 'YYYY-MM-DDTHH:mm'
+
+const newEvent = {
+  ...formData,
+  date, // Send date as a separate field
+  time, // Send time as a separate field
+  skills: formData.skills.map(skill => skill.value),
+  language: formData.language.map(lang => lang.value),
+  image: formData.image ? formData.image.name : ''
+};
    axios.post('/events/add_event',newEvent).then(
       async()=>{
         const response  = await axios.get('/events/all_events')
@@ -137,19 +141,19 @@ function AddEventForm() {
   
 
     alert('Event added successfully!');
-    setFormData({
-      title: '',
-      description: '',
-      interests: [],
-      location: '',
-      time: '',
-      skills: [],
-      ageRange: '',
-      gender: '',
-      language: [],
-      learningLinks: [],
-      image: null
-    });
+    // setFormData({
+    //   title: '',
+    //   description: '',
+    //   interests: [],
+    //   location: '',
+    //   time: '',
+    //   skills: [],
+    //   ageRange: '',
+    //   gender: '',
+    //   language: [],
+    //   learningLinks: [],
+    //   image: null
+    // });
   };
 
 
