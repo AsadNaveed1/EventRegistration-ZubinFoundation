@@ -33,7 +33,7 @@ function LoginPage() {
     } else {
       axios
         .post(
-          "user/login",
+          "http://localhost:5001/user/login",
           { email, password },
           {
             headers: {
