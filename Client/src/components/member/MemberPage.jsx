@@ -5,7 +5,7 @@ import Home from './Home.jsx'
 import Footer from '../shared/Footer.jsx';
 import EventSection from './EventSection.jsx';
 import styled from 'styled-components';
-
+import ChatBot from '../../../../ChatBot/ChatBot.jsx';
 
 // Define the routes for the Navbar
 const memberRoutes = [
@@ -13,7 +13,7 @@ const memberRoutes = [
   { title: 'My Events', link: '/member/MyEvents' },
   { title: 'My Appointments', link: '/member/MyAppointments' },
   { title: 'Make An Appointment', link: '/member/MakeAppointment' },
-  { title: 'Profile', link: '/member/Profile' },
+
 ];
 
 function MemberPage() {
@@ -22,6 +22,7 @@ function MemberPage() {
     <PageContainer>
       <Navbar routes={memberRoutes} />
       <Outlet/>
+      <ChatBot/>
     </PageContainer>
       <Footer/>
       </>
@@ -37,6 +38,3 @@ const PageContainer = styled.div`
   flex-direction: column;
   min-height: 90vh;
 `;
-
-
-

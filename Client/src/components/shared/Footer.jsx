@@ -6,7 +6,7 @@ const Footer = () => {
     <FooterContainer>
       <FooterContent>
         <About>
-          <h3>MyEvents</h3>
+          <h3>Event Registration</h3>
           <p>Discover the best events happening around you every day.</p>
         </About>
         <SocialMedia>
