@@ -1,10 +1,10 @@
 import React from 'react';
 import Navbar from '../shared/Navbar.jsx';
 import { Outlet } from 'react-router-dom';
-import Home from './Home.jsx'
 import Footer from '../shared/Footer.jsx';
-import EventSection from './EventSection.jsx';
 import styled from 'styled-components';
+import {Button} from '@mui/material'
+import {Link} from 'react-router-dom'
 
 
 // Define the routes for the Navbar
@@ -13,8 +13,11 @@ const memberRoutes = [
   { title: 'My Events', link: '/member/MyEvents' },
   { title: 'My Appointments', link: '/member/MyAppointments' },
   { title: 'Make An Appointment', link: '/member/MakeAppointment' },
-  { title: 'Profile', link: '/member/Profile' },
 ];
+
+const StyledButton = styled(Button)`
+  margin-left: 10px;
+`;
 
 function MemberPage() {
   return (

@@ -1,25 +1,44 @@
-import React, { useState } from "react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../img/logo.png";
-import { FaUserCircle } from "react-icons/fa";
+import { FaUserCircle, FaUser } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
-import axios from "axios";
+import chatbot_logo from '../member/chatbot.svg';
 
 function Navbar({ routes }) {
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
+  const popupRef = useRef();
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
   };
 
-  const handleLogout = () => {
-    axios.post("http://localhost:5001/user/logout").then(() => {
-      sessionStorage.removeItem("sessionId");
-    });
+  const handleClick = () => {
+    window.open("http://localhost:5001/api/chatbot", '_blank');
   };
+
+  const handleLogout = () => {
+    navigate("/");
+  };
+
+  const handleProfile = () => {
+    navigate("profile");
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (popupRef.current && !popupRef.current.contains(event.target)) {
+        setShowPopup(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <Wrapper>
@@ -34,12 +53,19 @@ function Navbar({ routes }) {
           </li>
         ))}
         <li>
-          <FaUserCircle className="user-icon" onClick={togglePopup} />
+        <img src={chatbot_logo} width={45} height={45} alt="" onClick={handleClick}  />
+        </li>
+        
+        <li>
+          <FaUserCircle className="user-icon" fill="#00a9ff" onClick={togglePopup} />
           {showPopup && (
-            <Popup>
+            <Popup ref={popupRef}>
               <div className="user-info">
-                <span className="name">Name</span>
+                <span className="name">User 1</span>
               </div>
+              <button className="profile-button" onClick={handleProfile}>
+                <FaUser /> Profile
+              </button>
               <button className="logout-button" onClick={handleLogout}>
                 <FiLogOut /> Logout
               </button>
@@ -94,11 +120,12 @@ const Wrapper = styled.nav`
   }
 
   .user-icon {
-    font-size: 28px;
+    font-size: 40px;
     color: #333;
     cursor: pointer;
   }
 `;
+
 
 const Popup = styled.div`
   position: absolute;
@@ -121,7 +148,7 @@ const Popup = styled.div`
     display: block;
   }
 
-  .logout-button {
+  .profile-button, .logout-button {
     background: none;
     border: none;
     cursor: pointer;

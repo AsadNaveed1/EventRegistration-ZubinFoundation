@@ -14,7 +14,6 @@ import MyEvents from "./components/member/MyEvents";
 import MyAppointments from "./components/member/MyAppointments";
 import Profile from "./components/member/Profile";
 import "./App.css";
-import MakeAppointment from "./components/member/MakeAppointment";
 import EventsSection from "./components/volunteer/EventsSection";
 import AppointmentList from "./components/member/AppointmentList";
 import EventFullDisplay from "./components/shared/EventFullDisplay";

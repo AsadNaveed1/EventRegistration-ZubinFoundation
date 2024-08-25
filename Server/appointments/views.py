@@ -9,6 +9,7 @@ from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import TemplateHTMLRenderer, JSONRenderer
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render
 
 class AppointmentListCreate(generics.ListCreateAPIView):
     queryset = Appointment.objects.all()
@@ -67,3 +68,7 @@ def unbook_appointment(request, pk):
             return Response(status=status.HTTP_200_OK)
             
         return Response({'error': 'Appointment is not booked'}, status=status.HTTP_200_OK)
+
+@api_view(('GET',))
+def get_chatbot(request):
+    return render(request, 'appointments/test.html')
