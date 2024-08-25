@@ -24,5 +24,6 @@ urlpatterns = [
     path("find_user", views.find_user),
     path("find_user/<int:user_id>", views.find_user_url),
     path("user_all_event/<int:user_id>", views.user_all_event_url),
-    path("update_user_info", views.update_user_info)
+    path("update_user_info", views.update_user_info),
+    path("complete_materials", views.complete_materials)
 ]

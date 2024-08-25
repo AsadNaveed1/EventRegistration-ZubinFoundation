@@ -1,6 +1,8 @@
 
 # Create your views here.
-import datetime
+from datetime import datetime
+
+
 import json
 from django.contrib.auth import authenticate
 from django.http import JsonResponse
@@ -124,19 +126,18 @@ def add_event_to_user(request):
             ####
 
             # Send notification message once user registered
-            notification_message = create_event_register_message(event)
-            send_whatsapp_message("+85252243017", notification_message)
-            # send_sms_message("+85252243017", notification_message)
+            # notification_message = create_event_register_message(event)
+            # send_whatsapp_message(user.phone_number, notification_message)
+            # send_sms_message(user.phone_number, notification_message)
             
             # Schedule reminder task
-
-            # start_datetime = datetime.fromisoformat(event.start_datetime)
-            # reminder_time = start_datetime - datetime.timedelta(hours=1)
-            # if reminder_time > timezone.now():
-            #     send_sync_reminder_message.apply_async(
-            #             (user.phone_number, event),
-            #             eta=reminder_time
-            #         )
+            print("okay")
+            # start_datetime= datetime.strptime(event.start_datetime.isoformat(), "%Y-%m-%dT%H:%M:%S.%f")
+            start_datetime = datetime.fromisoformat(event.start_datetime)
+            reminder_time = start_datetime - datetime.timedelta(hours=1)
+            print("reminder_time: "+ str(reminder_time))
+            if reminder_time > timezone.now():
+                send_sync_reminder_message.apply_async((user.phone_number, event),eta=reminder_time)
 
             # 使用序列化器將用戶對象轉換為 JSON
             serializer = UserSerializer(user)
@@ -217,15 +218,20 @@ def get_user_events(request):
 
 
 @csrf_exempt
-def add_event(request): ## tested
+def add_event(request):
     if request.method == 'POST':
-        serializer = EventSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            data = json.loads(request.body)
+            serializer = EventSerializer(data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse({'status': 'success', 'message': 'Event added successfully'}, status=201)
+            else:
+                return JsonResponse({'status': 'error', 'message': 'Invalid data', 'errors': serializer.errors}, status=400)
+        except json.JSONDecodeError:
+            return JsonResponse({'status': 'error', 'message': 'Invalid JSON'}, status=400)
     else:
-        return JsonResponse({'message': 'Invalid request method', 'status': 'error'}, status=405)
+        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
 
 
 @csrf_exempt
@@ -277,3 +283,5 @@ def remove_user_from_event(request):
         'status': 'error',
         'message': 'Invalid request method'
     }, status=405)
+
+

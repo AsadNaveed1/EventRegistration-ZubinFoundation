@@ -182,3 +182,65 @@ def update_user_info(request):
             return JsonResponse({'error': 'Invalid JSON format'}, status=400)
     else:
         return JsonResponse({'error': 'Invalid HTTP method'}, status=405)  # 返回錯誤信息和狀態碼
+
+
+
+@csrf_exempt
+def complete_materials(request):
+    if request.method == 'POST':
+        try:
+            # Get parameters
+            data = json.loads(request.body)
+            user_id = data.get('user_id')
+            new_materials = data.get('completed_materials', [])
+
+            if not isinstance(new_materials, list):
+                return JsonResponse({
+                    'message': 'completed_materials should be an array of strings',
+                    'status': 'error'
+                }, status=400)
+
+            # Find the user object
+            user = User.objects.get(pk=user_id)
+
+            # Get current completed materials
+            if  user.completed_materials is None:
+                user.completed_materials = list(new_materials)
+            else:
+                current_materials = set(user.completed_materials)
+
+                # Merge new materials, avoiding duplicates
+                updated_materials = current_materials.union(set(new_materials))
+
+                # Update user with new materials
+                user.completed_materials = list(updated_materials)
+                user.save()
+
+            return JsonResponse({
+                'message': 'Completed materials updated successfully',
+                'status': 'success',
+                'completed_materials': user.completed_materials
+            }, status=200)
+
+        except User.DoesNotExist:
+            return JsonResponse({
+                'message': 'User not found',
+                'status': 'error'
+            }, status=404)
+
+        except json.JSONDecodeError:
+            return JsonResponse({
+                'message': 'Invalid JSON',
+                'status': 'error'
+            }, status=400)
+
+        except Exception as e:
+            return JsonResponse({
+                'message': str(e),
+                'status': 'error'
+            }, status=500)
+
+    return JsonResponse({
+        'message': 'Invalid request method',
+        'status': 'error'
+    }, status=405)

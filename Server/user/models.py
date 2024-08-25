@@ -26,7 +26,7 @@ class User(models.Model):
     
     registered_events = models.ManyToManyField('events.Event', related_name='registered_users', blank=True)
     admin_code = models.CharField(max_length=100, null=True)  # Add this line
-
+    completed_materials = ArrayField(models.CharField(max_length=100), size=5, blank=True, null=True)
 
     def __str__(self):
         return self.username

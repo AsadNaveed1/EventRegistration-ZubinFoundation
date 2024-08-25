@@ -89,14 +89,20 @@ def create_event_register_message(event):
     return message_body
 
 def create_reminder_message(event):
+    start_date = event.start_datetime.strftime("%Y-%m-%d")
+    start_time = event.start_datetime.strftime("%H:%M:%S")
+    end_date = event.end_datetime.strftime("%Y-%m-%d")
+    end_time = event.end_datetime.strftime("%H:%M:%S")
     message_body = (
-        f"Hello! You've been registered for the following event:\n\n"
-        f"Event: {event.title}\n"  # Accessing the event name using dot notation
-        f"Date: {event.date}\n"    # Accessing the event date using dot notation
-        f"Time: {event.time}\n"    # Accessing the event time using dot notation
+        f"Reminder: The event '{event.title}' is starting at {start_date}\n\n."
+        f"Event: {start_date}\n"  # Accessing the event name using dot notation
+        f"Start Date: {start_date}\n"    # Accessing the event start date using dot notation
+        f"Start Time: {start_time}\n"    # Accessing the event start time using dot notation
+        f"End Date: {end_date}\n"    # Accessing the event end date using dot notation
+        f"End Time: {end_time}\n"    # Accessing the event end time using dot notation
         f"Location: {event.location}\n\n"
         
-        f"Reminder: The event '{event.title}' is starting at {event.starttime}."
+       
     )
     return message_body
 
