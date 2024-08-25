@@ -69,14 +69,16 @@ def create_event_register_message(event):
     end_time = event.end_datetime.strftime("%H:%M:%S")
 
     message_body = (
-        f"Hello! You've been registered for the following event:\n\n"
+        f"Hello! Thanks so much for your interest in the Zubin Foundation events! We are excited to extend an exclusive invitation to you for the event: {event.title}\n\n"
+        f"We are committed to improving the lives of Hong Kong’s ethnic minorities. Join us to get involved in various activities and the inclusive community. You will also receive an opportunity to connect with other members, our volunteers and mentors from different fields.\n"
+        f"Event details are as follows: \n"
         f"Event: {event.title}\n"  # Accessing the event title using dot notation
         f"Start Date: {start_date}\n"    # Accessing the event start date using dot notation
         f"Start Time: {start_time}\n"    # Accessing the event start time using dot notation
         f"End Date: {end_date}\n"    # Accessing the event end date using dot notation
         f"End Time: {end_time}\n"    # Accessing the event end time using dot notation
         f"Location: {event.location}\n\n"
-        f"Thank you for registering. We look forward to seeing you there!"
+        f"We are looking forward to engaging with you there!"
     )
     # message_body = (
     #     f"Hello! You've been registered for the following event:\n\n"
