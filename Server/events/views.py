@@ -165,7 +165,7 @@ return:
 '''
 @csrf_exempt
 def get_user_events(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
         try:
             # 1. Parse the JSON body of the request
             body = json.loads(request.body)
