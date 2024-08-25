@@ -209,6 +209,7 @@ def complete_materials(request):
             # Get current completed materials
             if  user.completed_materials is None:
                 user.completed_materials = list(new_materials)
+                user.save()
             else:
                 current_materials = set(user.completed_materials)
 

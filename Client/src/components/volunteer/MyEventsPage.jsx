@@ -14,8 +14,16 @@ function MyEventsPage() {
         // Use the correct endpoint and include the event ID in the URL
         console.log("response")
         const res = await axios.get(`user/find_user/${userId}`)
+        const registeredEventsWithReady = res.data.registered_events.map(event => {
+          const hasLearningMaterials = event.learning_materials && event.learning_materials.length > 0;
+          const isCompleted = res.data.completed_materials ? res.data.completed_materials.includes(event.learning_materials) : false;
         
-        setRegisteredEvents(res.data.registered_events)
+          return {
+            ...event, // Spread the existing event properties
+            ready: !hasLearningMaterials || isCompleted // Set ready based on the conditions
+          };
+        });
+        setRegisteredEvents(registeredEventsWithReady)
       } catch (error) {
         console.error('Error fetching events:', error);
         // Fallback to Sample.json on error, if you have it imported
@@ -34,6 +42,7 @@ function MyEventsPage() {
   const handleCloseModal = () => {
     setSelectedEvent(null);
   };
+
   const withdrawEvent = async (event) => {
     // if (seatsAvailable > 0 && !registered) {
       await axios.post('events/unregister',{
@@ -56,6 +65,16 @@ function MyEventsPage() {
               <p>{event.description}</p>
               <button onClick={() => handleViewDetails(event)}>View Details</button>
               <button onClick={() => withdrawEvent(event)}>Withdraw</button>
+              {event.ready ? (
+        <span>✔️ Completed</span> // You can replace this with any completed icon
+      ) : (
+        <span style={{marginRight:5}}>
+          <span style={{
+  color: 'red', // You can change the color as needed
+  fontWeight: 'bold',
+}}>!</span> Incomplete Training
+        </span>
+      )}
             </div>
           ))}
         </div>
